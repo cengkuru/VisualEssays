@@ -208,35 +208,39 @@ a{color:var(--rise-hi)}
 .gcard .gtx{font-size:13.5px;color:#f2efe9;line-height:1.35;margin-top:3px}
 @media(max-width:680px){.gstrip{grid-template-columns:1fr 1fr;gap:8px}.gcard .gtx{font-size:11px}}
 
-/* interactive two-line chart */
+/* two stacked panels: what improved (green) above what didn't (red). No opposite-axis decoding. */
 .ichart{background:var(--ink2);padding:13vh 0 11vh;border-top:1px solid #2a2620}
-.ichart .ihead{max-width:820px;margin:0 auto 14px;padding:0 24px}
+.ichart .ihead{max-width:820px;margin:0 auto 30px;padding:0 24px}
 .ichart h2{font-size:clamp(26px,4vw,40px);margin:6px 0 12px;font-family:var(--serif);font-weight:700}
-.ichart .ihead p{color:#cdc7bc;margin:0 0 18px;font-size:16px;max-width:60ch}
-.itoggles{display:flex;gap:12px;flex-wrap:wrap}
-.itog{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid #3a352e;color:#9b958a;padding:8px 14px;border-radius:30px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .25s}
-.itog .sw{width:12px;height:12px;border-radius:50%;transition:opacity .25s}
-.itog .sw.g{background:var(--rise)} .itog .sw.r{background:var(--stuck)}
-.itog.on{color:var(--paper);border-color:#5c564d}
-.itog:not(.on){opacity:.5} .itog:not(.on) .sw{opacity:.3}
-.iwrap{position:relative;max-width:1000px;margin:0 auto;padding:0 24px}
-#ichartsvg{width:100%;height:auto;display:block;overflow:visible}
-.iaxis{fill:#6e695f;font-family:var(--mono);font-size:13px}
+.ichart h2 .a{color:var(--rise)} .ichart h2 .b{color:var(--stuck)}
+.ichart .ihead p{color:#cdc7bc;margin:0;font-size:16px;max-width:62ch}
+.ipanel{max-width:1000px;margin:0 auto;padding:0 24px}
+.iplabel{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:#cdc7bc;margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.iplabel b{color:#6e695f;font-weight:400}
+.ipdot{width:11px;height:11px;border-radius:50%;flex:none}
+.ipdot.g{background:var(--rise)} .ipdot.r{background:var(--stuck)}
+.iwrap{position:relative}
+.ipanel svg{width:100%;height:170px;display:block;overflow:visible}
 .igrid{stroke:#2a2620;stroke-width:1}
-.iline-law{fill:none;stroke:var(--rise);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(91,191,151,.35));transition:opacity .3s}
-.iline-fail{fill:none;stroke:var(--stuck);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(207,107,58,.35));transition:opacity .3s}
+.iaxis{fill:#6e695f;font-family:var(--mono);font-size:12px}
+.iline-law{fill:none;stroke:var(--rise);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(91,191,151,.35))}
+.iline-fail{fill:none;stroke:var(--stuck);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(207,107,58,.35))}
+.iline-hope{fill:none;stroke:var(--stuck);stroke-width:2;stroke-dasharray:6 6;opacity:.5}
+.iarea-law{fill:var(--rise);opacity:.08} .iarea-fail{fill:var(--stuck);opacity:.08}
 .idot{cursor:pointer}
-.ilabel{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
-.igapband{fill:url(#igapgrad);opacity:.5;transition:opacity .3s}
-.iyearcard{position:absolute;z-index:5;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .15s,transform .15s;background:rgba(16,14,10,.97);border:1px solid #34302a;border-radius:4px;padding:12px 14px;width:230px;box-shadow:0 14px 40px rgba(0,0,0,.6)}
+.ilabel{font-family:var(--mono);font-size:11px;letter-spacing:.04em}
+.iverdict{max-width:1000px;margin:10px auto 0;padding:0 24px;font-size:14px;line-height:1.45}
+.iverdict.g{color:var(--rise-hi)} .iverdict.r{color:var(--stuck)}
+.ibridge{max-width:760px;margin:22px auto;padding:0 24px;font-family:var(--serif);font-style:italic;font-size:18px;color:var(--paper);text-align:center}
+.iyearcard{position:absolute;z-index:5;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .15s,transform .15s;background:rgba(16,14,10,.97);border:1px solid #34302a;border-radius:4px;padding:12px 14px;width:240px;box-shadow:0 14px 40px rgba(0,0,0,.6)}
 .iyearcard.on{opacity:1;transform:translateY(0)}
-.iyearcard .yy{font-family:var(--serif);font-weight:700;font-size:20px;color:var(--paper);margin-bottom:6px}
-.iyearcard .yr{font-size:12.5px;line-height:1.35;color:#d6d0c5;padding:4px 0}
-.iyearcard .yr b{font-family:var(--serif);font-size:16px}
+.iyearcard .yy{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--paper);margin-bottom:6px}
+.iyearcard .yr{font-size:12.5px;line-height:1.35;color:#d6d0c5;padding:3px 0}
+.iyearcard .yr b{font-family:var(--serif);font-size:15px}
 .iyearcard .yr b.g{color:var(--rise-hi)} .iyearcard .yr b.r{color:var(--stuck)}
 .iyearcard .yn{margin-top:7px;padding-top:7px;border-top:1px solid #2a2620;font-size:12px;color:#cdc7bc;line-height:1.4}
-.ifoot{max-width:1000px;margin:14px auto 0;padding:0 24px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-@media(max-width:680px){.iyearcard{width:180px}}
+.ifoot{max-width:1000px;margin:24px auto 0;padding:0 24px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:680px){.iyearcard{width:180px}.ipanel svg{height:150px}}
 
 /* map scene: where the 95 reports came from */
 .mapsec{position:relative;background:var(--ink2);padding:13vh 0 11vh;border-top:1px solid #2a2620}
@@ -259,13 +263,34 @@ a{color:var(--rise-hi)}
 .coda{padding:13vh 0 8vh;background:var(--ink2)}
 .flow{max-width:760px;margin:0 auto;padding:0 24px}
 .coda h2{font-size:clamp(26px,4vw,42px);margin:0 0 14px}
-.bars{margin-top:26px;display:flex;flex-direction:column;gap:14px}
-.barrow{display:grid;grid-template-columns:230px 1fr 52px;align-items:center;gap:14px}
-.barrow .lab{font-size:14px;color:#d6d0c5}
-.barrow .tr{height:22px;background:#262219;border-radius:2px;overflow:hidden}
-.barrow .fl{height:100%;background:var(--stuck);border-radius:2px}
-.barrow .fl.g{background:var(--rise)}
-.barrow .v{font-family:var(--serif);font-size:20px;font-weight:700;text-align:right}
+/* the failure-chain machine: where the delivery machine breaks, in order */
+.symptom{margin-top:22px;font-size:16px;color:#cdc7bc}
+.symptom b{font-family:var(--serif);font-size:22px}
+.chain{margin-top:24px;display:flex;flex-direction:column;gap:0;position:relative}
+.clink{display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:start;padding:14px 0;position:relative}
+.clink::before{content:"";position:absolute;left:47px;top:38px;bottom:-14px;width:2px;background:#3a352e}
+.clink:last-of-type::before{display:none}
+.clink .cstage{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8f897e;text-align:right;padding-top:6px}
+.clink .cnode{position:relative;padding-left:30px}
+.clink .cnode::before{content:"";position:absolute;left:0;top:7px;width:14px;height:14px;border-radius:50%;background:var(--stuck);box-shadow:0 0 0 4px rgba(207,107,58,.12)}
+.clink .cwhat{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--paper)}
+.clink .ccount{font-family:var(--mono);font-size:12px;color:var(--stuck);margin:2px 0 4px}
+.clink .cfix{font-size:13.5px;color:#cdc7bc;line-height:1.4}
+.chain .cloop{margin-top:14px;padding:12px 16px;border:1px dashed #4a443c;border-radius:4px;font-size:14px;color:#d6d0c5;display:flex;align-items:center;gap:10px}
+.chain .cloop b{color:var(--stuck);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;flex:none}
+/* one win, four warnings */
+.scorecards{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.scorecards .scgroup{display:flex;flex-direction:column;gap:14px}
+.sccard{border-radius:5px;padding:18px 18px 16px;border-left:4px solid}
+.sccard.win{background:rgba(91,191,151,.08);border-color:var(--rise)}
+.sccard.warn{background:rgba(207,107,58,.07);border-color:var(--stuck)}
+.sccard .sclabel{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.sccard.win .sclabel{color:var(--rise)} .sccard.warn .sclabel{color:var(--stuck)}
+.sccard .scnum{font-family:var(--serif);font-weight:700;font-size:clamp(32px,5vw,46px);line-height:1;margin:6px 0 4px}
+.sccard.win .scnum{color:var(--rise-hi)} .sccard.warn .scnum{color:var(--stuck)}
+.sccard .sctext{font-size:14px;color:#d6d0c5;line-height:1.35}
+.sccard.win{justify-content:center;display:flex;flex-direction:column}
+@media(max-width:680px){.scorecards{grid-template-columns:1fr}}
 /* the closer: the metaphor lands as the final beat, not a download link */
 .closer{margin-top:64px;padding-top:40px;border-top:1px solid #2a2620}
 .closer .cl1{font-family:var(--serif);font-weight:700;font-size:clamp(26px,4vw,40px);line-height:1.1;color:var(--rise-hi);margin:0}
@@ -351,35 +376,49 @@ footer b{color:var(--paper)}
   </div>
 </div>
 
-<!-- INTERACTIVE CHART: the two forces, on demand. Isolate one, then combine, the gap is the proof. -->
+<!-- TWO STACKED PANELS: one thing that improved, one that did not. No opposite-axis decoding. -->
 <section class="ichart">
   <div class="ihead">
-    <div class="eyebrow">The evidence, in two lines</div>
-    <h2>Don't take our word. Watch the two forces.</h2>
-    <p>One line is transparency: the share of each year's reports where open data became law. The other is delivery: the share still finding a real failure. Turn each on. They should converge. They never do.</p>
-    <div class="itoggles">
-      <button class="itog on" data-line="law"><span class="sw g"></span>Transparency in law</button>
-      <button class="itog on" data-line="fail"><span class="sw r"></span>Delivery failures</button>
+    <div class="eyebrow">The evidence, year by year</div>
+    <h2>The books opened. The red flags stayed.</h2>
+    <p>Each year, the reports tell two stories at once. Read them one above the other. The top line is the good news. The bottom line is the warning, and it is the one that should have come down.</p>
+  </div>
+
+  <div class="ipanel">
+    <div class="iplabel"><span class="ipdot g"></span>What improved <b>·</b> share of that year's reports where open-data rules had become law</div>
+    <div class="iwrap">
+      <svg id="ichartLaw" viewBox="0 0 1000 300" preserveAspectRatio="none" role="img" aria-label="Transparency in law rises from about 3 in 10 reports in 2015 to all of them by 2020."></svg>
+      <div id="iyearcardLaw" class="iyearcard" aria-live="polite"></div>
     </div>
+    <div class="iverdict g">Up and to the right: more reports could say transparency was now the law.</div>
   </div>
-  <div class="iwrap">
-    <svg id="ichartsvg" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Two lines, 2015 to 2021: transparency-into-law rising toward 100%, delivery-failure staying near 90 to 100%, never meeting."></svg>
-    <div id="iyearcard" class="iyearcard" aria-live="polite"></div>
+
+  <div class="ibridge">One system improved on paper. Now look at what happened in practice.</div>
+
+  <div class="ipanel">
+    <div class="iplabel"><span class="ipdot r"></span>What did not <b>·</b> share of that year's reports still finding a delivery failure</div>
+    <div class="iwrap">
+      <svg id="ichartFail" viewBox="0 0 1000 300" preserveAspectRatio="none" role="img" aria-label="Delivery failures stay near the top, around nine in ten reports every year. A dashed line shows where they would have fallen if publication had been enough; the real line never follows it down."></svg>
+      <div id="iyearcardFail" class="iyearcard" aria-live="polite"></div>
+    </div>
+    <div class="iverdict r">If publishing the data alone had fixed delivery, this line would have fallen (dashed). It stayed near the ceiling.</div>
   </div>
-  <div class="ifoot">Hover or tap any year for the real reports behind it. Source: 49 CoST assurance reports, 2015 to 2021.</div>
+
+  <div class="ifoot">Hover or tap any year for the real reports behind it. Year-by-year view uses the 49 CoST assurance reports from 2015 to 2021.</div>
 </section>
 
 <section class="coda">
   <div class="flow">
-    <div class="eyebrow" style="color:var(--rise-hi)">So if disclosure alone didn't move the needle</div>
-    <h2>What would?</h2>
-    <p style="color:#cdc7bc">The reports do not just name the failures. Read together, they point at the same few fixes, over and over. These are the moves they converge on, ranked by how many of the 95 reports raised them.</p>
-    <div class="bars" id="bars"></div>
-    <p style="color:#cdc7bc;margin-top:22px">It is a short list, and a stubborn one: get preparation right before tender, keep supervision independent of the contractor, and publish the audits that go missing. None of it is exotic. All of it sits downstream of disclosure, where the standard has not yet reached.</p>
+    <div class="eyebrow" style="color:var(--stuck)">The same machine, breaking in the same places</div>
+    <h2>The fixes are not exotic</h2>
+    <p style="color:#cdc7bc">Overruns are the symptom everyone sees. But the reports trace them to the same machine, breaking at three points: before tender, during construction, and after completion. With no audit at the end, the next project repeats the last one's mistakes.</p>
+    <div class="symptom"><b class="r">70 of 95</b> reports still flagged a project late or over budget. Here is why.</div>
+    <div class="chain" id="chain"></div>
+    <p style="color:#cdc7bc;margin-top:26px">None of the fixes is exotic: finish preparation before tender, keep supervision independent of the contractor, and publish the audit so the next project can learn. All of it sits downstream of disclosure, where the standard has not yet reached.</p>
 
-    <h2 style="margin-top:56px;font-size:24px">What changed, what didn't</h2>
-    <p style="color:#cdc7bc">A decade of assurance, scored on the questions that matter. The wins are real. So is the work left.</p>
-    <div class="scoreboard" id="scoreboard"></div>
+    <h2 style="margin-top:62px;font-size:clamp(24px,3.5vw,34px)">One win. Four warnings.</h2>
+    <p style="color:#cdc7bc">A decade of assurance, scored. Transparency entered the rulebook. The delivery controls that should turn published evidence into better projects did not keep pace. All counts are out of 95 reports.</p>
+    <div class="scorecards" id="scorecards"></div>
 
     <div class="closer">
       <p class="cl1">Transparency opened the books.</p>
@@ -2314,112 +2353,96 @@ function positionCard(x,y){
 function hideCard(c){ card.className=''; card.setAttribute('aria-hidden','true'); if(c){c.classList.remove('lit'); if(c.__lbl){c.__lbl.setAttribute('opacity',0.42);c.__lbl.removeAttribute('font-size');}} }
 // (the floating insight card is unused in the globe spine; per-country detail lives in #gcountryCard)
 
-// coda bars (real corpus counts)
 var T=D.totals;
-var bars=[
-  {lab:'Cost or time overruns',v:T.overrun,g:false},
-  {lab:'Weak project preparation',v:T.prep,g:false},
-  {lab:'Standard written into law',v:T.law,g:true},
-  {lab:'Missing audit reports',v:T.noAudit,g:false},
-  {lab:'Compromised supervision',v:T.superv,g:false}
-].sort(function(a,b){return b.v-a.v;});
-document.getElementById('bars').innerHTML=bars.map(function(b){
-  var pct=Math.round(b.v/T.rows*100);
-  return '<div class="barrow"><div class="lab">'+b.lab+'</div><div class="tr"><div class="fl'+(b.g?' g':'')+'" style="width:'+pct+'%"></div></div><div class="v" style="color:'+(b.g?'var(--rise)':'var(--stuck)')+'">'+b.v+'</div></div>';
-}).join('');
-
-// scoreboard: what changed / what didn't (every verdict tied to a real count)
-var score=[
-  {q:'Did transparency become formal law?', a:'Yes', cls:'yes', note:T.law+' of 95 reports record it'},
-  {q:'Did the reports keep finding cost or time overruns?', a:'Yes', cls:'no', note:T.overrun+' of 95 still flagged them'},
-  {q:'Did weak project preparation disappear?', a:'No', cls:'no', note:T.prep+' of 95 still flagged it'},
-  {q:'Did missing audits disappear?', a:'No', cls:'no', note:T.noAudit+' of 95 still flagged them'},
-  {q:'Did supervision become independent of the contractor?', a:'No', cls:'no', note:T.superv+' of 95 flagged the conflict'},
-  {q:'What is the next frontier?', a:'Delivery', cls:'next', note:'turn disclosure into supervision and audit'}
+// the failure-chain machine: stage -> what breaks (real count) -> the fix
+var chain=[
+  {stage:'Before tender',what:'Weak preparation',count:T.prep+' of 95 reports',fix:'Finish feasibility, design, budget and risk checks before the contract goes out.'},
+  {stage:'During construction',what:'Supervision conflicts',count:T.superv+' of 95 reports',fix:'Keep the people checking the work independent of the contractor doing it.'},
+  {stage:'The visible result',what:'Projects late or over budget',count:T.overrun+' of 95 reports',fix:'The symptom everyone sees, produced by the two breaks above.'},
+  {stage:'After completion',what:'Audits go missing',count:T.noAudit+' of 95 reports',fix:'Publish the audit and evaluation so the next project can learn from this one.'}
 ];
-document.getElementById('scoreboard').innerHTML=score.map(function(s){
-  return '<div class="srow"><div class="sq">'+s.q+'</div><div class="sa '+s.cls+'">'+s.a+'<small>'+s.note+'</small></div></div>';
-}).join('');
+document.getElementById('chain').innerHTML=chain.map(function(c){
+  return '<div class="clink"><div class="cstage">'+c.stage+'</div><div class="cnode"><div class="cwhat">'+c.what+'</div><div class="ccount">'+c.count+'</div><div class="cfix">'+c.fix+'</div></div></div>';
+}).join('')
+ + '<div class="cloop"><b>The loop</b><span>No audit, no learning, so the next project starts weakly prepared and the machine runs again.</span></div>';
 
-// ---- interactive two-line chart (the evidence) ----
+// one win, four warnings
+var win={label:'The win',num:T.law+' of 95',text:'reports recorded the transparency standard entering law'};
+var warns=[
+  {num:T.overrun+' of 95',text:'still flagged cost or time overruns'},
+  {num:T.prep+' of 95',text:'still flagged weak project preparation'},
+  {num:T.noAudit+' of 95',text:'flagged missing audits or evaluations'},
+  {num:T.superv+' of 95',text:'flagged supervision conflicts with the contractor'}
+];
+document.getElementById('scorecards').innerHTML=
+  '<div class="scgroup"><div class="sccard win"><div class="sclabel">The win</div><div class="scnum">'+win.num+'</div><div class="sctext">'+win.text+'</div></div></div>'
+ +'<div class="scgroup">'+warns.map(function(w){return '<div class="sccard warn"><div class="sclabel">Warning</div><div class="scnum">'+w.num+'</div><div class="sctext">'+w.text+'</div></div>';}).join('')+'</div>';
+
+// ---- two stacked panels: what improved (green) above what stayed (red) ----
 (function ichart(){
-  var svg=document.getElementById('ichartsvg'); if(!svg)return;
+  var lawSvg=document.getElementById('ichartLaw'), failSvg=document.getElementById('ichartFail');
+  if(!lawSvg||!failSvg)return;
   var NS2='http://www.w3.org/2000/svg';
   function E(t,a){var e=document.createElementNS(NS2,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
-  var W=1000,H=560,P={l:64,r:120,t:30,b:60};
-  var yrs=D.years; // each {year,n,lawPct,delivPct,reports}
-  function X(i){return P.l+(W-P.l-P.r)*(i/(yrs.length-1));}
-  function Y(p){return P.t+(H-P.t-P.b)*(1-p/100);}
-  // defs for the gap band gradient
-  var defs=E('defs',{}); var lg=E('linearGradient',{id:'igapgrad',x1:0,y1:0,x2:0,y2:1});
-  lg.appendChild(E('stop',{offset:'0%','stop-color':'#cf6b3a','stop-opacity':0.16}));
-  lg.appendChild(E('stop',{offset:'100%','stop-color':'#5bbf97','stop-opacity':0.06}));
-  defs.appendChild(lg); svg.appendChild(defs);
-  // gridlines + axis
-  [0,25,50,75,100].forEach(function(p){ svg.appendChild(E('line',{x1:P.l,y1:Y(p),x2:W-P.r,y2:Y(p),class:'igrid'}));
-    var t=E('text',{x:P.l-12,y:Y(p)+4,class:'iaxis','text-anchor':'end'});t.textContent=p+'%';svg.appendChild(t); });
-  yrs.forEach(function(y,i){ var t=E('text',{x:X(i),y:H-P.b+30,class:'iaxis','text-anchor':'middle'});t.textContent=y.year;svg.appendChild(t); });
-  // gap band (between the two lines)
-  var top=yrs.map(function(y,i){return [X(i),Y(y.delivPct)];});
-  var bot=yrs.map(function(y,i){return [X(i),Y(y.lawPct)];}).reverse();
-  var bandD='M'+top.map(function(p){return p[0]+' '+p[1];}).join(' L')+' L'+bot.map(function(p){return p[0]+' '+p[1];}).join(' L')+' Z';
-  var band=E('path',{d:bandD,class:'igapband'}); svg.appendChild(band);
-  function path(key){ return 'M'+yrs.map(function(y,i){return X(i)+' '+Y(key==='law'?y.lawPct:y.delivPct);}).join(' L'); }
-  var lawLine=E('path',{d:path('law'),class:'iline-law'}); svg.appendChild(lawLine);
-  var failLine=E('path',{d:path('fail'),class:'iline-fail'}); svg.appendChild(failLine);
-  // end labels
-  var li=yrs.length-1;
-  // both lines end near 100%, so offset the labels vertically to avoid overlap
-  var lawLbl=E('text',{x:X(li)+12,y:Y(yrs[li].lawPct)-8,class:'ilabel',fill:'var(--rise-hi)'});lawLbl.textContent='IN LAW';svg.appendChild(lawLbl);
-  var failLbl=E('text',{x:X(li)+12,y:Y(yrs[li].delivPct)+16,class:'ilabel',fill:'var(--stuck)'});failLbl.textContent='FAILURE';svg.appendChild(failLbl);
-  // gap annotation (the proof) at the widest visible gap
-  var gapMid=Math.round(yrs.length/2);
-  var gx=X(gapMid), gy=(Y(yrs[gapMid].lawPct)+Y(yrs[gapMid].delivPct))/2;
-  var gapTxt=E('text',{x:gx,y:gy+4,class:'ilabel','text-anchor':'middle',fill:'#cdc7bc','font-size':13});gapTxt.textContent='the gap that never closes';svg.appendChild(gapTxt);
-  // interactive dots per year on each line
-  var card=document.getElementById('iyearcard');
+  var yrs=D.years;
+  var VW=1000,VH=300,P={l:54,r:96,t:24,b:42};
+  function X(i){return P.l+(VW-P.l-P.r)*(i/(yrs.length-1));}
+  function Y(p){return P.t+(VH-P.t-P.b)*(1-p/100);}
+
+  function drawPanel(svg,key,opts){
+    svg.innerHTML='';
+    // gridlines + y labels (0,50,100)
+    [0,50,100].forEach(function(p){ svg.appendChild(E('line',{x1:P.l,y1:Y(p),x2:VW-P.r,y2:Y(p),class:'igrid'}));
+      var t=E('text',{x:P.l-10,y:Y(p)+4,class:'iaxis','text-anchor':'end'});t.textContent=p+'%';svg.appendChild(t); });
+    // x year labels
+    yrs.forEach(function(y,i){ var t=E('text',{x:X(i),y:VH-P.b+26,class:'iaxis','text-anchor':'middle'});t.textContent=y.year;svg.appendChild(t); });
+    // area + line
+    var pts=yrs.map(function(y,i){return [X(i),Y(key==='law'?y.lawPct:y.delivPct)];});
+    var areaD='M'+pts.map(function(p){return p[0]+' '+p[1];}).join(' L')+' L'+X(yrs.length-1)+' '+Y(0)+' L'+X(0)+' '+Y(0)+' Z';
+    svg.appendChild(E('path',{d:areaD,class:key==='law'?'iarea-law':'iarea-fail'}));
+    // expected-vs-actual: on the failure panel, a dashed "should have fallen" line
+    if(key==='fail'){
+      var hopeStart=yrs[0].delivPct, hopeEnd=20;
+      var hopeD='M'+pts.map(function(p,i){var t=i/(yrs.length-1);return p[0]+' '+Y(hopeStart+(hopeEnd-hopeStart)*t);}).join(' L');
+      svg.appendChild(E('path',{d:hopeD,class:'iline-hope'}));
+      var hl=E('text',{x:X(yrs.length-1)+8,y:Y(hopeEnd)+4,class:'ilabel',fill:'var(--stuck)','fill-opacity':0.6});hl.textContent='if it worked';svg.appendChild(hl);
+    }
+    var lineD='M'+pts.map(function(p){return p[0]+' '+p[1];}).join(' L');
+    svg.appendChild(E('path',{d:lineD,class:key==='law'?'iline-law':'iline-fail'}));
+    // end label
+    var last=pts[pts.length-1];
+    var lbl=E('text',{x:last[0]+8,y:last[1]+4,class:'ilabel',fill:key==='law'?'var(--rise-hi)':'var(--stuck)'});
+    lbl.textContent=key==='law'?'in law':'still failing';svg.appendChild(lbl);
+    // dots
+    yrs.forEach(function(y,i){
+      var val=key==='law'?y.lawPct:y.delivPct;
+      var d=E('circle',{cx:X(i),cy:Y(val),r:7,class:'idot',fill:key==='law'?'var(--rise)':'var(--stuck)',stroke:'#1e1b15','stroke-width':2,tabindex:0,role:'button','aria-label':y.year+', '+val+'%'});
+      function show(){ showYear(svg,opts.card,y,i,val,key); }
+      d.addEventListener('mouseenter',show); d.addEventListener('mouseleave',function(){opts.card.classList.remove('on');});
+      d.addEventListener('focus',show); d.addEventListener('blur',function(){opts.card.classList.remove('on');});
+      d.addEventListener('click',function(e){e.stopPropagation();show();});
+      svg.appendChild(d);
+    });
+  }
   function repFor(y){ var f=(y.reports||[]).filter(function(r){return r.over||r.prep;})[0]||(y.reports||[])[0]; return f; }
-  function showYear(y,i,key){
+  function showYear(svg,card,y,i,val,key){
     var r=repFor(y);
     card.innerHTML='<div class="yy">In '+y.year+'</div>'
-      +'<div class="yr"><span><b class="g">'+y.lawPct+'%</b> of reports could say open-data rules were now law</span></div>'
-      +'<div class="yr"><span><b class="r">'+y.delivPct+'%</b> still found a project late, over budget, or poorly run</span></div>'
+      +(key==='law'
+        ? '<div class="yr"><b class="g">'+y.lawPct+'%</b> of that year’s reports could say the rules had become law</div>'
+        : '<div class="yr"><b class="r">'+y.delivPct+'%</b> still found a project late, over budget, or poorly run</div>')
       +'<div class="yn">'+y.n+' report'+(y.n==1?'':'s')+' that year'+(r?'. e.g. '+r.c+': '+(r.over?'ran over':'')+(r.over&&r.prep?', ':'')+(r.prep?'weak preparation':''):'')+'.</div>';
     card.classList.add('on');
     var wrap=svg.getBoundingClientRect();
-    var sx=wrap.left+ (X(i)/W)*wrap.width, sy=wrap.top+(Y(key==='law'?y.lawPct:y.delivPct)/H)*wrap.height;
+    var sx=wrap.left+(X(i)/VW)*wrap.width, sy=wrap.top+(Y(val)/VH)*wrap.height;
     var pr=card.offsetParent.getBoundingClientRect();
     var px=sx-pr.left+14, py=sy-pr.top-10;
-    if(px+250>pr.width) px=sx-pr.left-244;
+    if(px+250>pr.width) px=sx-pr.left-244; if(px<0)px=6;
     card.style.left=px+'px'; card.style.top=py+'px';
   }
-  function hide(){ card.classList.remove('on'); }
-  yrs.forEach(function(y,i){
-    [['law',y.lawPct],['fail',y.delivPct]].forEach(function(pr){
-      var key=pr[0], val=pr[1];
-      var d=E('circle',{cx:X(i),cy:Y(val),r:7,class:'idot','data-line':key,fill:key==='law'?'var(--rise)':'var(--stuck)','stroke':'#1e1b15','stroke-width':2,tabindex:0,role:'button','aria-label':y.year+', '+(key==='law'?'in law ':'failure ')+val+'%'});
-      d.addEventListener('mouseenter',function(){showYear(y,i,key);});
-      d.addEventListener('mouseleave',hide);
-      d.addEventListener('focus',function(){showYear(y,i,key);});
-      d.addEventListener('blur',hide);
-      d.addEventListener('click',function(e){e.stopPropagation();showYear(y,i,key);});
-      svg.appendChild(d);
-    });
-  });
-  document.addEventListener('click',function(){hide();});
-  // toggles
-  var show={law:true,fail:true};
-  function sync(){
-    lawLine.style.opacity=show.law?1:0.06; lawLbl.style.opacity=show.law?1:0;
-    failLine.style.opacity=show.fail?1:0.06; failLbl.style.opacity=show.fail?1:0;
-    band.style.opacity=(show.law&&show.fail)?0.5:0;
-    gapTxt.style.opacity=(show.law&&show.fail)?1:0;
-    [].slice.call(svg.querySelectorAll('.idot')).forEach(function(d){ d.style.opacity=show[d.getAttribute('data-line')]?1:0.08; d.style.pointerEvents=show[d.getAttribute('data-line')]?'auto':'none'; });
-  }
-  [].slice.call(document.querySelectorAll('.itog')).forEach(function(btn){
-    btn.addEventListener('click',function(){ var k=btn.getAttribute('data-line'); show[k]=!show[k]; btn.classList.toggle('on',show[k]); sync(); });
-  });
-  sync();
+  drawPanel(lawSvg,'law',{card:document.getElementById('iyearcardLaw')});
+  drawPanel(failSvg,'fail',{card:document.getElementById('iyearcardFail')});
+  document.addEventListener('click',function(){document.getElementById('iyearcardLaw').classList.remove('on');document.getElementById('iyearcardFail').classList.remove('on');});
 })();
 
 // downloads
