@@ -263,34 +263,25 @@ a{color:var(--rise-hi)}
 .coda{padding:13vh 0 8vh;background:var(--ink2)}
 .flow{max-width:760px;margin:0 auto;padding:0 24px}
 .coda h2{font-size:clamp(26px,4vw,42px);margin:0 0 14px}
-/* the failure-chain machine: where the delivery machine breaks, in order */
-.symptom{margin-top:22px;font-size:16px;color:#cdc7bc}
-.symptom b{font-family:var(--serif);font-size:22px}
-.chain{margin-top:24px;display:flex;flex-direction:column;gap:0;position:relative}
-.clink{display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:start;padding:14px 0;position:relative}
-.clink::before{content:"";position:absolute;left:47px;top:38px;bottom:-14px;width:2px;background:#3a352e}
-.clink:last-of-type::before{display:none}
-.clink .cstage{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8f897e;text-align:right;padding-top:6px}
-.clink .cnode{position:relative;padding-left:30px}
-.clink .cnode::before{content:"";position:absolute;left:0;top:7px;width:14px;height:14px;border-radius:50%;background:var(--stuck);box-shadow:0 0 0 4px rgba(207,107,58,.12)}
-.clink .cwhat{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--paper)}
-.clink .ccount{font-family:var(--mono);font-size:12px;color:var(--stuck);margin:2px 0 4px}
-.clink .cfix{font-size:13.5px;color:#cdc7bc;line-height:1.4}
-.chain .cloop{margin-top:14px;padding:12px 16px;border:1px dashed #4a443c;border-radius:4px;font-size:14px;color:#d6d0c5;display:flex;align-items:center;gap:10px}
-.chain .cloop b{color:var(--stuck);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;flex:none}
-/* one win, four warnings */
-.scorecards{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.scorecards .scgroup{display:flex;flex-direction:column;gap:14px}
-.sccard{border-radius:5px;padding:18px 18px 16px;border-left:4px solid}
-.sccard.win{background:rgba(91,191,151,.08);border-color:var(--rise)}
-.sccard.warn{background:rgba(207,107,58,.07);border-color:var(--stuck)}
-.sccard .sclabel{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-.sccard.win .sclabel{color:var(--rise)} .sccard.warn .sclabel{color:var(--stuck)}
-.sccard .scnum{font-family:var(--serif);font-weight:700;font-size:clamp(32px,5vw,46px);line-height:1;margin:6px 0 4px}
-.sccard.win .scnum{color:var(--rise-hi)} .sccard.warn .scnum{color:var(--stuck)}
-.sccard .sctext{font-size:14px;color:#d6d0c5;line-height:1.35}
-.sccard.win{justify-content:center;display:flex;flex-direction:column}
-@media(max-width:680px){.scorecards{grid-template-columns:1fr}}
+/* coda: result first, then the project journey behind it, then the win as a note */
+.resulthero{margin-top:26px;background:rgba(207,107,58,.08);border-left:4px solid var(--stuck);border-radius:5px;padding:22px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.resulthero b{font-family:var(--serif);font-weight:700;font-size:clamp(40px,7vw,64px);line-height:.95;color:var(--stuck);flex:none}
+.resulthero span{font-size:16px;color:#e7e2d8;line-height:1.4;max-width:36ch}
+/* the project journey: before / during / after, ending in the loop */
+.journey{margin-top:30px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative}
+.jstep{position:relative;padding:0 18px 0 0}
+.jstep .jwhen{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#8f897e;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.jstep .jwhen::after{content:"";flex:1;height:1px;background:#3a352e}
+.jstep .jdot{position:absolute;left:0;top:18px;width:13px;height:13px;border-radius:50%;background:var(--stuck);box-shadow:0 0 0 4px rgba(207,107,58,.12)}
+.jstep .jwhat{font-family:var(--serif);font-weight:700;font-size:19px;color:var(--paper);margin-top:6px}
+.jstep .jcount{font-family:var(--mono);font-size:12px;color:var(--stuck);margin:3px 0 6px}
+.jstep .jfix{font-size:13.5px;color:#cdc7bc;line-height:1.4}
+.jloop{grid-column:1 / -1;margin-top:18px;padding:13px 16px;border:1px dashed #4a443c;border-radius:4px;font-size:14.5px;color:#e7e2d8;display:flex;align-items:center;gap:10px}
+.jloop b{color:var(--stuck);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;flex:none}
+.winnote{margin-top:24px;background:rgba(91,191,151,.06);border-left:3px solid var(--rise);border-radius:4px;padding:14px 18px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.winnote b{font-family:var(--serif);font-weight:700;font-size:26px;color:var(--rise-hi);flex:none}
+.winnote span{font-size:14.5px;color:#cdc7bc;line-height:1.4}
+@media(max-width:680px){.journey{grid-template-columns:1fr;gap:20px}.jstep{padding:0 0 0 26px}.jstep .jdot{top:2px}.jstep .jwhen::after{display:none}}
 /* the closer: the metaphor lands as the final beat, not a download link */
 .closer{margin-top:64px;padding-top:40px;border-top:1px solid #2a2620}
 .closer .cl1{font-family:var(--serif);font-weight:700;font-size:clamp(26px,4vw,40px);line-height:1.1;color:var(--rise-hi);margin:0}
@@ -380,45 +371,46 @@ footer b{color:var(--paper)}
 <section class="ichart">
   <div class="ihead">
     <div class="eyebrow">The evidence, year by year</div>
-    <h2>The books opened. The red flags stayed.</h2>
-    <p>Each year, the reports tell two stories at once. Read them one above the other. The top line is the good news. The bottom line is the warning, and it is the one that should have come down.</p>
+    <h2>The rulebook changed. The warnings did not.</h2>
+    <p>Each year tells two stories. More reports said transparency had entered law. But reports still kept finding delivery failures. If publication rules were enough on their own, the warning line below would fall.</p>
   </div>
 
   <div class="ipanel">
-    <div class="iplabel"><span class="ipdot g"></span>What improved <b>·</b> share of that year's reports where open-data rules had become law</div>
+    <div class="iplabel"><span class="ipdot g"></span>Reports saying transparency was in law</div>
     <div class="iwrap">
-      <svg id="ichartLaw" viewBox="0 0 1000 300" preserveAspectRatio="none" role="img" aria-label="Transparency in law rises from about 3 in 10 reports in 2015 to all of them by 2020."></svg>
+      <svg id="ichartLaw" viewBox="0 0 1000 300" preserveAspectRatio="none" role="img" aria-label="The share of reports recording transparency in law rises from about 3 in 10 in 2015 to all of them by 2020."></svg>
       <div id="iyearcardLaw" class="iyearcard" aria-live="polite"></div>
     </div>
-    <div class="iverdict g">Up and to the right: more reports could say transparency was now the law.</div>
+    <div class="iverdict g">More reports recorded legal adoption. By 2020 and 2021, every report in this set did.</div>
   </div>
 
-  <div class="ibridge">One system improved on paper. Now look at what happened in practice.</div>
+  <div class="ibridge">That is the paperwork win. Now look at delivery.</div>
 
   <div class="ipanel">
-    <div class="iplabel"><span class="ipdot r"></span>What did not <b>·</b> share of that year's reports still finding a delivery failure</div>
+    <div class="iplabel"><span class="ipdot r"></span>Reports still finding delivery failures</div>
     <div class="iwrap">
-      <svg id="ichartFail" viewBox="0 0 1000 300" preserveAspectRatio="none" role="img" aria-label="Delivery failures stay near the top, around nine in ten reports every year. A dashed line shows where they would have fallen if publication had been enough; the real line never follows it down."></svg>
+      <svg id="ichartFail" viewBox="0 0 1000 300" preserveAspectRatio="none" role="img" aria-label="The share of reports finding a delivery failure stays near 90 to 100 percent every year. A dashed line shows where it should have fallen if publication rules were enough; the real line never follows it down."></svg>
       <div id="iyearcardFail" class="iyearcard" aria-live="polite"></div>
     </div>
-    <div class="iverdict r">If publishing the data alone had fixed delivery, this line would have fallen (dashed). It stayed near the ceiling.</div>
+    <div class="iverdict r">The warning line should fall. It did not. Delivery failures stayed near 90 to 100% every year.</div>
   </div>
 
-  <div class="ifoot">Hover or tap any year for the real reports behind it. Year-by-year view uses the 49 CoST assurance reports from 2015 to 2021.</div>
+  <div class="ifoot">Year-by-year view uses 49 CoST assurance reports from 2015 to 2021. Counts show the share of reports in each year, not national project performance rates.</div>
 </section>
 
 <section class="coda">
   <div class="flow">
-    <div class="eyebrow" style="color:var(--stuck)">The same machine, breaking in the same places</div>
-    <h2>The fixes are not exotic</h2>
-    <p style="color:#cdc7bc">Overruns are the symptom everyone sees. But the reports trace them to the same machine, breaking at three points: before tender, during construction, and after completion. With no audit at the end, the next project repeats the last one's mistakes.</p>
-    <div class="symptom"><b class="r">70 of 95</b> reports still flagged a project late or over budget. Here is why.</div>
-    <div class="chain" id="chain"></div>
-    <p style="color:#cdc7bc;margin-top:26px">None of the fixes is exotic: finish preparation before tender, keep supervision independent of the contractor, and publish the audit so the next project can learn. All of it sits downstream of disclosure, where the standard has not yet reached.</p>
+    <div class="eyebrow" style="color:var(--stuck)">Where projects go wrong</div>
+    <h2>Why projects keep slipping</h2>
+    <p style="color:#cdc7bc">Start with the thing the public actually sees: projects that arrive late or cost more than they should. The reports trace that back to three weak points, before, during, and after construction. And with no audit at the end, one project's mistakes become the next project's starting point.</p>
 
-    <h2 style="margin-top:62px;font-size:clamp(24px,3.5vw,34px)">One win. Four warnings.</h2>
-    <p style="color:#cdc7bc">A decade of assurance, scored. Transparency entered the rulebook. The delivery controls that should turn published evidence into better projects did not keep pace. All counts are out of 95 reports.</p>
-    <div class="scorecards" id="scorecards"></div>
+    <div class="resulthero"><b class="r">70 of 95</b><span>reports still flagged a project as late or over budget. Here is what went wrong behind that number.</span></div>
+
+    <div class="journey" id="journey"></div>
+
+    <div class="winnote" id="winnote"></div>
+
+    <p style="color:#cdc7bc;margin-top:30px">The lesson is plain. Publishing the information helps reveal the problem. It only fixes delivery if someone acts on it: get the preparation right before the contract, keep the checks independent during construction, and publish the audit so the next project does not repeat the last one.</p>
 
     <div class="closer">
       <p class="cl1">Transparency opened the books.</p>
@@ -2354,29 +2346,20 @@ function hideCard(c){ card.className=''; card.setAttribute('aria-hidden','true')
 // (the floating insight card is unused in the globe spine; per-country detail lives in #gcountryCard)
 
 var T=D.totals;
-// the failure-chain machine: stage -> what breaks (real count) -> the fix
-var chain=[
-  {stage:'Before tender',what:'Weak preparation',count:T.prep+' of 95 reports',fix:'Finish feasibility, design, budget and risk checks before the contract goes out.'},
-  {stage:'During construction',what:'Supervision conflicts',count:T.superv+' of 95 reports',fix:'Keep the people checking the work independent of the contractor doing it.'},
-  {stage:'The visible result',what:'Projects late or over budget',count:T.overrun+' of 95 reports',fix:'The symptom everyone sees, produced by the two breaks above.'},
-  {stage:'After completion',what:'Audits go missing',count:T.noAudit+' of 95 reports',fix:'Publish the audit and evaluation so the next project can learn from this one.'}
+// the project journey: where it goes wrong, before / during / after construction
+var journey=[
+  {when:'Before the contract',what:'The project starts too weak',count:T.prep+' of 95 reports',fix:'Finish the design, budget, feasibility and risk checks before procurement begins.'},
+  {when:'During construction',what:'The checker is not independent',count:T.superv+' of 95 reports',fix:'The people checking the work should not depend on the contractor doing it.'},
+  {when:'After completion',what:'The lesson is not published',count:T.noAudit+' of 95 reports',fix:'Publish the audit or evaluation so the next project does not repeat the same mistakes.'}
 ];
-document.getElementById('chain').innerHTML=chain.map(function(c){
-  return '<div class="clink"><div class="cstage">'+c.stage+'</div><div class="cnode"><div class="cwhat">'+c.what+'</div><div class="ccount">'+c.count+'</div><div class="cfix">'+c.fix+'</div></div></div>';
+document.getElementById('journey').innerHTML=journey.map(function(s){
+  return '<div class="jstep"><span class="jdot"></span><div class="jwhen">'+s.when+'</div><div class="jwhat">'+s.what+'</div><div class="jcount">'+s.count+'</div><div class="jfix">'+s.fix+'</div></div>';
 }).join('')
- + '<div class="cloop"><b>The loop</b><span>No audit, no learning, so the next project starts weakly prepared and the machine runs again.</span></div>';
+ + '<div class="jloop"><b>The loop</b><span>No audit, no learning. No learning, and the next project starts with the same weak preparation.</span></div>';
 
-// one win, four warnings
-var win={label:'The win',num:T.law+' of 95',text:'reports recorded the transparency standard entering law'};
-var warns=[
-  {num:T.overrun+' of 95',text:'still flagged cost or time overruns'},
-  {num:T.prep+' of 95',text:'still flagged weak project preparation'},
-  {num:T.noAudit+' of 95',text:'flagged missing audits or evaluations'},
-  {num:T.superv+' of 95',text:'flagged supervision conflicts with the contractor'}
-];
-document.getElementById('scorecards').innerHTML=
-  '<div class="scgroup"><div class="sccard win"><div class="sclabel">The win</div><div class="scnum">'+win.num+'</div><div class="sctext">'+win.text+'</div></div></div>'
- +'<div class="scgroup">'+warns.map(function(w){return '<div class="sccard warn"><div class="sclabel">Warning</div><div class="scnum">'+w.num+'</div><div class="sctext">'+w.text+'</div></div>';}).join('')+'</div>';
+// the transparency win, as a smaller separate note (not equal to the warnings)
+document.getElementById('winnote').innerHTML=
+  '<b>'+T.law+' of 95</b><span>reports recorded the requirement to publish project information entering law. That is the real progress, on the rules. It is not the same as fixing what happens on site.</span>';
 
 // ---- two stacked panels: what improved (green) above what stayed (red) ----
 (function ichart(){
@@ -2405,14 +2388,14 @@ document.getElementById('scorecards').innerHTML=
       var hopeStart=yrs[0].delivPct, hopeEnd=20;
       var hopeD='M'+pts.map(function(p,i){var t=i/(yrs.length-1);return p[0]+' '+Y(hopeStart+(hopeEnd-hopeStart)*t);}).join(' L');
       svg.appendChild(E('path',{d:hopeD,class:'iline-hope'}));
-      var hl=E('text',{x:X(yrs.length-1)+8,y:Y(hopeEnd)+4,class:'ilabel',fill:'var(--stuck)','fill-opacity':0.6});hl.textContent='if it worked';svg.appendChild(hl);
+      var hl=E('text',{x:X(yrs.length-1)+8,y:Y(hopeEnd)+4,class:'ilabel',fill:'var(--stuck)','fill-opacity':0.6});hl.textContent='what improvement would look like';svg.appendChild(hl);
     }
     var lineD='M'+pts.map(function(p){return p[0]+' '+p[1];}).join(' L');
     svg.appendChild(E('path',{d:lineD,class:key==='law'?'iline-law':'iline-fail'}));
     // end label
     var last=pts[pts.length-1];
     var lbl=E('text',{x:last[0]+8,y:last[1]+4,class:'ilabel',fill:key==='law'?'var(--rise-hi)':'var(--stuck)'});
-    lbl.textContent=key==='law'?'in law':'still failing';svg.appendChild(lbl);
+    lbl.textContent=key==='law'?'in law':'actual warnings';svg.appendChild(lbl);
     // dots
     yrs.forEach(function(y,i){
       var val=key==='law'?y.lawPct:y.delivPct;
