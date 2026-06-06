@@ -85,10 +85,16 @@ a{color:var(--rise-hi)}
 .gcard-pop .gcinsight{font-family:var(--serif);font-weight:700;font-size:22px;line-height:1.15;color:var(--paper);padding:4px 18px 8px}
 .gcard-pop .gcdetail{padding:0 18px 10px;font-size:14px;color:#d6d0c5;line-height:1.45}
 /* stats demoted to a quiet supporting strip, so they serve the message not compete */
-.gcard-pop .gcstats{display:flex;gap:18px;padding:4px 18px 4px;flex-wrap:wrap}
-.gcard-pop .gcstat{font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:#9b958a;display:flex;align-items:baseline;gap:6px}
-.gcard-pop .gcstat b{font-family:var(--serif);font-size:19px}
 .gcard-pop b.g{color:var(--rise-hi)} .gcard-pop b.r{color:var(--stuck)}
+/* reinforcing mini-bars: transparency vs the failure that stayed */
+.gcard-pop .gcbars{display:flex;flex-direction:column;gap:9px;padding:8px 18px 4px}
+.gcard-pop .gcbar{display:grid;grid-template-columns:1fr 40px;grid-template-areas:"label val" "track val";align-items:center;gap:2px 8px}
+.gcard-pop .gcbl{grid-area:label;font-size:11px;color:#9b958a;line-height:1.25}
+.gcard-pop .gctrack{grid-area:track;height:7px;background:#262219;border-radius:4px;overflow:hidden}
+.gcard-pop .gctrack i{display:block;height:100%;border-radius:4px}
+.gcard-pop .gctrack i.g{background:var(--rise)} .gcard-pop .gctrack i.r{background:var(--stuck)}
+.gcard-pop .gcbar b{grid-area:val;font-family:var(--serif);font-size:16px;text-align:right}
+.gcard-pop .gccredit{display:none}
 .gcard-pop .gcn{padding:8px 18px 14px;font-family:var(--mono);font-size:9px;letter-spacing:.03em;color:#6e695f;border-top:1px solid #221f19;margin-top:8px}
 .gtrack{position:relative;z-index:2;pointer-events:none}
 .gtrack>section{min-height:100vh;display:flex;align-items:flex-end;padding:0 0 9vh 6vw}
@@ -225,7 +231,7 @@ a{color:var(--rise-hi)}
 .iyearcard{position:absolute;z-index:5;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .15s,transform .15s;background:rgba(16,14,10,.97);border:1px solid #34302a;border-radius:4px;padding:12px 14px;width:230px;box-shadow:0 14px 40px rgba(0,0,0,.6)}
 .iyearcard.on{opacity:1;transform:translateY(0)}
 .iyearcard .yy{font-family:var(--serif);font-weight:700;font-size:20px;color:var(--paper);margin-bottom:6px}
-.iyearcard .yr{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#9b958a;padding:3px 0}
+.iyearcard .yr{font-size:12.5px;line-height:1.35;color:#d6d0c5;padding:4px 0}
 .iyearcard .yr b{font-family:var(--serif);font-size:16px}
 .iyearcard .yr b.g{color:var(--rise-hi)} .iyearcard .yr b.r{color:var(--stuck)}
 .iyearcard .yn{margin-top:7px;padding-top:7px;border-top:1px solid #2a2620;font-size:12px;color:#cdc7bc;line-height:1.4}
@@ -292,8 +298,8 @@ footer b{color:var(--paper)}
 </div>
 
 <section class="cover" id="cover">
-  <div class="herobg ghost" style="background-image:url('img/hero-road-dusk.jpg')"></div>
-  <div class="herobg" id="herolight" style="background-image:url('img/hero-road-dusk.jpg')"></div>
+  <div class="herobg ghost" style="background-image:url('img/hero-construction.jpg')"></div>
+  <div class="herobg" id="herolight" style="background-image:url('img/hero-construction.jpg')"></div>
   <div class="glow" id="heroglow"></div>
   <div class="scrim"></div>
   <div class="inner">
@@ -309,7 +315,7 @@ footer b{color:var(--paper)}
     <div class="cue">Scroll to watch the decade ↓ &nbsp;·&nbsp; tap any dot for the report behind it</div>
     <div class="hint">The light reveals only what it touches</div>
   </div>
-  <div class="credit">Illustrative: a public road network at dusk<br>Photo: David Kristianto / Unsplash · real report photos appear later</div>
+  <div class="credit">Illustrative: a public road and building project under construction<br>Photo: Iain / Unsplash · real report photos appear later</div>
 </section>
 
 <!-- THE GLOBE: a rotating Mapbox globe that flies country to country.
@@ -2069,7 +2075,11 @@ var PHOTO_BY_COUNTRY={
   Uganda:{f:'img/uganda-road.jpg',cap:'A road under assurance review, Uganda'},
   Guatemala:{f:'img/guatemala-bridge.jpg',cap:'A construction site under review, Guatemala'},
   Tanzania:{f:'img/tanzania-site.jpg',cap:'A project site under review, Tanzania'},
-  Ukraine:{f:'img/ukraine-roadworks.jpg',cap:'Road works under assurance, Ukraine'}
+  Ukraine:{f:'img/ukraine-roadworks.jpg',cap:'Road works under assurance, Ukraine'},
+  // illustrative country infrastructure (Wikimedia Commons) where the reports carried no usable photo
+  Ethiopia:{f:'img/ethiopia-road.jpg',cap:'Illustrative: the Mekele to Afdera road under construction, Ethiopia',wm:'Photo: Wikimedia Commons'},
+  Honduras:{f:'img/honduras-road.jpg',cap:'Illustrative: a Honduran highway (Comayagua)',wm:'Photo: Wikimedia Commons'},
+  Thailand:{f:'img/thailand-road.jpg',cap:'Illustrative: Highway 401, Surat Thani, Thailand',wm:'Photo: Wikimedia Commons'}
 };
 var COUNTRY_LL={
   Malawi:[34.30,-13.25],Ethiopia:[39.78,9.15],Ukraine:[31.17,48.38],Honduras:[-86.24,15.20],
@@ -2120,17 +2130,26 @@ function pct(n,d){return Math.round(n/d*100);}
 // real numbers, named project + finding, real photo or a clean glyph.
 function countryCardHTML(code){
   var s=STOPS[code], a=AGG[s.c]||{n:0,law:0,fail:0};
-  var lawP=pct(a.law,a.n), failP=pct(a.fail,a.n);
   var ph=PHOTO_BY_COUNTRY[s.c];
   var media = ph
     ? '<div class="gcphoto"><img src="'+ph.f+'" alt="'+ph.cap.replace(/"/g,'')+'" loading="lazy"><span>'+ph.cap+'</span></div>'
     : '<div class="gcglyph" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M6 40 L24 8 L42 40 Z M16 40 L24 24 L32 40" fill="none" stroke="var(--stuck)" stroke-width="2"/></svg><span>'+s.c+'</span></div>';
+  // plain-language stat lines with the denominator visible (no jargon, no bare %)
+  var lawLine = a.law+' of its '+a.n+' report'+(a.n==1?'':'s')+' could say open-data rules had become law';
+  var failLine = a.fail+' of its '+a.n+' report'+(a.n==1?'':'s')+' still found a project late, over budget, or poorly run';
+  var lawP=pct(a.law,a.n), failP=pct(a.fail,a.n);
+  // a small reinforcing mini-chart: two bars, transparency vs the failure that stayed
+  var bars = '<div class="gcbars">'
+    + '<div class="gcbar"><span class="gcbl">Reports where the rules became law</span><span class="gctrack"><i class="g" style="width:'+lawP+'%"></i></span><b class="g">'+a.law+'/'+a.n+'</b></div>'
+    + '<div class="gcbar"><span class="gcbl">Reports still finding a failure</span><span class="gctrack"><i class="r" style="width:'+failP+'%"></i></span><b class="r">'+a.fail+'/'+a.n+'</b></div>'
+    + '</div>';
+  var credit = (ph&&ph.wm) ? '<div class="gccredit">'+ph.wm+'</div>' : '';
   return media
     + '<div class="gceyebrow">'+s.c+'</div>'
     + '<div class="gcinsight">'+s.insight+'</div>'
     + '<div class="gcdetail">'+s.detail+'</div>'
-    + '<div class="gcstats"><span class="gcstat"><b class="g">'+lawP+'%</b> standard in law</span><span class="gcstat"><b class="r">'+failP+'%</b> still flagged a failure</span></div>'
-    + '<div class="gcn">'+a.n+' assurance report'+(a.n==1?'':'s')+' · '+s.proj+' · read as reported</div>';
+    + bars
+    + '<div class="gcn">'+s.proj+' · read as reported in the assurance reports'+(credit?' · '+ph.wm:'')+'</div>';
 }
 
 // ---- the globe ----
@@ -2170,10 +2189,12 @@ function initGlobe(){
     // all-countries dots (the "everywhere" layer)
     var rows=buildCountryAgg();
     gmap.addSource('countries',{type:'geojson',data:{type:'FeatureCollection',features:rows.map(function(r){
-      return {type:'Feature',geometry:{type:'Point',coordinates:COUNTRY_LL[r.c]},properties:{c:r.c,failPct:pct(r.fail,r.n)}};})}});
+      return {type:'Feature',geometry:{type:'Point',coordinates:COUNTRY_LL[r.c]},properties:{c:r.c,n:r.n,failPct:pct(r.fail,r.n)}};})}});
+    // bubbles sized by number of assurance reports, so Ethiopia (12) visibly dwarfs Ghana (2)
     gmap.addLayer({id:'cdots',type:'circle',source:'countries',paint:{
-      'circle-radius':6,'circle-color':['interpolate',['linear'],['get','failPct'],60,'#5bbf97',85,'#cf6b3a'],
-      'circle-opacity':0.9,'circle-stroke-width':1,'circle-stroke-color':'rgba(242,239,233,.5)'}});
+      'circle-radius':['interpolate',['linear'],['get','n'],1,5,13,26],
+      'circle-color':['interpolate',['linear'],['get','failPct'],60,'#5bbf97',85,'#cf6b3a'],
+      'circle-opacity':0.82,'circle-stroke-width':1,'circle-stroke-color':'rgba(242,239,233,.5)'}});
     gmap.addLayer({id:'clabels',type:'symbol',source:'countries',layout:{
       'text-field':['get','c'],'text-size':11,'text-offset':[0,1.4],'text-font':['DIN Pro Medium','Arial Unicode MS Regular']},
       paint:{'text-color':'#e7e2d8','text-halo-color':'#0a0908','text-halo-width':1.3}});
@@ -2360,10 +2381,10 @@ document.getElementById('scoreboard').innerHTML=score.map(function(s){
   function repFor(y){ var f=(y.reports||[]).filter(function(r){return r.over||r.prep;})[0]||(y.reports||[])[0]; return f; }
   function showYear(y,i,key){
     var r=repFor(y);
-    card.innerHTML='<div class="yy">'+y.year+'</div>'
-      +'<div class="yr"><span>standard in law</span><b class="g">'+y.lawPct+'%</b></div>'
-      +'<div class="yr"><span>still flagged a failure</span><b class="r">'+y.delivPct+'%</b></div>'
-      +'<div class="yn">'+y.n+' report'+(y.n==1?'':'s')+' this year'+(r?'. e.g. '+r.c+': '+(r.over?'overran':'')+(r.over&&r.prep?', ':'')+(r.prep?'weak prep':''):'')+'.</div>';
+    card.innerHTML='<div class="yy">In '+y.year+'</div>'
+      +'<div class="yr"><span><b class="g">'+y.lawPct+'%</b> of reports could say open-data rules were now law</span></div>'
+      +'<div class="yr"><span><b class="r">'+y.delivPct+'%</b> still found a project late, over budget, or poorly run</span></div>'
+      +'<div class="yn">'+y.n+' report'+(y.n==1?'':'s')+' that year'+(r?'. e.g. '+r.c+': '+(r.over?'ran over':'')+(r.over&&r.prep?', ':'')+(r.prep?'weak preparation':''):'')+'.</div>';
     card.classList.add('on');
     var wrap=svg.getBoundingClientRect();
     var sx=wrap.left+ (X(i)/W)*wrap.width, sy=wrap.top+(Y(key==='law'?y.lawPct:y.delivPct)/H)*wrap.height;
