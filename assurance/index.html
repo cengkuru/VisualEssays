@@ -66,6 +66,17 @@ a{color:var(--rise-hi)}
 
 .machine{position:sticky;top:0;height:100vh;overflow:hidden;z-index:1}
 
+/* concrete opener: one real project before the decade */
+.opener{background:var(--ink);padding:12vh 0 12vh;border-top:1px solid #1f1c17}
+.openerwrap{max-width:1040px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.openerimg{margin:0;position:relative;border-radius:5px;overflow:hidden}
+.openerimg img{width:100%;height:100%;max-height:440px;object-fit:cover;display:block}
+.openerimg figcaption{position:absolute;left:12px;bottom:10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#f2efe9;text-shadow:0 1px 8px rgba(0,0,0,.9)}
+.openertext h2{font-size:clamp(26px,3.6vw,38px);font-family:var(--serif);font-weight:700;margin:8px 0 14px;line-height:1.1}
+.openertext p{font-size:16px;color:#cdc7bc;line-height:1.55;margin:0 0 12px}
+.openertext .openerturn{color:var(--paper);font-size:17px;border-left:3px solid var(--stuck);padding-left:14px;margin-top:18px}
+@media(max-width:760px){.openerwrap{grid-template-columns:1fr;gap:22px}.openerimg img{max-height:300px}}
+
 /* THE GLOBE scene */
 .gwrap{position:relative}
 .gstage{position:sticky;top:0;height:100vh;overflow:hidden;background:#070908}
@@ -255,6 +266,14 @@ a{color:var(--rise-hi)}
 .maplegend .sz i{border-radius:50%;background:#6e695f;display:inline-block}
 .mappop{font-family:var(--sans)}
 .mappop .popphoto img{width:100%;height:96px;object-fit:cover;border-radius:2px;margin-bottom:7px;display:block}
+/* tap-a-dot report card */
+.rcard{font-family:var(--sans)}
+.rcard .rctitle{font-family:var(--serif);font-weight:700;font-size:14px;color:#14120e;line-height:1.2;margin-bottom:2px}
+.rcard .rcmeta{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:#6e695f;margin-bottom:8px}
+.rcard .rcrow{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#4a4743;padding:3px 0;border-top:1px solid #e5e0d6}
+.rcard .rcrow b{font-weight:600}
+.rcard .rcx{color:var(--cost-red);font-weight:700} .rcard .rcok{color:#2f7d5b;font-weight:700}
+.rcard .rclink{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--cost-red)}
 .mappop .pc{font-family:var(--serif);font-weight:700;font-size:16px;color:#14120e;margin:0 0 3px}
 .mappop .pm{font-size:12.5px;color:#4a4743;line-height:1.45}
 .mappop .pm b{color:var(--cost-red)}
@@ -320,22 +339,34 @@ footer b{color:var(--paper)}
   <div class="scrim"></div>
   <div class="inner">
     <div class="eyebrow">CoST · 95 independent assurance reports, 2011 to 2021</div>
-    <h1><span class="a">Transparency rose.</span><br><span class="b">Delivery didn't.</span></h1>
-    <p class="lede">Over a decade, governments across a dozen countries got dramatically better at one thing: publishing what their public projects cost and how they were run. The rules became law almost everywhere. And yet, across the very same projects, the failures that openness was meant to drive out, the overruns, the weak planning, the contractor left to watch itself, barely moved. Every overrun is a school built late, a clinic over budget, a road that still chokes the homes beside it.</p>
-    <p class="lede" style="font-size:15px;color:#bdb7ac;margin-top:14px">We read 95 independent assurance reports, 2011 to 2021. The year-by-year story uses the 49 from 2015 to 2021, where the data is dense enough to compare.</p>
+    <h1><span class="a">The rules opened up.</span><br><span class="b">The warnings didn't stop.</span></h1>
+    <p class="lede">Over a decade, governments across a dozen countries got dramatically better at one thing: making it the law to publish what public projects cost and how they were run. Then independent teams went and checked those projects. Year after year, the same warnings kept coming back, late projects, costs over budget, weak planning, the contractor left to watch itself. A decade of rising transparency did not shrink how often the checks found trouble.</p>
+    <p class="lede" style="font-size:14.5px;color:#bdb7ac;margin-top:16px">A fair caution, stated up front: these are what the assurance checks <i>found</i>, and assurance exists to find trouble. So read this as a finding about the reports, not an audited national score. The point still stands: a decade of disclosure did not reduce how often the checks flagged the same failures.</p>
     <div class="stats">
-      <div><b class="g">26</b><span>reports show the standard entering law</span></div>
-      <div><b class="r">70</b><span>still flag cost or time overruns</span></div>
-      <div><b class="r">57</b><span>still flag weak project preparation</span></div>
+      <div><b class="g">26</b><span>reports record the rules entering law</span></div>
+      <div><b class="r">70</b><span>of 95 still flagged cost or time overruns</span></div>
+      <div><b class="r">57</b><span>of 95 still flagged weak project preparation</span></div>
     </div>
-    <div class="cue">Scroll to watch the decade ↓ &nbsp;·&nbsp; tap any dot for the report behind it</div>
-    <div class="hint">The light reveals only what it touches</div>
+    <div class="cue">Scroll to travel the decade ↓ &nbsp;·&nbsp; tap any report to read it</div>
   </div>
-  <div class="credit">Illustrative: a public road and building project under construction<br>Photo: Iain / Unsplash · real report photos appear later</div>
+  <div class="credit">Illustrative: a public road and building project under construction<br>Photo: Iain / Unsplash · real report photos appear in the story</div>
 </section>
 
-<!-- THE GLOBE: a rotating Mapbox globe that flies country to country.
-     transparency rose, the break stayed - shown by flying to where it happened. -->
+<!-- concrete opening: one real named project before the decade-wide view -->
+<section class="opener">
+  <div class="openerwrap">
+    <figure class="openerimg"><img src="img/ghana-road-settlement.jpg" alt="An unpaved road runs past homes and stalls in Sekondi-Takoradi, Ghana" loading="lazy"><figcaption>Sekondi-Takoradi, Ghana</figcaption></figure>
+    <div class="openertext">
+      <div class="eyebrow">Start with one project</div>
+      <h2>A road, a report, and a familiar ending</h2>
+      <p>In Ghana, an independent team checked the works at Sekondi-Takoradi. The good news was real: the country had written open-data rules into law, so the project's information could be published and checked at all.</p>
+      <p>Then they looked at the road itself. It ran over. It was left unpaved, the dust settling on the homes and market stalls beside it. The paperwork had advanced. The project had not.</p>
+      <p class="openerturn">One report is an anecdote. So we read 95 of them, from a dozen countries, across a decade, to see whether Ghana was the exception or the rule.</p>
+    </div>
+  </div>
+</section>
+
+<!-- THE GLOBE: a rotating Mapbox globe that flies country to country -->
 <div class="gwrap">
   <div class="gstage">
     <div id="globe"></div>
@@ -361,8 +392,8 @@ footer b{color:var(--paper)}
 
     <section data-g="all"><div class="gbeat stuck">
       <h2>Every one of them</h2>
-      <p>Pull back, and the pattern is the whole map. In country after country the books were opened to the public, and in country after country the same delivery failures kept turning up. The light reached everywhere. The fracture went nowhere.</p>
-      <div class="src">12 countries · 95 reports · the standard rose, the failure held</div>
+      <p>Pull back, and the pattern is the whole map. Country after country made disclosure the law. Country after country, the checks kept finding the same delivery warnings. The rules spread everywhere. The warnings stayed.</p>
+      <div class="src">12 countries · 95 reports · the rules spread, the warnings held</div>
     </div></section>
   </div>
 </div>
@@ -413,9 +444,9 @@ footer b{color:var(--paper)}
     <p style="color:#cdc7bc;margin-top:30px">The lesson is plain. Publishing the information helps reveal the problem. It only fixes delivery if someone acts on it: get the preparation right before the contract, keep the checks independent during construction, and publish the audit so the next project does not repeat the last one.</p>
 
     <div class="closer">
-      <p class="cl1">Transparency opened the books.</p>
-      <p class="cl2">Delivery is the chapter still unwritten.</p>
-      <p class="cl3">The next decade is not about publishing more PDFs. It is about making the evidence already on the page trigger something: better preparation, independent supervision, audits that appear, consequences when a project fails. The standard proved it can open the books. Whether anyone acts on what they show is the only question left.</p>
+      <p class="cl1">Transparency is here now.</p>
+      <p class="cl2">Seeing the problem is not the same as fixing it.</p>
+      <p class="cl3">A decade of disclosure did what it was built to do: it made the problems impossible to hide. What it could not do on its own was stop them. The next decade is not about publishing more PDFs. It is about making the evidence already on the page trigger something, better preparation before the contract, independent checks during construction, audits that actually appear, and consequences when a project fails. Whether anyone acts on what the reports show is the only question left.</p>
     </div>
 
     <details class="method" style="margin-top:48px">
@@ -2235,6 +2266,29 @@ function initGlobe(){
       'circle-radius':40,'circle-color':'var(--rise)','circle-opacity':0.18,'circle-blur':1}},'cdots');
     gmap.addLayer({id:'halo-ring',type:'circle',source:'halo',filter:['==',['get','active'],1],paint:{
       'circle-radius':16,'circle-color':'rgba(0,0,0,0)','circle-stroke-color':'#8fe0bf','circle-stroke-width':2}});
+    // tap a country dot -> a real individual report card (its actual yes/no flags)
+    var repsByCountry={};
+    SC.forEach(function(s){ if(s.c==='Global'||s.c==='United Kingdom')return; (repsByCountry[s.c]=repsByCountry[s.c]||[]).push(s); });
+    var rcpop=new mapboxgl.Popup({closeButton:true,closeOnClick:true,offset:14,maxWidth:'300px'});
+    function yn(v){ return v ? '<span class="rcx">✕</span> yes' : '<span class="rcok">✓</span> no'; }
+    function reportCard(e){
+      var c=e.features[0].properties.c; var list=repsByCountry[c]||[]; if(!list.length)return;
+      // prefer a report that names a project and flags a failure, with a source link
+      var r=list.filter(function(x){return x.u&&(x.overrun||x.prep||x.superv);})[0]||list.filter(function(x){return x.u;})[0]||list[0];
+      var disc=(r.disc!=null)?r.disc+'% of the data published':'disclosure not stated';
+      var html='<div class="rcard"><div class="rctitle">'+(r.t||c)+'</div><div class="rcmeta">'+c+(r.year?' · '+r.year:'')+' · '+disc+'</div>'
+        +'<div class="rcrow"><span>Transparency in law</span><b>'+yn(r.law)+'</b></div>'
+        +'<div class="rcrow"><span>Cost or time overrun</span><b>'+yn(r.overrun)+'</b></div>'
+        +'<div class="rcrow"><span>Weak preparation</span><b>'+yn(r.prep)+'</b></div>'
+        +'<div class="rcrow"><span>Supervision conflict</span><b>'+yn(r.superv)+'</b></div>'
+        +'<div class="rcrow"><span>Audit missing</span><b>'+yn(r.noAudit)+'</b></div>'
+        +(r.u?'<a class="rclink" href="'+r.u+'" target="_blank" rel="noopener">read this report ↗</a>':'')
+        +'</div>';
+      rcpop.setLngLat(e.lngLat).setHTML(html).addTo(gmap);
+    }
+    gmap.on('click','cdots',reportCard);
+    gmap.on('mouseenter','cdots',function(){gmap.getCanvas().style.cursor='pointer';});
+    gmap.on('mouseleave','cdots',function(){gmap.getCanvas().style.cursor='';});
     spin();
     // if a stop is already the current scroll position, fly there
     if(curG && STOPS[curG]) flyToStop(curG);
