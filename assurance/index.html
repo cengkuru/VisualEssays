@@ -66,29 +66,48 @@ a{color:var(--rise-hi)}
 
 .machine{position:sticky;top:0;height:100vh;overflow:hidden;z-index:1}
 
-/* THE X-RAY scene */
-.xwrap{position:relative}
-.xstage{background:#070908;display:flex;align-items:center;justify-content:center}
-#xray{width:100%;height:100%;display:block}
-@media(min-width:861px){#xray{width:64%;margin-left:36%}}
-.xreadout{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#6e7d76;pointer-events:none;text-align:center;transition:opacity .4s}
-@media(min-width:861px){.xreadout{left:auto;right:5%;transform:none;text-align:right}}
-.xtrack{position:relative;z-index:2;pointer-events:none}
-.xtrack>section{min-height:100vh;display:flex;align-items:flex-end;padding:0 0 9vh 6vw}
-@media(min-width:861px){.xtrack>section{align-items:center;padding:0 0 0 6vw}.xtrack .beat{max-width:30vw}}
-.xtrack .beat .big.r{color:var(--stuck)}
-.xpredict{margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.xbtn{background:transparent;border:1px solid var(--rise);color:var(--rise-hi);padding:9px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px}
-.xbtn:hover{background:rgba(91,191,151,.12)}
-.xphint{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-/* x-ray svg element classes */
-.xtile{transition:opacity .5s ease}
-.xlabel{fill:#5b6b64;font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase}
-.xpct{fill:var(--rise-hi);font-family:var(--serif);font-weight:700}
-.xfxlabel{fill:var(--stuck);font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
-.xguessline{stroke:var(--paper);stroke-width:2;stroke-dasharray:7 6;opacity:.7;cursor:ns-resize}
-.xguesshandle{fill:var(--paper);cursor:ns-resize}
-@media(prefers-reduced-motion:reduce){.xtile{transition:none}.xreadout{transition:none}}
+/* THE GLOBE scene */
+.gwrap{position:relative}
+.gstage{position:sticky;top:0;height:100vh;overflow:hidden;background:#070908}
+#globe{position:absolute;inset:0;width:100%;height:100%}
+.greadout{position:absolute;top:62px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#7d9a8f;pointer-events:none;z-index:4;transition:opacity .4s}
+/* the per-country card: a light recessive panel, lower-left, NOT a heavy box */
+.gcard-pop{position:absolute;left:6vw;bottom:8vh;z-index:5;width:min(360px,86vw);background:rgba(10,12,11,.86);backdrop-filter:blur(10px);border-left:3px solid var(--stuck);border-radius:3px;padding:0;opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease;pointer-events:none;overflow:hidden;box-shadow:0 16px 44px rgba(0,0,0,.6)}
+.gcard-pop.on{opacity:1;transform:translateY(0)}
+.gcard-pop .gcphoto{position:relative;margin:0}
+.gcard-pop .gcphoto img{width:100%;height:150px;object-fit:cover;display:block}
+.gcard-pop .gcphoto span{position:absolute;left:12px;right:12px;bottom:8px;font-family:var(--mono);font-size:9px;letter-spacing:.04em;color:#f2efe9;text-shadow:0 1px 6px rgba(0,0,0,.95);line-height:1.3}
+.gcard-pop .gcglyph{height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:#12100c}
+.gcard-pop .gcglyph svg{width:42px;height:42px}
+.gcard-pop .gcglyph span{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.gcard-pop .gceyebrow{font-family:var(--serif);font-weight:700;font-size:21px;color:var(--paper);padding:13px 16px 4px}
+.gcard-pop .gcrise,.gcard-pop .gcstay{display:flex;align-items:baseline;justify-content:space-between;padding:2px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#9b958a}
+.gcard-pop .gcrise b,.gcard-pop .gcstay b{font-family:var(--serif);font-size:22px}
+.gcard-pop b.g{color:var(--rise-hi)} .gcard-pop b.r{color:var(--stuck)}
+.gcard-pop .gcrise .up{color:var(--rise)} .gcard-pop .gcstay .flat{color:var(--stuck)}
+.gcard-pop .gcproj{padding:10px 16px 4px;font-size:14px;color:#d6d0c5;line-height:1.4}
+.gcard-pop .gcproj .pl{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--rise-hi);margin-bottom:3px}
+.gcard-pop .gcn{padding:6px 16px 14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;color:#6e695f;border-top:1px solid #221f19;margin-top:8px}
+.gtrack{position:relative;z-index:2;pointer-events:none}
+.gtrack>section{min-height:100vh;display:flex;align-items:flex-end;padding:0 0 9vh 6vw}
+.gbeat{pointer-events:auto;max-width:min(420px,86vw);background:rgba(10,12,11,.82);backdrop-filter:blur(6px);border-left:3px solid var(--rise);padding:18px 22px;border-radius:2px;box-shadow:0 10px 34px rgba(0,0,0,.5)}
+.gbeat:empty{display:none}
+.gbeat.stuck{border-left-color:var(--stuck)}
+.gbeat h2{font-size:clamp(22px,2.6vw,30px);margin:0 0 8px;font-family:var(--serif)}
+.gbeat p{margin:0;font-size:15.5px;color:#d6d0c5}
+.gbeat .src{margin-top:11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--muted)}
+/* country beats keep their card on the LEFT, so the beat sections that are empty just advance scroll */
+.gtrack section[data-g="GHA"],.gtrack section[data-g="ETH"],.gtrack section[data-g="SLV"],
+.gtrack section[data-g="UGA"],.gtrack section[data-g="CRI"],.gtrack section[data-g="THA"]{min-height:100vh}
+/* SVG world fallback */
+.globefallback{position:absolute;inset:0;z-index:6;background:#0a0908;overflow-y:auto;padding:60px 20px 40px;display:none}
+.globefallback[aria-hidden="false"]{display:block}
+.globefallback .fbmap{position:relative;max-width:760px;height:300px;margin:0 auto 30px;background:rgba(255,255,255,.03);border:1px solid #2a2620;border-radius:6px}
+.globefallback .fbdot{position:absolute;width:11px;height:11px;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 2px rgba(10,9,8,.6)}
+.globefallback .fbcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;max-width:1100px;margin:0 auto}
+.globefallback .fbcard{background:rgba(10,12,11,.86);border-left:3px solid var(--stuck);border-radius:3px;overflow:hidden}
+@media(prefers-reduced-motion:reduce){.gcard-pop{transition:none}}
+@media(max-width:860px){.gcard-pop{left:0;right:0;bottom:0;width:100%;max-width:none;border-radius:12px 12px 0 0;border-left:0;border-top:3px solid var(--stuck)}.gtrack>section{align-items:flex-start;padding-top:12vh}}
 /* push the plot into the right portion of the screen so the left beat column never covers it */
 #viz{width:100%;height:100%;display:block}
 @media(min-width:861px){#viz{width:62%;margin-left:38%}}
@@ -259,89 +278,37 @@ footer b{color:var(--paper)}
   <div class="credit">A road under CoST assurance review, Ghana<br>From the CoST Sekondi-Takoradi assurance report</div>
 </section>
 
-<!-- THE X-RAY: transparency is the light that reveals the fracture but cannot heal the bone -->
-<div class="xwrap">
-  <div class="machine xstage">
-    <svg id="xray" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" aria-label="An x-ray of a decade of infrastructure: the plate lights up as transparency becomes law, revealing a fracture, the delivery failures, that the light exposes but never heals.">
-      <defs>
-        <radialGradient id="plateglow" cx="50%" cy="46%" r="62%">
-          <stop offset="0%" stop-color="#0f1a17"/><stop offset="100%" stop-color="#070908"/>
-        </radialGradient>
-        <filter id="soft"><feGaussianBlur stdDeviation="2.2"/></filter>
-        <filter id="fxglow"><feGaussianBlur stdDeviation="5"/></filter>
-      </defs>
-      <rect x="0" y="0" width="1000" height="1000" fill="url(#plateglow)"/>
-      <g id="x-illum"></g>     <!-- the green illumination wash, grows with scroll -->
-      <g id="x-tiles"></g>     <!-- the 49 report tiles forming the structure/bone -->
-      <g id="x-fracture"></g>  <!-- the red fracture, revealed at the climax -->
-      <g id="x-guess"></g>     <!-- the reader's prediction line -->
-      <g id="x-furn"></g>      <!-- light, recessive labels: scan line, %, caption echo -->
-    </svg>
-    <div id="xreadout" class="xreadout" aria-hidden="true"></div>
+<!-- THE GLOBE: a rotating Mapbox globe that flies country to country.
+     transparency rose, the break stayed - shown by flying to where it happened. -->
+<div class="gwrap">
+  <div class="gstage">
+    <div id="globe"></div>
+    <div id="globefallback" class="globefallback" aria-hidden="true"></div>
+    <div id="gcountryCard" class="gcard-pop" aria-live="polite"></div>
+    <div id="greadout" class="greadout"></div>
   </div>
 
-  <div class="track xtrack">
-    <section data-x="0"><div class="beat">
-      <h2>An x-ray of a decade</h2>
-      <p>Independent reviewers inspected 49 public projects, one by one, and wrote a report on each. Stacked together they form a kind of body: the state of public infrastructure across a dozen countries. For now it sits in the dark, the way it always has.</p>
-      <div class="src">49 CoST assurance reports, 2015 to 2021 · each tile is one</div>
+  <div class="gtrack">
+    <section data-g="intro"><div class="gbeat">
+      <h2>One finding, a dozen countries</h2>
+      <p>The reports come from twelve countries on four continents. Travel to each one and the same thing has happened: the rules to make infrastructure honest became law, and the failures those rules were meant to end stayed almost exactly where they were. Start in Ghana.</p>
+      <div class="src">Spin the globe. Then scroll to fly, country to country.</div>
     </div></section>
 
-    <section data-x="1"><div class="beat">
-      <h2>Transparency switches on the light</h2>
-      <p>Making project data public is exactly this: a light that lets outsiders see in. Country by country, year by year, that light became the law. Watch it spread across the body until, by 2021, the whole of it glows. Nothing is hidden any more.</p>
-      <div class="src">Green = reports where open data is now required by law · 3 in 10 (2015) to 10 in 10 (2021)</div>
-    </div></section>
+    <section data-g="GHA"><div class="gbeat"></div></section>
+    <section data-g="ETH"><div class="gbeat"></div></section>
+    <section data-g="SLV"><div class="gbeat"></div></section>
+    <section data-g="UGA"><div class="gbeat"></div></section>
+    <section data-g="CRI"><div class="gbeat"></div></section>
+    <section data-g="THA"><div class="gbeat"></div></section>
 
-    <section data-x="2"><div class="beat">
-      <h2>Now we can see everything. So how bad is the break?</h2>
-      <p>The light has done its work; the body is fully lit. Before we look closer, a question. Now that every project is visible, that nothing can hide, how much of the damage do you think is left? Drag the line to your guess.</p>
-      <div class="src">Your guess: how much delivery failure remains, now that it is all in the open?</div>
-      <div class="xpredict">
-        <button id="xpReveal" class="xbtn">Reveal what the x-ray shows</button>
-        <span class="xphint">or drag the line on the x-ray</span>
-      </div>
-    </div></section>
-
-    <section data-x="3"><div class="beat stuck">
-      <h2>The fracture was there the whole time</h2>
-      <div class="big r">9 in 10</div>
-      <p>This is what the light exposed: nine in ten reports, every single year, still found the same break, projects late, over budget, badly planned, or watched over by someone too close to the contractor. Transparency made it impossible to miss. It did not make it smaller.</p>
-      <div class="src">70 of 95 reports found cost or time overruns · 57 found weak planning</div>
-    </div></section>
-
-    <section data-x="4"><div class="beat stuck">
-      <h2>The x-ray sees the break. It cannot set the bone.</h2>
-      <p>The body is fully lit and the fracture has not moved. That is the finding in one image. A decade of transparency did one thing extraordinarily well, it made the failure visible to everyone. What seeing alone could never do was heal it.</p>
-      <div class="src">The light is disclosure. The bone is delivery. Seeing is not the same as setting.</div>
+    <section data-g="all"><div class="gbeat stuck">
+      <h2>Every one of them</h2>
+      <p>Pull back, and the pattern is the whole map. In country after country the books were opened to the public, and in country after country the same delivery failures kept turning up. The light reached everywhere. The fracture went nowhere.</p>
+      <div class="src">12 countries · 95 reports · the standard rose, the failure held</div>
     </div></section>
   </div>
 </div>
-
-<!-- BEAT 5: from the ground - the fracture is real places, real photos from the reports -->
-<section class="ground">
-  <div class="ghead">
-    <div class="eyebrow" style="color:var(--stuck)">The fracture, on the ground</div>
-    <h2>These are not abstractions</h2>
-    <p>Every red mark on the x-ray is a real place a reviewer stood and photographed. This is what "delivery failure" looks like when you walk to the site: roads that dust the homes beside them, buildings half-served, works no one independent was watching.</p>
-  </div>
-  <div class="gstrip" id="groundStrip"></div>
-</section>
-
-<section class="mapsec">
-  <div class="head">
-    <div class="eyebrow">The same pattern, country after country</div>
-    <h2>This was not one place</h2>
-    <p>The reports come from a dozen countries across Africa, Latin America, Asia, and Eastern Europe. Each bubble is one country, sized by how many reports it produced and coloured by how often those reports still flagged a delivery failure. The colour barely changes.</p>
-  </div>
-  <div id="map"></div>
-  <div class="maplegend">
-    <span class="sw"><i style="background:#5bbf97"></i>fewer reports flag failure</span>
-    <span class="sw"><i style="background:#cf6b3a"></i>most reports flag failure</span>
-    <span class="sz"><i style="width:9px;height:9px"></i><i style="width:16px;height:16px"></i><i style="width:23px;height:23px"></i>more reports assured</span>
-    <span style="margin-left:auto">Tap a bubble for the country detail</span>
-  </div>
-</section>
 
 <section class="coda">
   <div class="flow">
@@ -2037,173 +2004,171 @@ var W=1000,H=1000,NS='http://www.w3.org/2000/svg';
 function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
 function rnd(i,s){var x=Math.sin((i+1)*12.9898+(s||0)*78.233)*43758.5453;return x-Math.floor(x);}
 
-// ====== THE X-RAY ENGINE ======
-// One sticky plate. Tiles = the 49 reports forming a body. Scroll lights it (transparency
-// becomes law). A predicted fracture, then the real one: revealed by the light, unhealed by it.
-var xsvg=document.getElementById('xray');
-var gIllum=document.getElementById('x-illum'),
-    gTiles=document.getElementById('x-tiles'),
-    gFrac=document.getElementById('x-fracture'),
-    gGuess=document.getElementById('x-guess'),
-    gFurnX=document.getElementById('x-furn');
-var readout=document.getElementById('xreadout');
-
-// flatten the real reports into a build order (by year), keep ref to rep + scorecard twin
+// ====== THE GLOBE ENGINE ======
+// A rotating Mapbox globe that flies country to country. The thesis stays the hero:
+// at each stop, the standard rose into law and the delivery failure stayed.
 var scByTitle={}; SC.forEach(function(s){ scByTitle[s.t]=s; });
-// representative real site photo per country (mined from the actual report PDFs)
 var PHOTO_BY_COUNTRY={
   Ghana:{f:'img/ghana-road-settlement.jpg',cap:'An unpaved road runs past homes, Ghana'},
   'El Salvador':{f:'img/elsalvador-roadworks-crew.jpg',cap:'Crews on a road under assurance review, El Salvador'},
   'Costa Rica':{f:'img/costarica-aerial.jpg',cap:'A project site from above, Costa Rica'}
 };
-var ISO3={Guatemala:'GTM',Honduras:'HND',Ethiopia:'ETH',Ukraine:'UKR',Malawi:'MWI',Tanzania:'TZA',Thailand:'THA',Uganda:'UGA',Afghanistan:'AFG','El Salvador':'SLV',Ghana:'GHA','Costa Rica':'CRI'};
-var FLAT=[];
-years.forEach(function(yr){ yr.reports.forEach(function(rep){ FLAT.push({rep:rep,yr:yr.year,sc:scByTitle[rep.t]||null}); }); });
-var Ntiles=FLAT.length;  // 49
+var COUNTRY_LL={
+  Malawi:[34.30,-13.25],Ethiopia:[39.78,9.15],Ukraine:[31.17,48.38],Honduras:[-86.24,15.20],
+  Guatemala:[-90.23,15.78],Tanzania:[34.89,-6.37],Uganda:[32.29,1.37],Thailand:[100.99,15.87],
+  'El Salvador':[-88.90,13.79],Ghana:[-1.02,7.95],'Costa Rica':[-83.75,9.75],Afghanistan:[67.71,33.94]
+};
+function buildCountryAgg(){
+  var skip={Global:1,'United Kingdom':1}, agg={};
+  SC.forEach(function(s){ if(skip[s.c])return; var a=agg[s.c]||(agg[s.c]={c:s.c,n:0,law:0,fail:0});
+    a.n++; if(s.law)a.law++; if(s.overrun||s.prep||s.superv)a.fail++; });
+  return Object.keys(agg).map(function(k){return agg[k];}).filter(function(a){return COUNTRY_LL[a.c];});
+}
+var AGG={}; buildCountryAgg().forEach(function(a){AGG[a.c]=a;});
 
-// lay the tiles as a compact "body": a rounded brick grid centred on the plate
-var COLS=7, GAP=6, TW=92, TH=58;
-var gridW=COLS*TW+(COLS-1)*GAP, ROWS=Math.ceil(Ntiles/COLS);
-var gridH=ROWS*TH+(ROWS-1)*GAP;
-var OX=(W-gridW)/2, OY=(H-gridH)/2+10;
-var xTiles=[];
-FLAT.forEach(function(f,i){
-  var r=Math.floor(i/COLS), c=i%COLS;
-  var x=OX+c*(TW+GAP), y=OY+r*(TH+GAP);
-  var inLaw=!!f.rep.law;
-  var fail=!!(f.rep.over||f.rep.prep||(f.sc&&(f.sc.superv||f.sc.noAudit)));
-  var g=el('g',{class:'xtile',transform:'translate('+x+','+y+')',tabindex:0,role:'button',
-    'aria-label':f.rep.t+', '+f.rep.c+', '+f.yr});
-  // base tile: a dim "bone" cell
-  var base=el('rect',{x:0,y:0,width:TW,height:TH,rx:6,fill:'#171f1c',stroke:'#222a26','stroke-width':1});
-  // illumination overlay (green when lit) - opacity animates via JS
-  var lit=el('rect',{x:0,y:0,width:TW,height:TH,rx:6,fill:'var(--rise)','fill-opacity':0,class:'xlit'});
-  // country code, faint
-  var code=el('text',{x:TW/2,y:TH/2+5,'text-anchor':'middle','font-family':'var(--mono)','font-size':15,'font-weight':700,'letter-spacing':'.06em',fill:'#3b4540',class:'xcode'});
-  code.textContent=ISO3[f.rep.c]||f.rep.c.slice(0,3).toUpperCase();
-  g.appendChild(base); g.appendChild(lit); g.appendChild(code);
-  g.__rep=f.rep; g.__sc=f.sc; g.__yr=f.yr; g.__inLaw=inLaw; g.__fail=fail;
-  g.__base=base; g.__lit=lit; g.__code=code;
-  gTiles.appendChild(g); xTiles.push(g);
-});
+// the verified itinerary: code -> {country, named project (as the report titles it), the finding}
+var STOPS={
+  GHA:{c:'Ghana',proj:'Sekondi-Takoradi, second assurance',find:'A road left unpaved, dust settling on the homes and stalls beside it.'},
+  ETH:{c:'Ethiopia',proj:'Arjo Dedessa Dam',find:'Over budget and behind schedule, with preparation flagged as weak.'},
+  SLV:{c:'El Salvador',proj:'Third assurance, road works',find:'Overruns and weak planning, the public unable to use the data as published.'},
+  UGA:{c:'Uganda',proj:'Mwiri Access Road',find:'Supervision compromised by a conflict of interest with the contractor.'},
+  CRI:{c:'Costa Rica',proj:'First assurance',find:'Cost or time overruns on a project the standard was meant to safeguard.'},
+  THA:{c:'Thailand',proj:'Fourth assurance',find:'The brightest case: every report records the law, yet three in four still flag a failure.'}
+};
+var ORDER=['GHA','ETH','SLV','UGA','CRI','THA'];
 
-// per-year cumulative law fraction (for the illumination sweep)
-var yseq=years.map(function(y){return y.year;});
-function lawFracUpTo(frac){ // frac 0..1 across the decade -> share of tiles lit
-  // light tiles in build order, weighted so the FINAL share matches reports-in-law growing 30%->100%
-  return frac;
+var greadout=document.getElementById('greadout');
+var gcard=document.getElementById('gcountryCard');
+function pct(n,d){return Math.round(n/d*100);}
+
+// render the per-country card (light, recessive; never a heavy box). Shows: rise/stayed,
+// real numbers, named project + finding, real photo or a clean glyph.
+function countryCardHTML(code){
+  var s=STOPS[code], a=AGG[s.c]||{n:0,law:0,fail:0};
+  var lawP=pct(a.law,a.n), failP=pct(a.fail,a.n);
+  var ph=PHOTO_BY_COUNTRY[s.c];
+  var media = ph
+    ? '<div class="gcphoto"><img src="'+ph.f+'" alt="'+ph.cap.replace(/"/g,'')+'" loading="lazy"><span>'+ph.cap+'</span></div>'
+    : '<div class="gcglyph" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M6 40 L24 8 L42 40 Z M16 40 L24 24 L32 40" fill="none" stroke="var(--stuck)" stroke-width="2"/></svg><span>'+s.c+'</span></div>';
+  return media
+    + '<div class="gceyebrow">'+s.c+'</div>'
+    + '<div class="gcrise"><span class="up">▲ standard into law</span><b class="g">'+lawP+'%</b></div>'
+    + '<div class="gcstay"><span class="flat">▬ failure still found</span><b class="r">'+failP+'%</b></div>'
+    + '<div class="gcproj"><span class="pl">'+s.proj+'</span>'+s.find+'</div>'
+    + '<div class="gcn">'+a.n+' assurance report'+(a.n==1?'':'s')+', read as reported</div>';
 }
 
-// ILLUMINATE: light a share of tiles (0..1). lit tiles glow green; we light inLaw tiles first
-// then the rest, so "in law" leads and by full=1 the whole plate glows (by 2021 every report).
-var orderLit = xTiles.slice().sort(function(a,b){ return (b.__inLaw?1:0)-(a.__inLaw?1:0); });
-function setIllum(frac){
-  var n=Math.round(frac*Ntiles);
-  orderLit.forEach(function(g,i){
-    var on=i<n;
-    g.__lit.setAttribute('fill-opacity', on?0.30:0);
-    g.__code.setAttribute('fill', on?'#bfe9d6':'#3b4540');
+// ---- the globe ----
+var gmap=null, mapReady=false, spinEnabled=true, userInteracting=false, curG=null;
+function flyToStop(code){
+  if(!gmap||!mapReady){ return; }
+  spinEnabled=false;
+  var c=COUNTRY_LL[STOPS[code].c];
+  gmap.flyTo({center:c,zoom:4.0,speed:0.7,curve:1.5,pitch:35,essential:true});
+  paintHalo(code);
+}
+function flyToAll(){
+  if(!gmap||!mapReady)return; spinEnabled=true;
+  gmap.flyTo({center:[10,12],zoom:1.3,pitch:0,speed:0.8,essential:true});
+}
+function paintHalo(code){
+  if(!gmap.getSource('halo'))return;
+  var fixed=Object.keys(STOPS).map(function(k){return {type:'Feature',geometry:{type:'Point',coordinates:COUNTRY_LL[STOPS[k].c]},properties:{active:k===code?1:0}};});
+  gmap.getSource('halo').setData({type:'FeatureCollection',features:fixed});
+}
+
+function initGlobe(){
+  if(!window.mapboxgl || mapReady) return;
+  mapboxgl.accessToken=atob('cGsuZXlKMUlqb2lZMlZ1WjJ0MWNuVWlMQ0poSWpvaVkyMXdNemM1T1docE1E')+atob('QjBkekp3Y3pGNGEzUnJiV1IzZWlKOS5sRzQwa1VobmlLUzF2bGR5MlFNeXNR');
+  try{
+    gmap=new mapboxgl.Map({container:'globe',style:'mapbox://styles/mapbox/dark-v11',projection:'globe',
+      center:[10,12],zoom:1.3,pitch:0,attributionControl:true,cooperativeGestures:true});
+  }catch(e){ showFallback(); return; }
+  gmap.on('error',function(){ /* keep going; fallback covers hard failures */ });
+  ['mousedown','dragstart','touchstart'].forEach(function(ev){ gmap.on(ev,function(){userInteracting=true;}); });
+  ['mouseup','dragend','touchend'].forEach(function(ev){ gmap.on(ev,function(){userInteracting=false;}); });
+  gmap.on('style.load',function(){
+    gmap.setFog({'color':'rgb(12,14,16)','high-color':'rgb(20,30,40)','horizon-blend':0.08,'space-color':'rgb(7,9,8)','star-intensity':0.15});
   });
-  // plate ambient glow grows too
-  gIllum.innerHTML='';
-  if(frac>0){
-    var glow=el('rect',{x:OX-30,y:OY-30,width:gridW+60,height:gridH+60,rx:18,fill:'var(--rise)','fill-opacity':0.05*frac,filter:'url(#fxglow)'});
-    gIllum.appendChild(glow);
+  gmap.on('load',function(){
+    mapReady=true;
+    // all-countries dots (the "everywhere" layer)
+    var rows=buildCountryAgg();
+    gmap.addSource('countries',{type:'geojson',data:{type:'FeatureCollection',features:rows.map(function(r){
+      return {type:'Feature',geometry:{type:'Point',coordinates:COUNTRY_LL[r.c]},properties:{c:r.c,failPct:pct(r.fail,r.n)}};})}});
+    gmap.addLayer({id:'cdots',type:'circle',source:'countries',paint:{
+      'circle-radius':6,'circle-color':['interpolate',['linear'],['get','failPct'],60,'#5bbf97',85,'#cf6b3a'],
+      'circle-opacity':0.9,'circle-stroke-width':1,'circle-stroke-color':'rgba(242,239,233,.5)'}});
+    gmap.addLayer({id:'clabels',type:'symbol',source:'countries',layout:{
+      'text-field':['get','c'],'text-size':11,'text-offset':[0,1.4],'text-font':['DIN Pro Medium','Arial Unicode MS Regular']},
+      paint:{'text-color':'#e7e2d8','text-halo-color':'#0a0908','text-halo-width':1.3}});
+    // active-stop halo (the x-ray light on the focused country)
+    gmap.addSource('halo',{type:'geojson',data:{type:'FeatureCollection',features:[]}});
+    gmap.addLayer({id:'halo-glow',type:'circle',source:'halo',filter:['==',['get','active'],1],paint:{
+      'circle-radius':40,'circle-color':'var(--rise)','circle-opacity':0.18,'circle-blur':1}},'cdots');
+    gmap.addLayer({id:'halo-ring',type:'circle',source:'halo',filter:['==',['get','active'],1],paint:{
+      'circle-radius':16,'circle-color':'rgba(0,0,0,0)','circle-stroke-color':'#8fe0bf','circle-stroke-width':2}});
+    spin();
+    // if a stop is already the current scroll position, fly there
+    if(curG && STOPS[curG]) flyToStop(curG);
+  });
+}
+function spin(){
+  if(!gmap||!mapReady) return;
+  if(spinEnabled && !userInteracting && !reduce){
+    var c=gmap.getCenter(); c.lng-=0.35; gmap.easeTo({center:c,duration:1000,easing:function(n){return n;}});
   }
+  setTimeout(spin,1000);
 }
 
-// READOUT: a light, recessive label of what's happening (never covers the body)
-function setReadout(html,tone){ readout.innerHTML=html; readout.style.color = tone==='r'?'var(--stuck)':(tone==='g'?'var(--rise-hi)':'#6e7d76'); readout.style.opacity=html?1:0; }
-
-// THE FRACTURE: a jagged red break across the body. Size encodes the real ~9-in-10 failure rate.
-// reveal animates from 0 (hidden) to 1 (full).
-var FAIL_RATE = Math.round((D.totals.overrun)/D.totals.rows*100); // honest headline ~74; but story says 9 in 10 by-year. use flagged-any:
-// flagged at least one failure across the corpus:
-var anyFail = SC.filter(function(s){return s.overrun||s.prep||s.superv||s.noAudit;}).length;
-var anyTot = SC.filter(function(s){return s.c!=='Global'&&s.c!=='United Kingdom';}).length;
-function buildFracturePath(){
-  // a lightning-style crack from top-left of the body to bottom-right
-  var x0=OX+gridW*0.10, y0=OY+8, x1=OX+gridW*0.92, y1=OY+gridH-8;
-  var pts=[[x0,y0]]; var seg=7;
-  for(var i=1;i<seg;i++){ var t=i/seg; var jx=(rnd(i,9)-0.5)*120; var jy=(rnd(i,11)-0.5)*40;
-    pts.push([x0+(x1-x0)*t+jx, y0+(y1-y0)*t+jy]); }
-  pts.push([x1,y1]);
-  return 'M'+pts.map(function(p){return p[0].toFixed(0)+' '+p[1].toFixed(0);}).join(' L');
+// ---- scroll driver: each .gtrack section sets the camera ----
+function setGStop(g){
+  if(g===curG) return; curG=g;
+  if(g==='intro'){ gcard.classList.remove('on'); greadout.textContent=''; flyToAll(); return; }
+  if(g==='all'){ gcard.classList.remove('on'); greadout.textContent='THE LIGHT REACHED EVERYWHERE · THE FRACTURE WENT NOWHERE'; flyToAll(); return; }
+  // a country stop
+  flyToStop(g);
+  gcard.innerHTML=countryCardHTML(g); gcard.classList.add('on');
+  var s=STOPS[g], a=AGG[s.c]||{n:0};
+  greadout.textContent=s.c.toUpperCase()+' · '+pct(a.law,a.n)+'% IN LAW · '+pct(a.fail,a.n)+'% STILL FRACTURED';
 }
-var fracPath=buildFracturePath();
-function setFracture(frac){ // 0..1 reveal
-  gFrac.innerHTML='';
-  if(frac<=0)return;
-  var glow=el('path',{d:fracPath,fill:'none',stroke:'var(--stuck)','stroke-width':14,'stroke-linecap':'round','stroke-linejoin':'round','stroke-opacity':0.25*frac,filter:'url(#fxglow)'});
-  var core=el('path',{d:fracPath,fill:'none',stroke:'var(--stuck)','stroke-width':4,'stroke-linecap':'round','stroke-linejoin':'round','stroke-opacity':0.95*frac});
-  // dashoffset draw-on
-  var len=1400; core.setAttribute('stroke-dasharray',len); core.setAttribute('stroke-dashoffset',len*(1-frac));
-  gFrac.appendChild(glow); gFrac.appendChild(core);
-  // tiles touched by the fracture flush red at full reveal
-  if(frac>0.6){ xTiles.forEach(function(g){ if(g.__fail && rnd(g.__yr+g.__rep.t.length,3)>0.18){ g.__base.setAttribute('fill','#3a1d14'); g.__base.setAttribute('stroke','rgba(207,107,58,.5)'); } }); }
-  else { xTiles.forEach(function(g){ g.__base.setAttribute('fill','#171f1c'); g.__base.setAttribute('stroke','#222a26'); }); }
-}
-
-// THE GUESS line (predict beat): a draggable horizontal line over the body; reader sets "how much break remains"
-var guessPct=40; // default guess
-function drawGuess(show){
-  gGuess.innerHTML='';
-  if(!show)return;
-  var gy=OY+gridH*(1-guessPct/100);
-  gGuess.appendChild(el('line',{x1:OX-20,y1:gy,x2:OX+gridW+20,y2:gy,class:'xguessline'}));
-  gGuess.appendChild(el('circle',{cx:OX+gridW+20,cy:gy,r:9,class:'xguesshandle'}));
-  var t=el('text',{x:OX-28,y:gy+5,'text-anchor':'end','font-family':'var(--mono)','font-size':14,fill:'var(--paper)'});
-  t.textContent='your guess: '+guessPct+'% left'; gGuess.appendChild(t);
-}
-function svgY(clientY){ var b=xsvg.getBoundingClientRect(); return (clientY-b.top)/b.height*H; }
-var dragging=false;
-function guessFromY(yy){ var p=Math.round((1-(yy-OY)/gridH)*100); guessPct=Math.max(0,Math.min(100,p)); drawGuess(true); }
-xsvg.addEventListener('pointerdown',function(e){ if(curX!==2)return; dragging=true; guessFromY(svgY(e.clientY)); e.preventDefault(); });
-addEventListener('pointermove',function(e){ if(dragging){ guessFromY(svgY(e.clientY)); } });
-addEventListener('pointerup',function(){ dragging=false; });
-
-// ====== STAGE DRIVER ======
-var curX=-1, revealed=false;
-function renderX(stage){
-  curX=stage;
-  if(stage===0){ setIllum(0); setFracture(0); drawGuess(false); setReadout('THE BODY IN THE DARK · 49 REPORTS',''); }
-  else if(stage===1){ setIllum(1); setFracture(0); drawGuess(false); setReadout('TRANSPARENCY → LAW · NOW FULLY LIT','g'); }
-  else if(stage===2){ setIllum(1); setFracture(0); drawGuess(true); setReadout('FULLY LIT · WHERE IS THE BREAK?','g'); }
-  else if(stage===3){ setIllum(1); drawGuess(false); revealFracture(); setReadout('9 IN 10 REPORTS · STILL FRACTURED','r'); }
-  else if(stage===4){ setIllum(1); drawGuess(false); setFracture(1); setReadout('SEEN, NOT SET','r'); }
-}
-function revealFracture(){
-  if(reduce){ setFracture(1); revealed=true; return; }
-  if(revealed){ setFracture(1); return; }
-  revealed=true; var t0=null, dur=1100;
-  (function step(ts){ if(t0===null)t0=ts; var k=Math.min(1,(ts-t0)/dur);
-    setFracture(k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2);
-    if(k<1) requestAnimationFrame(step); })(); }
-document.getElementById('xpReveal').addEventListener('click',function(){ if(curX===2){ /* jump visual to reveal */ setIllum(1); drawGuess(false); revealFracture(); setReadout('9 IN 10 REPORTS · STILL FRACTURED','r'); } });
-
-// race-proof scroll: drive from the most-centred .xtrack section
-var xratios={};
-function pickX(){ var best=null,bestR=0; for(var k in xratios){ if(xratios[k]>bestR){bestR=xratios[k];best=+k;} } if(best!==null&&bestR>0.2&&best!==curX) renderX(best); }
-[].slice.call(document.querySelectorAll('.xtrack section')).forEach(function(s){
-  new IntersectionObserver(function(es){ es.forEach(function(e){ xratios[e.target.dataset.x]=e.isIntersecting?e.intersectionRatio:0; }); pickX(); },{threshold:[0,.2,.5,.8,1]}).observe(s);
+var gratios={};
+function pickG(){ var best=null,bestR=0; for(var k in gratios){ if(gratios[k]>bestR){bestR=gratios[k];best=k;} } if(best&&bestR>0.25) setGStop(best); }
+[].slice.call(document.querySelectorAll('.gtrack section')).forEach(function(s){
+  new IntersectionObserver(function(es){ es.forEach(function(e){ gratios[e.target.dataset.g]=e.isIntersecting?e.intersectionRatio:0; }); pickG(); },{threshold:[0,.25,.5,.75,1]}).observe(s);
 });
-renderX(0); if(reduce){ renderX(4); }
 
-// ---- onboarding hint (adapted to the x-ray) ----
-var howto=document.getElementById('howto');
-var howtoDone=false, xActive=false;
-function syncHowto(){ if(howto){ howto.classList.toggle('hide', !(!howtoDone && xActive)); } }
-function dismissHowto(){ howtoDone=true; syncHowto(); }
-new IntersectionObserver(function(es){es.forEach(function(e){ xActive=e.isIntersecting&&e.intersectionRatio>0.6; syncHowto(); });},{threshold:[0,.6,.9]}).observe(document.querySelector('.xstage'));
-new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&+e.target.dataset.x>=3)dismissHowto();});},{threshold:.5}).observe(document.querySelector('section[data-x="3"]'));
-
-// ---- report insight card: hover/focus any dot ----
-var card=document.getElementById('card');
-function esc(s){return String(s).replace(/[<>&]/g,function(m){return({'<':'&lt;','>':'&gt;','&':'&amp;'})[m];});}
-function flagRow(on,badLabel,okLabel){
-  if(on) return '<div class="fg"><span class="mk bad">✕</span><span>'+esc(badLabel)+'</span></div>';
-  return '<div class="fg"><span class="mk ok">✓</span><span>'+esc(okLabel)+'</span></div>';
+// ---- SVG world fallback (reduced-motion or no WebGL) ----
+function showFallback(){
+  var fb=document.getElementById('globefallback'); if(!fb)return;
+  document.getElementById('globe').style.display='none';
+  fb.setAttribute('aria-hidden','false');
+  var rows=buildCountryAgg();
+  // simple equirectangular projection of the 12 country dots over a faint world
+  function px(lon,lat){ return [(lon+180)/360*100, (90-lat)/180*100]; }
+  var dots=rows.map(function(r){ var p=px(COUNTRY_LL[r.c][0],COUNTRY_LL[r.c][1]); var fp=pct(r.fail,r.n);
+    var col=fp>=80?'#cf6b3a':(fp>=60?'#d3a24a':'#5bbf97');
+    return '<span class="fbdot" style="left:'+p[0].toFixed(1)+'%;top:'+p[1].toFixed(1)+'%;background:'+col+'" title="'+r.c+'"></span>';
+  }).join('');
+  var cards=ORDER.map(function(code){ return '<div class="fbcard">'+countryCardHTML(code)+'</div>'; }).join('');
+  fb.innerHTML='<div class="fbmap">'+dots+'</div><div class="fbcards">'+cards+'</div>';
 }
+
+// boot: lazy-init the globe when the scene is near; fallback for reduced-motion / no-WebGL
+function webglOK(){ try{ var c=document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl')||c.getContext('experimental-webgl'))); }catch(e){ return false; } }
+if(reduce || !webglOK() || !window.mapboxgl){
+  showFallback();
+} else {
+  var started=false;
+  new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && !started){ started=true; initGlobe(); } }); },{threshold:.05}).observe(document.querySelector('.gstage'));
+}
+
+// ---- onboarding hint (adapted to the globe) ----
+var howto=document.getElementById('howto');
+var howtoDone=false, gActive=false;
+function syncHowto(){ if(howto){ howto.classList.toggle('hide', !(!howtoDone && gActive)); } }
+function dismissHowto(){ howtoDone=true; syncHowto(); }
+new IntersectionObserver(function(es){es.forEach(function(e){ gActive=e.isIntersecting&&e.intersectionRatio>0.6; syncHowto(); });},{threshold:[0,.6,.9]}).observe(document.querySelector('.gstage'));
 function cardHTML(rep,sc,yr){
   // disclosure line: prefer the precise scorecard value, fall back to viz value
   var disc = (sc&&sc.disc!=null)?sc.disc:(rep.disc!=null?rep.disc:null);
@@ -2251,25 +2216,7 @@ function positionCard(x,y){
   card.style.left=px+'px'; card.style.top=py+'px';
 }
 function hideCard(c){ card.className=''; card.setAttribute('aria-hidden','true'); if(c){c.classList.remove('lit'); if(c.__lbl){c.__lbl.setAttribute('opacity',0.42);c.__lbl.removeAttribute('font-size');}} }
-var tappedDot=null;  // currently open tile on touch
-xTiles.forEach(function(c){
-  c.style.cursor='pointer';
-  c.addEventListener('mouseenter',function(e){ clearTimeout(cardTimer); showCard(c,e.clientX,e.clientY); });
-  c.addEventListener('mousemove',function(e){ if(card.classList.contains('on')&&!tappedDot) positionCard(e.clientX,e.clientY); });
-  c.addEventListener('mouseleave',function(){ if(tappedDot)return; cardTimer=setTimeout(function(){hideCard(c);},80); });
-  c.addEventListener('focus',function(){ var b=c.getBoundingClientRect(); showCard(c,b.left+b.width/2,b.top); });
-  c.addEventListener('blur',function(){ if(!tappedDot) hideCard(c); });
-  // touch / click: tap a tile to pin its card, tap again or elsewhere to close
-  c.addEventListener('click',function(e){
-    e.stopPropagation(); dismissHowto();
-    if(tappedDot===c){ hideCard(c); tappedDot=null; return; }
-    if(tappedDot) hideCard(tappedDot);
-    var b=c.getBoundingClientRect(); showCard(c,b.left+b.width/2,b.top); tappedDot=c;
-  });
-});
-// tap anywhere else closes a pinned card
-document.addEventListener('click',function(){ if(tappedDot){ hideCard(tappedDot); tappedDot=null; } });
-card.addEventListener('click',function(e){ e.stopPropagation(); });  // taps inside the card (e.g. source link) don't close it
+// (the floating insight card is unused in the globe spine; per-country detail lives in #gcountryCard)
 
 // coda bars (real corpus counts)
 var T=D.totals;
@@ -2307,70 +2254,6 @@ document.getElementById('dlJson').onclick=function(){dl('cost-assurance-scorecar
 document.getElementById('dlCsv').onclick=function(){dl('cost-assurance-scorecard.csv','text/csv',csv());};
 document.getElementById('dlXls').onclick=function(){dl('cost-assurance-scorecard.xls','application/vnd.ms-excel',xls());};
 
-// ---- beat 5: from-the-ground photo strip (real mined site photos) ----
-var GROUND=[
-  {f:'img/ghana-road-settlement.jpg',co:'Ghana',tx:'An unpaved road dusts the homes and stalls beside it'},
-  {f:'img/ghana-waterlogged.jpg',co:'Ghana',tx:'A waterlogged site the report flagged'},
-  {f:'img/elsalvador-roadworks-crew.jpg',co:'El Salvador',tx:'Crews on a road the assurance team came to check'},
-  {f:'img/elsalvador-erosion.jpg',co:'El Salvador',tx:'Erosion and water damage at a project site'},
-  {f:'img/elsalvador-classroom.jpg',co:'El Salvador',tx:'Inside a school the project was meant to deliver'},
-  {f:'img/ghana-building.jpg',co:'Ghana',tx:'A public building, delivered'}
-];
-var gs=document.getElementById('groundStrip');
-if(gs){ gs.innerHTML=GROUND.map(function(g){
-  return '<figure class="gcard"><img src="'+g.f+'" alt="'+g.tx.replace(/"/g,'')+', '+g.co+'" loading="lazy"><figcaption class="gcap"><div class="gco">'+g.co+'</div><div class="gtx">'+g.tx+'</div></figcaption></figure>';
-}).join(''); }
-
-// ---- map scene: where the reports came from (Mapbox GL, lazy-loaded on scroll) ----
-var COUNTRY_LL={
-  Malawi:[34.30,-13.25],Ethiopia:[39.78,9.15],Ukraine:[31.17,48.38],Honduras:[-86.24,15.20],
-  Guatemala:[-90.23,15.78],Tanzania:[34.89,-6.37],Uganda:[32.29,1.37],Thailand:[100.99,15.87],
-  'El Salvador':[-88.90,13.79],Ghana:[-1.02,7.95],'Costa Rica':[-83.75,9.75],Afghanistan:[67.71,33.94]
-};
-function buildCountryAgg(){
-  var skip={Global:1,'United Kingdom':1}, agg={};
-  SC.forEach(function(s){ if(skip[s.c])return; var a=agg[s.c]||(agg[s.c]={c:s.c,n:0,law:0,fail:0});
-    a.n++; if(s.law)a.law++; if(s.overrun||s.prep||s.superv)a.fail++; });
-  return Object.keys(agg).map(function(k){return agg[k];}).filter(function(a){return COUNTRY_LL[a.c];});
-}
-function initMap(){
-  if(!window.mapboxgl){ return; }
-  // public (pk) Mapbox token, assembled at runtime so no literal token ships in the repo;
-  // real protection is the URL restriction on the token at the Mapbox dashboard (cengkuru.github.io).
-  mapboxgl.accessToken=atob('cGsuZXlKMUlqb2lZMlZ1WjJ0MWNuVWlMQ0poSWpvaVkyMXdNemM1T1docE1E')+atob('QjBkekp3Y3pGNGEzUnJiV1IzZWlKOS5sRzQwa1VobmlLUzF2bGR5MlFNeXNR');
-  var rows=buildCountryAgg();
-  var feats=rows.map(function(r){ var fr=r.fail/r.n;
-    return {type:'Feature',geometry:{type:'Point',coordinates:COUNTRY_LL[r.c]},
-      properties:{c:r.c,n:r.n,law:r.law,fail:r.fail,failPct:Math.round(fr*100),lawPct:Math.round(r.law/r.n*100)}};});
-  var map=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/dark-v11',projection:'equalEarth',center:[-10,14],zoom:0.9,attributionControl:true,cooperativeGestures:true});
-  map.addControl(new mapboxgl.NavigationControl({showCompass:false}),'top-right');
-  map.on('load',function(){
-    // fit all 12 countries (Latin America to SE Asia) in view
-    try{ var bnds=new mapboxgl.LngLatBounds(); feats.forEach(function(f){bnds.extend(f.geometry.coordinates);}); map.fitBounds(bnds,{padding:{top:70,bottom:70,left:60,right:60},maxZoom:3,duration:0}); }catch(e){}
-    map.addSource('countries',{type:'geojson',data:{type:'FeatureCollection',features:feats}});
-    map.addLayer({id:'bubbles',type:'circle',source:'countries',paint:{
-      'circle-radius':['interpolate',['linear'],['get','n'],1,8,13,30],
-      'circle-color':['interpolate',['linear'],['get','failPct'],60,'#5bbf97',80,'#d3a24a',100,'#cf6b3a'],
-      'circle-opacity':0.82,'circle-stroke-width':1.5,'circle-stroke-color':'rgba(242,239,233,.55)'}});
-    map.addLayer({id:'labels',type:'symbol',source:'countries',layout:{
-      'text-field':['get','c'],'text-size':12,'text-offset':[0,1.7],'text-font':['DIN Pro Medium','Arial Unicode MS Regular']},
-      paint:{'text-color':'#e7e2d8','text-halo-color':'#14120e','text-halo-width':1.4}});
-    var pop=new mapboxgl.Popup({closeButton:false,closeOnClick:true,offset:14});
-    map.on('mouseenter','bubbles',function(){map.getCanvas().style.cursor='pointer';});
-    map.on('mouseleave','bubbles',function(){map.getCanvas().style.cursor='';});
-    function show(e){var p=e.features[0].properties;
-      var ph=PHOTO_BY_COUNTRY[p.c];
-      var photo=ph?'<div class="popphoto"><img src="'+ph.f+'" alt="'+ph.cap.replace(/"/g,'')+'" loading="lazy"></div>':'';
-      var html='<div class="mappop">'+photo+'<div class="pc">'+p.c+'</div><div class="pm">'+
-        p.n+' assurance report'+(p.n==1?'':'s')+'<br><b>'+p.failPct+'%</b> still flagged a delivery failure<br>'+
-        p.lawPct+'% recorded the standard in law</div></div>';
-      pop.setLngLat(e.lngLat).setHTML(html).addTo(map);}
-    map.on('click','bubbles',show);
-    map.on('mouseenter','bubbles',show);
-  });
-}
-var mapStarted=false;
-new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting && !mapStarted){ mapStarted=true; initMap(); } });},{threshold:.15}).observe(document.getElementById('map'));
 })();
 </script>
 </body>
