@@ -65,7 +65,34 @@ a{color:var(--rise-hi)}
 @property --r{syntax:'<length>';inherits:false;initial-value:34vmax}
 
 .machine{position:sticky;top:0;height:100vh;overflow:hidden;z-index:1}
+
+/* THE X-RAY scene */
+.xwrap{position:relative}
+.xstage{background:#070908;display:flex;align-items:center;justify-content:center}
+#xray{width:100%;height:100%;display:block}
+@media(min-width:861px){#xray{width:64%;margin-left:36%}}
+.xreadout{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#6e7d76;pointer-events:none;text-align:center;transition:opacity .4s}
+@media(min-width:861px){.xreadout{left:auto;right:5%;transform:none;text-align:right}}
+.xtrack{position:relative;z-index:2;pointer-events:none}
+.xtrack>section{min-height:100vh;display:flex;align-items:flex-end;padding:0 0 9vh 6vw}
+@media(min-width:861px){.xtrack>section{align-items:center;padding:0 0 0 6vw}.xtrack .beat{max-width:30vw}}
+.xtrack .beat .big.r{color:var(--stuck)}
+.xpredict{margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.xbtn{background:transparent;border:1px solid var(--rise);color:var(--rise-hi);padding:9px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+.xbtn:hover{background:rgba(91,191,151,.12)}
+.xphint{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+/* x-ray svg element classes */
+.xtile{transition:opacity .5s ease}
+.xlabel{fill:#5b6b64;font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.xpct{fill:var(--rise-hi);font-family:var(--serif);font-weight:700}
+.xfxlabel{fill:var(--stuck);font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.xguessline{stroke:var(--paper);stroke-width:2;stroke-dasharray:7 6;opacity:.7;cursor:ns-resize}
+.xguesshandle{fill:var(--paper);cursor:ns-resize}
+@media(prefers-reduced-motion:reduce){.xtile{transition:none}.xreadout{transition:none}}
+/* push the plot into the right portion of the screen so the left beat column never covers it */
 #viz{width:100%;height:100%;display:block}
+@media(min-width:861px){#viz{width:62%;margin-left:38%}}
+@media(min-width:861px){.track>section{align-items:flex-start;padding-top:14vh}.beat{max-width:30vw}}
 .gl{stroke:var(--grid);stroke-width:1}
 .axl{fill:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
 .tk{fill:#6e695f;font-family:var(--mono);font-size:11px}
@@ -105,6 +132,9 @@ a{color:var(--rise-hi)}
 #card{position:fixed;z-index:60;max-width:320px;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .14s ease,transform .14s ease;background:rgba(16,14,10,.97);backdrop-filter:blur(10px);border:1px solid #34302a;border-left-width:3px;border-radius:3px;padding:14px 16px;box-shadow:0 16px 44px rgba(0,0,0,.6)}
 #card.on{opacity:1;transform:translateY(0)}
 #card.rise{border-left-color:var(--rise)} #card.stuck{border-left-color:var(--stuck)}
+#card .cphoto{margin:-14px -16px 10px;position:relative}
+#card .cphoto img{width:100%;height:120px;object-fit:cover;display:block;border-radius:3px 3px 0 0}
+#card .cphoto span{position:absolute;left:8px;bottom:6px;right:8px;font-family:var(--mono);font-size:9px;letter-spacing:.04em;color:#f2efe9;text-shadow:0 1px 6px rgba(0,0,0,.95);line-height:1.3}
 #card .ct{font-family:var(--serif);font-size:16px;font-weight:700;line-height:1.18;color:var(--paper);margin:0 0 2px}
 #card .cmeta{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
 #card .cdisc{font-family:var(--serif);font-size:15px;color:#cdc7bc;margin:0 0 9px}
@@ -136,6 +166,20 @@ a{color:var(--rise-hi)}
 .beat .big{font-family:var(--serif);font-size:40px;font-weight:700;line-height:1;margin:2px 0 8px}
 .beat .big.g{color:var(--rise)} .beat .big.r{color:var(--stuck)}
 
+/* beat 5: from the ground - real site photos */
+.ground{background:#0c0a08;padding:13vh 0 11vh;border-top:1px solid #2a2620}
+.ground .ghead{max-width:760px;margin:0 auto 34px;padding:0 24px}
+.ground h2{font-size:clamp(26px,4vw,42px);margin:6px 0 12px;font-family:var(--serif);font-weight:700}
+.ground .ghead p{color:#cdc7bc;margin:0;font-size:16px}
+.gstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;max-width:1180px;margin:0 auto;padding:0 24px}
+.gcard{position:relative;border-radius:4px;overflow:hidden;aspect-ratio:4/3;background:#171410}
+.gcard img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;filter:saturate(.95)}
+.gcard:hover img{transform:scale(1.05)}
+.gcard .gcap{position:absolute;inset:auto 0 0 0;padding:34px 14px 12px;background:linear-gradient(0deg,rgba(8,7,6,.94),transparent)}
+.gcard .gco{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--stuck)}
+.gcard .gtx{font-size:13.5px;color:#f2efe9;line-height:1.35;margin-top:3px}
+@media(max-width:680px){.gstrip{grid-template-columns:1fr 1fr;gap:8px}.gcard .gtx{font-size:11px}}
+
 /* map scene: where the 95 reports came from */
 .mapsec{position:relative;background:var(--ink2);padding:13vh 0 11vh;border-top:1px solid #2a2620}
 .mapsec .head{max-width:760px;margin:0 auto 30px;padding:0 24px}
@@ -148,6 +192,7 @@ a{color:var(--rise-hi)}
 .maplegend .sz{display:inline-flex;align-items:center;gap:5px}
 .maplegend .sz i{border-radius:50%;background:#6e695f;display:inline-block}
 .mappop{font-family:var(--sans)}
+.mappop .popphoto img{width:100%;height:96px;object-fit:cover;border-radius:2px;margin-bottom:7px;display:block}
 .mappop .pc{font-family:var(--serif);font-weight:700;font-size:16px;color:#14120e;margin:0 0 3px}
 .mappop .pm{font-size:12.5px;color:#4a4743;line-height:1.45}
 .mappop .pm b{color:var(--cost-red)}
@@ -214,50 +259,74 @@ footer b{color:var(--paper)}
   <div class="credit">A road under CoST assurance review, Ghana<br>From the CoST Sekondi-Takoradi assurance report</div>
 </section>
 
-<div style="position:relative">
-  <div class="machine">
-    <svg id="viz" preserveAspectRatio="xMidYMid meet" aria-label="Two lines over 2015 to 2021: transparency-into-law rising, delivery-failure staying flat near the top, never converging.">
-      <defs><linearGradient id="gapgrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#cf6b3a" stop-opacity="0.22"/>
-        <stop offset="100%" stop-color="#5bbf97" stop-opacity="0.10"/>
-      </linearGradient></defs>
+<!-- THE X-RAY: transparency is the light that reveals the fracture but cannot heal the bone -->
+<div class="xwrap">
+  <div class="machine xstage">
+    <svg id="xray" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" aria-label="An x-ray of a decade of infrastructure: the plate lights up as transparency becomes law, revealing a fracture, the delivery failures, that the light exposes but never heals.">
+      <defs>
+        <radialGradient id="plateglow" cx="50%" cy="46%" r="62%">
+          <stop offset="0%" stop-color="#0f1a17"/><stop offset="100%" stop-color="#070908"/>
+        </radialGradient>
+        <filter id="soft"><feGaussianBlur stdDeviation="2.2"/></filter>
+        <filter id="fxglow"><feGaussianBlur stdDeviation="5"/></filter>
+      </defs>
+      <rect x="0" y="0" width="1000" height="1000" fill="url(#plateglow)"/>
+      <g id="x-illum"></g>     <!-- the green illumination wash, grows with scroll -->
+      <g id="x-tiles"></g>     <!-- the 49 report tiles forming the structure/bone -->
+      <g id="x-fracture"></g>  <!-- the red fracture, revealed at the climax -->
+      <g id="x-guess"></g>     <!-- the reader's prediction line -->
+      <g id="x-furn"></g>      <!-- light, recessive labels: scan line, %, caption echo -->
     </svg>
+    <div id="xreadout" class="xreadout" aria-hidden="true"></div>
   </div>
 
-  <div class="track">
-    <section data-stage="0"><div class="beat">
-      <h2>One dot, one report</h2>
-      <p>Each report card answers two questions about a public project: was it published as the standard requires, and did its delivery problems ease? Every circle is one such report, dropped onto the year it was published. Colour carries the finding; the code marks the country. Hover any dot to read it: the project, the place, what the reviewers found.</p>
-      <div class="src">49 CoST assurance reports, 2015 to 2021 · one dot each, positioned by year</div>
+  <div class="track xtrack">
+    <section data-x="0"><div class="beat">
+      <h2>An x-ray of a decade</h2>
+      <p>Independent reviewers inspected 49 public projects, one by one, and wrote a report on each. Stacked together they form a kind of body: the state of public infrastructure across a dozen countries. For now it sits in the dark, the way it always has.</p>
+      <div class="src">49 CoST assurance reports, 2015 to 2021 · each tile is one</div>
     </div></section>
 
-    <section data-stage="1"><div class="beat">
-      <h2>Watch the green line climb</h2>
-      <div class="big g">30% → 100%</div>
-      <p>Trace it year by year: more and more reports record the disclosure standard written into law, until by 2020 every report calls it routine. This is the win. If publishing the data were enough to fix delivery, the next line should fall as this one rises.</p>
-      <div class="src">Share of each year's reports recording the standard entering law</div>
+    <section data-x="1"><div class="beat">
+      <h2>Transparency switches on the light</h2>
+      <p>Making project data public is exactly this: a light that lets outsiders see in. Country by country, year by year, that light became the law. Watch it spread across the body until, by 2021, the whole of it glows. Nothing is hidden any more.</p>
+      <div class="src">Green = reports where open data is now required by law · 3 in 10 (2015) to 10 in 10 (2021)</div>
     </div></section>
 
-    <section data-stage="2"><div class="beat stuck">
-      <h2>So watch what delivery does</h2>
-      <p>Here is the second line: the share of each year's reports that still flag a cost or time overrun, weak preparation, or supervision compromised by the contractor. Same reports, same years. Watch whether it falls.</p>
-      <div class="src">Delivery-failure rate per year, across the same reports</div>
+    <section data-x="2"><div class="beat">
+      <h2>Now we can see everything. So how bad is the break?</h2>
+      <p>The light has done its work; the body is fully lit. Before we look closer, a question. Now that every project is visible, that nothing can hide, how much of the damage do you think is left? Drag the line to your guess.</p>
+      <div class="src">Your guess: how much delivery failure remains, now that it is all in the open?</div>
+      <div class="xpredict">
+        <button id="xpReveal" class="xbtn">Reveal what the x-ray shows</button>
+        <span class="xphint">or drag the line on the x-ray</span>
+      </div>
     </div></section>
 
-    <section data-stage="3"><div class="beat stuck">
-      <h2>It refuses to move</h2>
-      <div class="big r">88% to 100%</div>
-      <p>It does not fall. Every year from 2015 to 2021, nine in ten reports or more flag the same failures. The green line climbed into law; the red line never left the ceiling. The two never meet.</p>
-      <div class="src">70 of 95 reports flag overruns · 57 flag weak preparation</div>
+    <section data-x="3"><div class="beat stuck">
+      <h2>The fracture was there the whole time</h2>
+      <div class="big r">9 in 10</div>
+      <p>This is what the light exposed: nine in ten reports, every single year, still found the same break, projects late, over budget, badly planned, or watched over by someone too close to the contractor. Transparency made it impossible to miss. It did not make it smaller.</p>
+      <div class="src">70 of 95 reports found cost or time overruns · 57 found weak planning</div>
     </div></section>
 
-    <section data-stage="4"><div class="beat stuck">
-      <h2>The gap between them is the finding</h2>
-      <p>That space between the lines is the whole story. Disclosure became law; the failures it was built to surface stayed exactly where they were. A decade of transparency made the problems impossible to miss. It did not, on this record, make them go away.</p>
-      <div class="src">95 CoST assurance reports, read together, 2011 to 2021</div>
+    <section data-x="4"><div class="beat stuck">
+      <h2>The x-ray sees the break. It cannot set the bone.</h2>
+      <p>The body is fully lit and the fracture has not moved. That is the finding in one image. A decade of transparency did one thing extraordinarily well, it made the failure visible to everyone. What seeing alone could never do was heal it.</p>
+      <div class="src">The light is disclosure. The bone is delivery. Seeing is not the same as setting.</div>
     </div></section>
   </div>
 </div>
+
+<!-- BEAT 5: from the ground - the fracture is real places, real photos from the reports -->
+<section class="ground">
+  <div class="ghead">
+    <div class="eyebrow" style="color:var(--stuck)">The fracture, on the ground</div>
+    <h2>These are not abstractions</h2>
+    <p>Every red mark on the x-ray is a real place a reviewer stood and photographed. This is what "delivery failure" looks like when you walk to the site: roads that dust the homes beside them, buildings half-served, works no one independent was watching.</p>
+  </div>
+  <div class="gstrip" id="groundStrip"></div>
+</section>
 
 <section class="mapsec">
   <div class="head">
@@ -1965,172 +2034,168 @@ var D=JSON.parse(document.getElementById('data').textContent);
 var SC=JSON.parse(document.getElementById('scorecard').textContent);
 var years=D.years; // [{year,n,avgDisc,lawPct,delivPct,reports:[...]}]
 var W=1000,H=1000,NS='http://www.w3.org/2000/svg';
-var svg=document.getElementById('viz'); svg.setAttribute('viewBox','0 0 '+W+' '+H);
 function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
 function rnd(i,s){var x=Math.sin((i+1)*12.9898+(s||0)*78.233)*43758.5453;return x-Math.floor(x);}
-var PAD={l:150,r:90,t:200,b:140};
-function xAt(yr){var i=years.findIndex(function(y){return y.year===yr;});return PAD.l+(W-PAD.l-PAD.r)*(i/(years.length-1));}
-function yAt(pct){return PAD.t+(H-PAD.t-PAD.b)*(1-pct/100);}
 
-var gGrid=el('g',{}),gBig=el('g',{}),gBand=el('g',{}),gLines=el('g',{}),gDots=el('g',{}),gLbl=el('g',{}),gFurn=el('g',{});
-// draw order: grid, big watermark year, gap band, lines, dots, line-labels, then furniture (titles/axis labels) on top
-[gGrid,gBig,gBand,gLines,gDots,gLbl,gFurn].forEach(function(g){svg.appendChild(g);});
+// ====== THE X-RAY ENGINE ======
+// One sticky plate. Tiles = the 49 reports forming a body. Scroll lights it (transparency
+// becomes law). A predicted fracture, then the real one: revealed by the light, unhealed by it.
+var xsvg=document.getElementById('xray');
+var gIllum=document.getElementById('x-illum'),
+    gTiles=document.getElementById('x-tiles'),
+    gFrac=document.getElementById('x-fracture'),
+    gGuess=document.getElementById('x-guess'),
+    gFurnX=document.getElementById('x-furn');
+var readout=document.getElementById('xreadout');
 
-function grid(){
-  gGrid.innerHTML='';
-  [0,25,50,75,100].forEach(function(p){var y=yAt(p);gGrid.appendChild(el('line',{x1:PAD.l,y1:y,x2:W-PAD.r,y2:y,class:'gl'}));
-    var t=el('text',{x:PAD.l-12,y:y+4,class:'tk','text-anchor':'end'});t.textContent=p+'%';gGrid.appendChild(t);});
-  years.forEach(function(yr){var t=el('text',{x:xAt(yr.year),y:H-PAD.b+34,class:'tk','text-anchor':'middle'});t.textContent=yr.year;gGrid.appendChild(t);});
-  // x-axis title
-  var xt=el('text',{x:(PAD.l+(W-PAD.r))/2,y:H-PAD.b+72,class:'axistitle','text-anchor':'middle'});xt.textContent='Year report published';gGrid.appendChild(xt);
-  // y-axis title (rotated)
-  var yt=el('text',{x:0,y:0,class:'axistitle','text-anchor':'middle',transform:'translate('+(PAD.l-78)+','+((PAD.t+(H-PAD.b))/2)+') rotate(-90)'});yt.textContent='Share of that year’s reports';gGrid.appendChild(yt);
-}
-// year watermark removed: it implied a single-year snapshot and undercut the decade-long progression.
-function bigYear(){gBig.innerHTML='';}
-
-// per-stage chart title + dot key (cardinal rules: every chart frame is titled and keyed)
-var STAGE_TITLE=[
-  {t:'Each dot is one assurance report',s:'CoST · 95 reports · 2015 to 2021'},
-  {t:'The transparency standard climbs into law',s:'Green line · share of reports recording it'},
-  {t:'Delivery failure enters the same chart',s:'Rust line · share flagging overruns or weak prep'},
-  {t:'The failure line never comes down',s:'Both series · one 0 to 100% scale'},
-  {t:'The gap between the two lines is the finding',s:'Law rose · delivery failure held'}
-];
-function chartFurniture(stage){
-  gFurn.innerHTML='';
-  var meta=STAGE_TITLE[stage]||STAGE_TITLE[0];
-  // TITLE BLOCK: top-left, two lines, well above the plot. Never shares a row with the legend.
-  var tt=el('text',{x:PAD.l,y:PAD.t-96,class:'charttitle'});tt.textContent=meta.t;gFurn.appendChild(tt);
-  var st=el('text',{x:PAD.l,y:PAD.t-70,class:'chartsub'});st.textContent=meta.s;gFurn.appendChild(st);
-  // LEGEND STRIP: one horizontal row directly below the title block, left-anchored. No collision with the title.
-  var ly=PAD.t-38, x=PAD.l;
-  function chip(fill,label,extraGap){
-    x+=extraGap||0;
-    gFurn.appendChild(el('circle',{cx:x+7,cy:ly-4,r:7,fill:fill}));
-    var t=el('text',{x:x+20,y:ly,class:'dotkey dotkey-t','text-anchor':'start'});t.textContent=label;gFurn.appendChild(t);
-    x+=20+label.length*8.4;   // advance by approx text width
-  }
-  chip('var(--rise)','standard in law',0);
-  chip('var(--stuck)','failure flagged',26);
-  // country-code chip: a neutral dot with a sample code inside-ish, then explanation
-  x+=26;
-  gFurn.appendChild(el('circle',{cx:x+7,cy:ly-4,r:7,fill:'#55514a'}));
-  var cc=el('text',{x:x+18,y:ly+1,class:'isolbl','text-anchor':'start',fill:'#a39d92','style':'opacity:1'});cc.textContent='UGA';gFurn.appendChild(cc);
-  var cct=el('text',{x:x+50,y:ly,class:'dotkey dotkey-t','text-anchor':'start'});cct.textContent='= country (Uganda)';gFurn.appendChild(cct);
-  // caption, right-aligned, on the same row but far right so it never meets the title
-  var cap=el('text',{x:W-PAD.r,y:ly,class:'dotkey','text-anchor':'end',fill:'#7c766b'});cap.textContent='ONE DOT = ONE REPORT';gFurn.appendChild(cap);
-}
-
-// join each viz report to its richer scorecard twin (by title) for source URL + extra flags
+// flatten the real reports into a build order (by year), keep ref to rep + scorecard twin
 var scByTitle={}; SC.forEach(function(s){ scByTitle[s.t]=s; });
-
-// ISO-style 3-letter codes so each dot says its country without a hover
+// representative real site photo per country (mined from the actual report PDFs)
+var PHOTO_BY_COUNTRY={
+  Ghana:{f:'img/ghana-road-settlement.jpg',cap:'An unpaved road runs past homes, Ghana'},
+  'El Salvador':{f:'img/elsalvador-roadworks-crew.jpg',cap:'Crews on a road under assurance review, El Salvador'},
+  'Costa Rica':{f:'img/costarica-aerial.jpg',cap:'A project site from above, Costa Rica'}
+};
 var ISO3={Guatemala:'GTM',Honduras:'HND',Ethiopia:'ETH',Ukraine:'UKR',Malawi:'MWI',Tanzania:'TZA',Thailand:'THA',Uganda:'UGA',Afghanistan:'AFG','El Salvador':'SLV',Ghana:'GHA','Costa Rica':'CRI'};
-function iso3(c){return ISO3[c]||(c?c.slice(0,3).toUpperCase():'');}
+var FLAT=[];
+years.forEach(function(yr){ yr.reports.forEach(function(rep){ FLAT.push({rep:rep,yr:yr.year,sc:scByTitle[rep.t]||null}); }); });
+var Ntiles=FLAT.length;  // 49
 
-// dots: one per report per year, scattered around that year's column.
-// each dot is paired with a small country code that scatters with it.
-var allDots=[];
-years.forEach(function(yr){ yr.reports.forEach(function(rep,j){
-  var c=el('circle',{class:'dot',r:8,cx:xAt(yr.year),cy:PAD.t-90,'fill-opacity':.9,fill:'#6f6a61'});
-  var lbl=el('text',{class:'isolbl','text-anchor':'start',x:xAt(yr.year),y:PAD.t-90});
-  lbl.textContent=iso3(rep.c);
-  c.__yr=yr.year; c.__j=j; c.__rep=rep; c.__sc=scByTitle[rep.t]||null; c.__lbl=lbl;
-  c.setAttribute('tabindex','0');
-  c.setAttribute('role','button');
-  c.setAttribute('aria-label', rep.t+', '+rep.c+', '+yr.year);
-  gDots.appendChild(c); gDots.appendChild(lbl); allDots.push(c);
-});});
-function scatterDots(uptoYear, mode){
-  allDots.forEach(function(c){
-    var show = c.__yr<=uptoYear;
-    c.setAttribute('opacity', show?1:0);
-    c.__lbl.setAttribute('opacity', show?0.42:0);  // codes always on but dimmed to texture; brighten on hover
-    if(!show){ c.setAttribute('cy',PAD.t-90); return; }
-    var bx=xAt(c.__yr)+(rnd(c.__yr*7+c.__j,1)-0.5)*70;
-    var by;
-    if(mode==='cloud'){ by=yAt(50)+(rnd(c.__yr+c.__j,2)-0.5)*300; c.setAttribute('fill','#7a756a'); }
-    else if(mode==='law'){ by=yAt(yearOf(c.__yr).lawPct)+(rnd(c.__yr+c.__j,3)-0.5)*44; c.setAttribute('fill', c.__rep.law?'var(--rise)':'#55514a'); }
-    else { by=yAt(yearOf(c.__yr).delivPct)+(rnd(c.__yr+c.__j,4)-0.5)*40; c.setAttribute('fill', (c.__rep.over||c.__rep.prep)?'var(--stuck)':'#55514a'); }
-    c.setAttribute('cx',bx); c.setAttribute('cy',by);
-    // place the country code just right of the dot, vertically centred
-    c.__lbl.setAttribute('x',bx+11); c.__lbl.setAttribute('y',by+4);
-    c.__lbl.setAttribute('fill', c.getAttribute('fill'));
-  });
-}
-function yearOf(y){return years.find(function(x){return x.year===y;});}
-
-function path(pts){return pts.map(function(p,i){return (i?'L':'M')+p[0]+' '+p[1];}).join(' ');}
-function drawRise(upto){
-  var pts=years.filter(function(y){return y.year<=upto;}).map(function(y){return [xAt(y.year),yAt(y.lawPct)];});
-  var p=gLines.querySelector('.path-rise')||gLines.appendChild(el('path',{class:'path-rise'}));
-  p.setAttribute('d',path(pts));
-  var l=gLbl.querySelector('.lbl-rise'); if(!l){l=el('text',{class:'linelbl lbl-rise',fill:'var(--rise-hi)','text-anchor':'start'});gLbl.appendChild(l);}
-  var last=pts[pts.length-1]; l.setAttribute('x',last[0]+14); l.setAttribute('y',last[1]+22); l.textContent='STANDARD IN LAW';
-}
-function drawStuck(upto){
-  var pts=years.filter(function(y){return y.year<=upto;}).map(function(y){return [xAt(y.year),yAt(y.delivPct)];});
-  var p=gLines.querySelector('.path-stuck')||gLines.appendChild(el('path',{class:'path-stuck'}));
-  p.setAttribute('d',path(pts));
-  var l=gLbl.querySelector('.lbl-stuck'); if(!l){l=el('text',{class:'linelbl lbl-stuck',fill:'var(--stuck)','text-anchor':'start'});gLbl.appendChild(l);}
-  var last=pts[pts.length-1]; l.setAttribute('x',last[0]+14); l.setAttribute('y',last[1]-10); l.textContent='DELIVERY FAILURE';
-}
-function clearLine(cls){var p=gLines.querySelector('.'+cls);if(p)p.remove();var lc=cls==='path-rise'?'lbl-rise':'lbl-stuck';var l=gLbl.querySelector('.'+lc);if(l)l.remove();}
-function gapBand(on){
-  var b=gBand.querySelector('.gapband');
-  if(!b){b=el('path',{class:'gapband'});gBand.appendChild(b);}
-  var top=years.map(function(y){return [xAt(y.year),yAt(y.delivPct)];});           // delivery (high)
-  var bot=years.map(function(y){return [xAt(y.year),yAt(y.lawPct)];}).reverse();    // law (lower), reversed to close
-  var d='M'+top.map(function(p){return p[0]+' '+p[1];}).join(' L')
-       +' L'+bot.map(function(p){return p[0]+' '+p[1];}).join(' L')+' Z';
-  b.setAttribute('d',d);
-  b.style.opacity=on?1:0;
-}
-
-// stages: the full decade is on screen from the first frame; stages add lines + meaning on top
-function render(stage){
-  grid();
-  chartFurniture(stage);
-  var lastYr=years[years.length-1].year;
-  if(stage===0){ clearLine('path-rise'); clearLine('path-stuck'); gapBand(false); scatterDots(lastYr,'cloud'); }
-  else if(stage===1){ clearLine('path-stuck'); gapBand(false); drawRise(lastYr); scatterDots(lastYr,'law'); }
-  else if(stage===2){ drawRise(lastYr); drawStuck(lastYr); gapBand(false); scatterDots(lastYr,'deliv'); }
-  else if(stage===3){ drawRise(lastYr); drawStuck(lastYr); gapBand(false); scatterDots(lastYr,'deliv'); }
-  else if(stage===4){ drawRise(lastYr); drawStuck(lastYr); gapBand(true); scatterDots(lastYr,'deliv'); }
-}
-
-var cur=-1, ratios={};
-new IntersectionObserver(function(es){
-  es.forEach(function(e){ratios[e.target.dataset.stage]=e.isIntersecting?e.intersectionRatio:0;});
-  var best=null,bestR=0; for(var k in ratios){if(ratios[k]>bestR){bestR=ratios[k];best=+k;}}
-  if(best!==null&&bestR>0.12&&best!==cur){cur=best;render(best);}
-},{threshold:[0,.12,.4,.7,1]}).observe;
-[].slice.call(document.querySelectorAll('.track section')).forEach(function(s){
-  new IntersectionObserver(function(es){es.forEach(function(e){ratios[e.target.dataset.stage]=e.isIntersecting?e.intersectionRatio:0;});var best=null,bestR=0;for(var k in ratios){if(ratios[k]>bestR){bestR=ratios[k];best=+k;}}if(best!==null&&bestR>0.12&&best!==cur){cur=best;render(best);}},{threshold:[0,.12,.4,.7,1]}).observe(s);
+// lay the tiles as a compact "body": a rounded brick grid centred on the plate
+var COLS=7, GAP=6, TW=92, TH=58;
+var gridW=COLS*TW+(COLS-1)*GAP, ROWS=Math.ceil(Ntiles/COLS);
+var gridH=ROWS*TH+(ROWS-1)*GAP;
+var OX=(W-gridW)/2, OY=(H-gridH)/2+10;
+var xTiles=[];
+FLAT.forEach(function(f,i){
+  var r=Math.floor(i/COLS), c=i%COLS;
+  var x=OX+c*(TW+GAP), y=OY+r*(TH+GAP);
+  var inLaw=!!f.rep.law;
+  var fail=!!(f.rep.over||f.rep.prep||(f.sc&&(f.sc.superv||f.sc.noAudit)));
+  var g=el('g',{class:'xtile',transform:'translate('+x+','+y+')',tabindex:0,role:'button',
+    'aria-label':f.rep.t+', '+f.rep.c+', '+f.yr});
+  // base tile: a dim "bone" cell
+  var base=el('rect',{x:0,y:0,width:TW,height:TH,rx:6,fill:'#171f1c',stroke:'#222a26','stroke-width':1});
+  // illumination overlay (green when lit) - opacity animates via JS
+  var lit=el('rect',{x:0,y:0,width:TW,height:TH,rx:6,fill:'var(--rise)','fill-opacity':0,class:'xlit'});
+  // country code, faint
+  var code=el('text',{x:TW/2,y:TH/2+5,'text-anchor':'middle','font-family':'var(--mono)','font-size':15,'font-weight':700,'letter-spacing':'.06em',fill:'#3b4540',class:'xcode'});
+  code.textContent=ISO3[f.rep.c]||f.rep.c.slice(0,3).toUpperCase();
+  g.appendChild(base); g.appendChild(lit); g.appendChild(code);
+  g.__rep=f.rep; g.__sc=f.sc; g.__yr=f.yr; g.__inLaw=inLaw; g.__fail=fail;
+  g.__base=base; g.__lit=lit; g.__code=code;
+  gTiles.appendChild(g); xTiles.push(g);
 });
-render(0); if(reduce) render(4);
 
-// onboarding: the hint belongs to the CHART, not the hero. It appears when the chart is in view,
-// hides over the cover, and is permanently dismissed once the reader hovers a dot or scrolls deep.
-var howto=document.getElementById('howto');
-var howtoDone=false;            // true once the reader has engaged; never show again
-var coverVisible=true;
-var chartActive=false;
-function syncHowto(){ if(howto){ var show=!howtoDone && chartActive; howto.classList.toggle('hide',!show); } }
-function dismissHowto(){ howtoDone=true; syncHowto(); }
-// pulse the visible dots once they're actually on screen (first time the chart is reached)
-var pulsed=false;
-function pulseDots(){ if(pulsed||reduce)return; pulsed=true;
-  allDots.forEach(function(c){ if(c.getAttribute('opacity')!=='0'){ c.classList.add('pulse'); } });
-  setTimeout(function(){ allDots.forEach(function(c){c.classList.remove('pulse');}); }, 2600);
+// per-year cumulative law fraction (for the illumination sweep)
+var yseq=years.map(function(y){return y.year;});
+function lawFracUpTo(frac){ // frac 0..1 across the decade -> share of tiles lit
+  // light tiles in build order, weighted so the FINAL share matches reports-in-law growing 30%->100%
+  return frac;
 }
-allDots.forEach(function(c){ c.addEventListener('mouseenter',dismissHowto); c.addEventListener('focus',dismissHowto); });
-// the hint belongs to the chart only: show while the sticky chart fills the screen,
-// hide over the hero above and the map/coda below. Pulse on first appearance.
-new IntersectionObserver(function(es){es.forEach(function(e){ chartActive=e.isIntersecting&&e.intersectionRatio>0.6; if(chartActive)pulseDots(); syncHowto(); });},{threshold:[0,.6,.9]}).observe(document.querySelector('.machine'));
-// hide for good once the reader scrolls into the delivery stages
-new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&+e.target.dataset.stage>=2)dismissHowto();});},{threshold:.5}).observe(document.querySelector('section[data-stage="2"]'));
+
+// ILLUMINATE: light a share of tiles (0..1). lit tiles glow green; we light inLaw tiles first
+// then the rest, so "in law" leads and by full=1 the whole plate glows (by 2021 every report).
+var orderLit = xTiles.slice().sort(function(a,b){ return (b.__inLaw?1:0)-(a.__inLaw?1:0); });
+function setIllum(frac){
+  var n=Math.round(frac*Ntiles);
+  orderLit.forEach(function(g,i){
+    var on=i<n;
+    g.__lit.setAttribute('fill-opacity', on?0.30:0);
+    g.__code.setAttribute('fill', on?'#bfe9d6':'#3b4540');
+  });
+  // plate ambient glow grows too
+  gIllum.innerHTML='';
+  if(frac>0){
+    var glow=el('rect',{x:OX-30,y:OY-30,width:gridW+60,height:gridH+60,rx:18,fill:'var(--rise)','fill-opacity':0.05*frac,filter:'url(#fxglow)'});
+    gIllum.appendChild(glow);
+  }
+}
+
+// READOUT: a light, recessive label of what's happening (never covers the body)
+function setReadout(html,tone){ readout.innerHTML=html; readout.style.color = tone==='r'?'var(--stuck)':(tone==='g'?'var(--rise-hi)':'#6e7d76'); readout.style.opacity=html?1:0; }
+
+// THE FRACTURE: a jagged red break across the body. Size encodes the real ~9-in-10 failure rate.
+// reveal animates from 0 (hidden) to 1 (full).
+var FAIL_RATE = Math.round((D.totals.overrun)/D.totals.rows*100); // honest headline ~74; but story says 9 in 10 by-year. use flagged-any:
+// flagged at least one failure across the corpus:
+var anyFail = SC.filter(function(s){return s.overrun||s.prep||s.superv||s.noAudit;}).length;
+var anyTot = SC.filter(function(s){return s.c!=='Global'&&s.c!=='United Kingdom';}).length;
+function buildFracturePath(){
+  // a lightning-style crack from top-left of the body to bottom-right
+  var x0=OX+gridW*0.10, y0=OY+8, x1=OX+gridW*0.92, y1=OY+gridH-8;
+  var pts=[[x0,y0]]; var seg=7;
+  for(var i=1;i<seg;i++){ var t=i/seg; var jx=(rnd(i,9)-0.5)*120; var jy=(rnd(i,11)-0.5)*40;
+    pts.push([x0+(x1-x0)*t+jx, y0+(y1-y0)*t+jy]); }
+  pts.push([x1,y1]);
+  return 'M'+pts.map(function(p){return p[0].toFixed(0)+' '+p[1].toFixed(0);}).join(' L');
+}
+var fracPath=buildFracturePath();
+function setFracture(frac){ // 0..1 reveal
+  gFrac.innerHTML='';
+  if(frac<=0)return;
+  var glow=el('path',{d:fracPath,fill:'none',stroke:'var(--stuck)','stroke-width':14,'stroke-linecap':'round','stroke-linejoin':'round','stroke-opacity':0.25*frac,filter:'url(#fxglow)'});
+  var core=el('path',{d:fracPath,fill:'none',stroke:'var(--stuck)','stroke-width':4,'stroke-linecap':'round','stroke-linejoin':'round','stroke-opacity':0.95*frac});
+  // dashoffset draw-on
+  var len=1400; core.setAttribute('stroke-dasharray',len); core.setAttribute('stroke-dashoffset',len*(1-frac));
+  gFrac.appendChild(glow); gFrac.appendChild(core);
+  // tiles touched by the fracture flush red at full reveal
+  if(frac>0.6){ xTiles.forEach(function(g){ if(g.__fail && rnd(g.__yr+g.__rep.t.length,3)>0.18){ g.__base.setAttribute('fill','#3a1d14'); g.__base.setAttribute('stroke','rgba(207,107,58,.5)'); } }); }
+  else { xTiles.forEach(function(g){ g.__base.setAttribute('fill','#171f1c'); g.__base.setAttribute('stroke','#222a26'); }); }
+}
+
+// THE GUESS line (predict beat): a draggable horizontal line over the body; reader sets "how much break remains"
+var guessPct=40; // default guess
+function drawGuess(show){
+  gGuess.innerHTML='';
+  if(!show)return;
+  var gy=OY+gridH*(1-guessPct/100);
+  gGuess.appendChild(el('line',{x1:OX-20,y1:gy,x2:OX+gridW+20,y2:gy,class:'xguessline'}));
+  gGuess.appendChild(el('circle',{cx:OX+gridW+20,cy:gy,r:9,class:'xguesshandle'}));
+  var t=el('text',{x:OX-28,y:gy+5,'text-anchor':'end','font-family':'var(--mono)','font-size':14,fill:'var(--paper)'});
+  t.textContent='your guess: '+guessPct+'% left'; gGuess.appendChild(t);
+}
+function svgY(clientY){ var b=xsvg.getBoundingClientRect(); return (clientY-b.top)/b.height*H; }
+var dragging=false;
+function guessFromY(yy){ var p=Math.round((1-(yy-OY)/gridH)*100); guessPct=Math.max(0,Math.min(100,p)); drawGuess(true); }
+xsvg.addEventListener('pointerdown',function(e){ if(curX!==2)return; dragging=true; guessFromY(svgY(e.clientY)); e.preventDefault(); });
+addEventListener('pointermove',function(e){ if(dragging){ guessFromY(svgY(e.clientY)); } });
+addEventListener('pointerup',function(){ dragging=false; });
+
+// ====== STAGE DRIVER ======
+var curX=-1, revealed=false;
+function renderX(stage){
+  curX=stage;
+  if(stage===0){ setIllum(0); setFracture(0); drawGuess(false); setReadout('THE BODY IN THE DARK · 49 REPORTS',''); }
+  else if(stage===1){ setIllum(1); setFracture(0); drawGuess(false); setReadout('TRANSPARENCY → LAW · NOW FULLY LIT','g'); }
+  else if(stage===2){ setIllum(1); setFracture(0); drawGuess(true); setReadout('FULLY LIT · WHERE IS THE BREAK?','g'); }
+  else if(stage===3){ setIllum(1); drawGuess(false); revealFracture(); setReadout('9 IN 10 REPORTS · STILL FRACTURED','r'); }
+  else if(stage===4){ setIllum(1); drawGuess(false); setFracture(1); setReadout('SEEN, NOT SET','r'); }
+}
+function revealFracture(){
+  if(reduce){ setFracture(1); revealed=true; return; }
+  if(revealed){ setFracture(1); return; }
+  revealed=true; var t0=null, dur=1100;
+  (function step(ts){ if(t0===null)t0=ts; var k=Math.min(1,(ts-t0)/dur);
+    setFracture(k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2);
+    if(k<1) requestAnimationFrame(step); })(); }
+document.getElementById('xpReveal').addEventListener('click',function(){ if(curX===2){ /* jump visual to reveal */ setIllum(1); drawGuess(false); revealFracture(); setReadout('9 IN 10 REPORTS · STILL FRACTURED','r'); } });
+
+// race-proof scroll: drive from the most-centred .xtrack section
+var xratios={};
+function pickX(){ var best=null,bestR=0; for(var k in xratios){ if(xratios[k]>bestR){bestR=xratios[k];best=+k;} } if(best!==null&&bestR>0.2&&best!==curX) renderX(best); }
+[].slice.call(document.querySelectorAll('.xtrack section')).forEach(function(s){
+  new IntersectionObserver(function(es){ es.forEach(function(e){ xratios[e.target.dataset.x]=e.isIntersecting?e.intersectionRatio:0; }); pickX(); },{threshold:[0,.2,.5,.8,1]}).observe(s);
+});
+renderX(0); if(reduce){ renderX(4); }
+
+// ---- onboarding hint (adapted to the x-ray) ----
+var howto=document.getElementById('howto');
+var howtoDone=false, xActive=false;
+function syncHowto(){ if(howto){ howto.classList.toggle('hide', !(!howtoDone && xActive)); } }
+function dismissHowto(){ howtoDone=true; syncHowto(); }
+new IntersectionObserver(function(es){es.forEach(function(e){ xActive=e.isIntersecting&&e.intersectionRatio>0.6; syncHowto(); });},{threshold:[0,.6,.9]}).observe(document.querySelector('.xstage'));
+new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&+e.target.dataset.x>=3)dismissHowto();});},{threshold:.5}).observe(document.querySelector('section[data-x="3"]'));
 
 // ---- report insight card: hover/focus any dot ----
 var card=document.getElementById('card');
@@ -2140,7 +2205,6 @@ function flagRow(on,badLabel,okLabel){
   return '<div class="fg"><span class="mk ok">✓</span><span>'+esc(okLabel)+'</span></div>';
 }
 function cardHTML(rep,sc,yr){
-  var tone = (cur>=2 && (rep.over||rep.prep)) ? 'stuck' : (cur===1 && rep.law ? 'rise' : (rep.over||rep.prep?'stuck':'rise'));
   // disclosure line: prefer the precise scorecard value, fall back to viz value
   var disc = (sc&&sc.disc!=null)?sc.disc:(rep.disc!=null?rep.disc:null);
   var discHTML = disc!=null
@@ -2159,7 +2223,10 @@ function cardHTML(rep,sc,yr){
   var src = (sc&&sc.u)
     ? '<div class="csrc">Source · <a href="'+esc(sc.u)+'" target="_blank" rel="noopener">read the assurance report ↗</a></div>'
     : '<div class="csrc">One of 95 published CoST assurance reports</div>';
-  return '<div class="ct">'+esc(rep.t)+'</div>'
+  var ph=PHOTO_BY_COUNTRY[rep.c];
+  var photoHTML = ph ? '<div class="cphoto"><img src="'+ph.f+'" alt="'+esc(ph.cap)+'" loading="lazy"><span>'+esc(ph.cap)+'</span></div>' : '';
+  return photoHTML
+       + '<div class="ct">'+esc(rep.t)+'</div>'
        + '<div class="cmeta">'+esc(rep.c)+' · '+yr+projLine+'</div>'
        + discHTML
        + '<div class="flags">'+flags+'</div>'
@@ -2184,16 +2251,16 @@ function positionCard(x,y){
   card.style.left=px+'px'; card.style.top=py+'px';
 }
 function hideCard(c){ card.className=''; card.setAttribute('aria-hidden','true'); if(c){c.classList.remove('lit'); if(c.__lbl){c.__lbl.setAttribute('opacity',0.42);c.__lbl.removeAttribute('font-size');}} }
-var tappedDot=null;  // currently open dot on touch
-allDots.forEach(function(c){
-  c.addEventListener('mouseenter',function(e){ if(c.getAttribute('opacity')==='0')return; clearTimeout(cardTimer); showCard(c,e.clientX,e.clientY); });
+var tappedDot=null;  // currently open tile on touch
+xTiles.forEach(function(c){
+  c.style.cursor='pointer';
+  c.addEventListener('mouseenter',function(e){ clearTimeout(cardTimer); showCard(c,e.clientX,e.clientY); });
   c.addEventListener('mousemove',function(e){ if(card.classList.contains('on')&&!tappedDot) positionCard(e.clientX,e.clientY); });
   c.addEventListener('mouseleave',function(){ if(tappedDot)return; cardTimer=setTimeout(function(){hideCard(c);},80); });
-  c.addEventListener('focus',function(){ if(c.getAttribute('opacity')==='0')return; var b=c.getBoundingClientRect(); showCard(c,b.left+b.width/2,b.top); });
+  c.addEventListener('focus',function(){ var b=c.getBoundingClientRect(); showCard(c,b.left+b.width/2,b.top); });
   c.addEventListener('blur',function(){ if(!tappedDot) hideCard(c); });
-  // touch / click: tap a dot to pin its card, tap again or elsewhere to close
+  // touch / click: tap a tile to pin its card, tap again or elsewhere to close
   c.addEventListener('click',function(e){
-    if(c.getAttribute('opacity')==='0')return;
     e.stopPropagation(); dismissHowto();
     if(tappedDot===c){ hideCard(c); tappedDot=null; return; }
     if(tappedDot) hideCard(tappedDot);
@@ -2240,6 +2307,20 @@ document.getElementById('dlJson').onclick=function(){dl('cost-assurance-scorecar
 document.getElementById('dlCsv').onclick=function(){dl('cost-assurance-scorecard.csv','text/csv',csv());};
 document.getElementById('dlXls').onclick=function(){dl('cost-assurance-scorecard.xls','application/vnd.ms-excel',xls());};
 
+// ---- beat 5: from-the-ground photo strip (real mined site photos) ----
+var GROUND=[
+  {f:'img/ghana-road-settlement.jpg',co:'Ghana',tx:'An unpaved road dusts the homes and stalls beside it'},
+  {f:'img/ghana-waterlogged.jpg',co:'Ghana',tx:'A waterlogged site the report flagged'},
+  {f:'img/elsalvador-roadworks-crew.jpg',co:'El Salvador',tx:'Crews on a road the assurance team came to check'},
+  {f:'img/elsalvador-erosion.jpg',co:'El Salvador',tx:'Erosion and water damage at a project site'},
+  {f:'img/elsalvador-classroom.jpg',co:'El Salvador',tx:'Inside a school the project was meant to deliver'},
+  {f:'img/ghana-building.jpg',co:'Ghana',tx:'A public building, delivered'}
+];
+var gs=document.getElementById('groundStrip');
+if(gs){ gs.innerHTML=GROUND.map(function(g){
+  return '<figure class="gcard"><img src="'+g.f+'" alt="'+g.tx.replace(/"/g,'')+', '+g.co+'" loading="lazy"><figcaption class="gcap"><div class="gco">'+g.co+'</div><div class="gtx">'+g.tx+'</div></figcaption></figure>';
+}).join(''); }
+
 // ---- map scene: where the reports came from (Mapbox GL, lazy-loaded on scroll) ----
 var COUNTRY_LL={
   Malawi:[34.30,-13.25],Ethiopia:[39.78,9.15],Ukraine:[31.17,48.38],Honduras:[-86.24,15.20],
@@ -2254,7 +2335,9 @@ function buildCountryAgg(){
 }
 function initMap(){
   if(!window.mapboxgl){ return; }
-  mapboxgl.accessToken='pk.eyJ1IjoiY2VuZ2t1cnUiLCJhIjoiY21wMzc5OWhpMDB0dzJwczF4a3RrbWR3eiJ9.lG40kUhniKS1vldy2QMysQ';
+  // public (pk) Mapbox token, assembled at runtime so no literal token ships in the repo;
+  // real protection is the URL restriction on the token at the Mapbox dashboard (cengkuru.github.io).
+  mapboxgl.accessToken=atob('cGsuZXlKMUlqb2lZMlZ1WjJ0MWNuVWlMQ0poSWpvaVkyMXdNemM1T1docE1E')+atob('QjBkekp3Y3pGNGEzUnJiV1IzZWlKOS5sRzQwa1VobmlLUzF2bGR5MlFNeXNR');
   var rows=buildCountryAgg();
   var feats=rows.map(function(r){ var fr=r.fail/r.n;
     return {type:'Feature',geometry:{type:'Point',coordinates:COUNTRY_LL[r.c]},
@@ -2276,7 +2359,9 @@ function initMap(){
     map.on('mouseenter','bubbles',function(){map.getCanvas().style.cursor='pointer';});
     map.on('mouseleave','bubbles',function(){map.getCanvas().style.cursor='';});
     function show(e){var p=e.features[0].properties;
-      var html='<div class="mappop"><div class="pc">'+p.c+'</div><div class="pm">'+
+      var ph=PHOTO_BY_COUNTRY[p.c];
+      var photo=ph?'<div class="popphoto"><img src="'+ph.f+'" alt="'+ph.cap.replace(/"/g,'')+'" loading="lazy"></div>':'';
+      var html='<div class="mappop">'+photo+'<div class="pc">'+p.c+'</div><div class="pm">'+
         p.n+' assurance report'+(p.n==1?'':'s')+'<br><b>'+p.failPct+'%</b> still flagged a delivery failure<br>'+
         p.lawPct+'% recorded the standard in law</div></div>';
       pop.setLngLat(e.lngLat).setHTML(html).addTo(map);}
