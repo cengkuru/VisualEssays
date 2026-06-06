@@ -51,7 +51,9 @@ a{color:var(--rise-hi)}
 .cover h1{font-size:clamp(42px,8vw,86px);margin:.1em 0 .3em;max-width:13ch;text-shadow:0 2px 30px rgba(0,0,0,.85)}
 .cover h1 .a{color:var(--rise)} .cover h1 .b{color:var(--stuck)}
 .cover .lede{font-size:clamp(17px,2.1vw,22px);color:#eae5db;max-width:52ch;text-shadow:0 1px 16px rgba(0,0,0,.95)}
-.cover .stats{margin-top:34px;display:flex;gap:clamp(20px,4vw,40px);flex-wrap:wrap}
+.cover .statshead{margin-top:34px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--stuck);text-shadow:0 1px 10px rgba(0,0,0,.8)}
+.cover .stats{margin-top:14px;display:flex;gap:clamp(20px,4vw,40px);flex-wrap:wrap}
+.cover .statsnote{margin-top:14px;font-size:13px;color:#bdb7ac;max-width:54ch;line-height:1.45;text-shadow:0 1px 10px rgba(0,0,0,.8)}
 .cover .stats b{display:block;font-family:var(--serif);font-size:clamp(28px,5vw,34px)}
 .cover .stats .g{color:var(--rise-hi)} .cover .stats .r{color:var(--stuck)}
 .cover .stats span{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#cdc7bc;max-width:18ch;display:inline-block}
@@ -342,11 +344,13 @@ footer b{color:var(--paper)}
     <h1><span class="a">The rules opened up.</span><br><span class="b">The warnings didn't stop.</span></h1>
     <p class="lede">Over a decade, governments across a dozen countries got dramatically better at one thing: making it the law to publish what public projects cost and how they were run. Then independent teams went and checked those projects. Year after year, the same warnings kept coming back, late projects, costs over budget, weak planning, the contractor left to watch itself. A decade of rising transparency did not shrink how often the checks found trouble.</p>
     <p class="lede" style="font-size:14.5px;color:#bdb7ac;margin-top:16px">A fair caution, stated up front: these are what the assurance checks <i>found</i>, and assurance exists to find trouble. So read this as a finding about the reports, not an audited national score. The point still stands: a decade of disclosure did not reduce how often the checks flagged the same failures.</p>
+    <div class="statshead">The contradiction, in three numbers</div>
     <div class="stats">
-      <div><b class="g">26</b><span>reports record the rules entering law</span></div>
-      <div><b class="r">70</b><span>of 95 still flagged cost or time overruns</span></div>
-      <div><b class="r">57</b><span>of 95 still flagged weak project preparation</span></div>
+      <div><b class="r">70</b><span>of 95 reports still flagged a project late or over budget</span></div>
+      <div><b class="r">57</b><span>of 95 traced it to weak preparation before the contract</span></div>
+      <div><b class="g">26</b><span>recorded the rules to publish entering law, the real progress</span></div>
     </div>
+    <div class="statsnote">One report can carry several of these flags. They are not three separate piles: they are the same reports showing progress on the rules and the same warnings on the ground.</div>
     <div class="cue">Scroll to travel the decade ↓ &nbsp;·&nbsp; tap any report to read it</div>
   </div>
   <div class="credit">Illustrative: a public road and building project under construction<br>Photo: Iain / Unsplash · real report photos appear in the story</div>
@@ -357,8 +361,8 @@ footer b{color:var(--paper)}
   <div class="openerwrap">
     <figure class="openerimg"><img src="img/ghana-road-settlement.jpg" alt="An unpaved road runs past homes and stalls in Sekondi-Takoradi, Ghana" loading="lazy"><figcaption>Sekondi-Takoradi, Ghana</figcaption></figure>
     <div class="openertext">
-      <div class="eyebrow">Start with one project</div>
-      <h2>A road, a report, and a familiar ending</h2>
+      <div class="eyebrow">Sekondi-Takoradi, Ghana</div>
+      <h2>One road shows the pattern</h2>
       <p>In Ghana, an independent team checked the works at Sekondi-Takoradi. The good news was real: the country had written open-data rules into law, so the project's information could be published and checked at all.</p>
       <p>Then they looked at the road itself. It ran over. It was left unpaved, the dust settling on the homes and market stalls beside it. The paperwork had advanced. The project had not.</p>
       <p class="openerturn">One report is an anecdote. So we read 95 of them, from a dozen countries, across a decade, to see whether Ghana was the exception or the rule.</p>
@@ -433,7 +437,7 @@ footer b{color:var(--paper)}
   <div class="flow">
     <div class="eyebrow" style="color:var(--stuck)">Where projects go wrong</div>
     <h2>Why projects keep slipping</h2>
-    <p style="color:#cdc7bc">Start with the thing the public actually sees: projects that arrive late or cost more than they should. The reports trace that back to three weak points, before, during, and after construction. And with no audit at the end, one project's mistakes become the next project's starting point.</p>
+    <p style="color:#cdc7bc">By the time the public sees a project running late or over budget, the trouble has usually started much earlier. Some projects enter procurement weakly prepared. During construction, the people checking the work are not always independent of the contractor. After completion, the audit often never appears, so the next project begins without learning from the last one.</p>
 
     <div class="resulthero"><b class="r">70 of 95</b><span>reports still flagged a project as late or over budget. Here is what went wrong behind that number.</span></div>
 
