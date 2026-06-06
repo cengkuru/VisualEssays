@@ -29,25 +29,40 @@ a{color:var(--rise-hi)}
 .brandbar img{height:22px;background:#fff;padding:2px 5px;border-radius:2px}
 .brandbar .tag{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 
-/* full-bleed hero: a real site photo sells the stakes on load */
-.cover{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 7vw 9vh;overflow:hidden}
-.cover .herobg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center 32%;transform:scale(1.04);animation:heroken 18s ease-out forwards}
-@keyframes heroken{to{transform:scale(1.12)}}
-/* scrim: dark enough at the bottom for text, lets the photo breathe up top */
-.cover .scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(14,12,8,.34) 0%,rgba(14,12,8,.20) 32%,rgba(14,12,8,.72) 68%,rgba(14,12,8,.96) 100%)}
-.cover .inner{position:relative;z-index:2;max-width:1040px}
-.cover .eyebrow{text-shadow:0 1px 12px rgba(0,0,0,.7)}
-.cover h1{font-size:clamp(42px,8vw,86px);margin:.1em 0 .3em;max-width:13ch;text-shadow:0 2px 24px rgba(0,0,0,.55)}
+/* hero: a dark canvas where light reveals the photo. transparency, enacted.
+   you only see the scene where you bring light to it. */
+.cover{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 7vw 9vh;overflow:hidden;background:#0a0908}
+/* the photo lives underneath, masked to a soft moving spotlight that follows the pointer */
+.cover .herobg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center 38%;
+  /* spotlight position driven by --mx/--my (px); radius by --r */
+  --mx:38%;--my:42%;--r:34vmax;
+  -webkit-mask:radial-gradient(circle var(--r) at var(--mx) var(--my), #000 0%, rgba(0,0,0,.78) 38%, rgba(0,0,0,.30) 64%, transparent 82%);
+  mask:radial-gradient(circle var(--r) at var(--mx) var(--my), #000 0%, rgba(0,0,0,.78) 38%, rgba(0,0,0,.30) 64%, transparent 82%);
+  filter:saturate(.92) contrast(1.04)}
+/* faint ambient ghost of the photo so the frame never reads as fully empty */
+.cover .herobg.ghost{z-index:0;opacity:.05;-webkit-mask:none;mask:none;filter:saturate(.5) brightness(.7)}
+/* warm rim around the light so it reads as illumination, not a hole */
+.cover .glow{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;
+  --mx:38%;--my:42%;background:radial-gradient(circle 26vmax at var(--mx) var(--my), rgba(91,191,151,.10) 0%, rgba(207,107,58,.06) 45%, transparent 70%)}
+/* permanent legibility wash in the lower-left text zone */
+.cover .scrim{position:absolute;inset:0;z-index:2;background:linear-gradient(105deg,rgba(10,9,8,.92) 0%,rgba(10,9,8,.74) 30%,rgba(10,9,8,.28) 52%,transparent 70%),linear-gradient(0deg,rgba(10,9,8,.95) 0%,rgba(10,9,8,.5) 22%,transparent 42%)}
+.cover .inner{position:relative;z-index:3;max-width:1040px}
+.cover .eyebrow{text-shadow:0 1px 14px rgba(0,0,0,.9)}
+.cover h1{font-size:clamp(42px,8vw,86px);margin:.1em 0 .3em;max-width:13ch;text-shadow:0 2px 30px rgba(0,0,0,.85)}
 .cover h1 .a{color:var(--rise)} .cover h1 .b{color:var(--stuck)}
-.cover .lede{font-size:clamp(17px,2.1vw,22px);color:#eae5db;max-width:52ch;text-shadow:0 1px 14px rgba(0,0,0,.7)}
+.cover .lede{font-size:clamp(17px,2.1vw,22px);color:#eae5db;max-width:52ch;text-shadow:0 1px 16px rgba(0,0,0,.95)}
 .cover .stats{margin-top:34px;display:flex;gap:clamp(20px,4vw,40px);flex-wrap:wrap}
 .cover .stats b{display:block;font-family:var(--serif);font-size:clamp(28px,5vw,34px)}
 .cover .stats .g{color:var(--rise-hi)} .cover .stats .r{color:var(--stuck)}
 .cover .stats span{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#cdc7bc;max-width:18ch;display:inline-block}
 .cover .cue{margin-top:36px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#cdc7bc}
-.cover .credit{position:absolute;right:14px;bottom:10px;z-index:2;font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;color:rgba(242,239,233,.62);text-align:right;max-width:60vw;line-height:1.45}
-.cover .credit a{color:rgba(242,239,233,.62)}
-@media(prefers-reduced-motion:reduce){.cover .herobg{animation:none;transform:none}}
+.cover .hint{margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#6e695f}
+.cover .credit{position:absolute;right:14px;bottom:10px;z-index:3;font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;color:rgba(242,239,233,.5);text-align:right;max-width:60vw;line-height:1.45}
+.cover .credit a{color:rgba(242,239,233,.5)}
+/* register --mx/--my/--r so they can transition */
+@property --mx{syntax:'<length-percentage>';inherits:false;initial-value:38%}
+@property --my{syntax:'<length-percentage>';inherits:false;initial-value:42%}
+@property --r{syntax:'<length>';inherits:false;initial-value:34vmax}
 
 .machine{position:sticky;top:0;height:100vh;overflow:hidden;z-index:1}
 #viz{width:100%;height:100%;display:block}
@@ -173,8 +188,10 @@ footer b{color:var(--paper)}
   <span class="hk"><b>Scroll</b> to play the decade</span>
 </div>
 
-<section class="cover">
-  <div class="herobg" style="background-image:url('img/ghana-road-settlement.jpg')"></div>
+<section class="cover" id="cover">
+  <div class="herobg ghost" style="background-image:url('img/ghana-road-settlement.jpg')"></div>
+  <div class="herobg" id="herolight" style="background-image:url('img/ghana-road-settlement.jpg')"></div>
+  <div class="glow" id="heroglow"></div>
   <div class="scrim"></div>
   <div class="inner">
     <div class="eyebrow">CoST · 95 independent assurance reports, 2011 to 2021</div>
@@ -186,6 +203,7 @@ footer b{color:var(--paper)}
       <div><b class="r">57</b><span>still flag weak project preparation</span></div>
     </div>
     <div class="cue">Scroll to watch the decade ↓ &nbsp;·&nbsp; tap any dot for the report behind it</div>
+    <div class="hint">The light reveals only what it touches</div>
   </div>
   <div class="credit">A road under CoST assurance review, Ghana<br>From the CoST Sekondi-Takoradi assurance report</div>
 </section>
@@ -202,8 +220,8 @@ footer b{color:var(--paper)}
 
   <div class="track">
     <section data-stage="0"><div class="beat">
-      <h2>Think of these as report cards</h2>
-      <p>Each circle is one report card for a public project, dropped onto the year it was published. The cards ask two questions: did the government publish what it should, and did the delivery problems get better? Its colour is the answer; its code is the country. Hover any dot to read that report: the project, where, what it found.</p>
+      <h2>One dot, one report</h2>
+      <p>Each report card answers two questions about a public project: was it published as the standard requires, and did its delivery problems ease? Every circle is one such report, dropped onto the year it was published. Colour carries the finding; the code marks the country. Hover any dot to read it: the project, the place, what the reviewers found.</p>
       <div class="src">49 CoST assurance reports, 2015 to 2021 · one dot each, positioned by year</div>
     </div></section>
 
@@ -1904,6 +1922,39 @@ footer b{color:var(--paper)}
 (function(){
 "use strict";
 var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---- hero spotlight: light follows the pointer and reveals the photo; drifts on its own when idle ----
+(function heroSpotlight(){
+  var cover=document.getElementById('cover'),
+      light=document.getElementById('herolight'),
+      glow=document.getElementById('heroglow');
+  if(!cover||!light)return;
+  var W=innerWidth,H=innerHeight,
+      tx=W*0.42, ty=H*0.42,   // target (where the light wants to be)
+      cx=tx, cy=ty,           // current (eased)
+      pointer=false, idle=true, t=0;
+  function setVars(x,y){
+    var px=(x/W*100).toFixed(2)+'%', py=(y/H*100).toFixed(2)+'%';
+    light.style.setProperty('--mx',px); light.style.setProperty('--my',py);
+    if(glow){ glow.style.setProperty('--mx',px); glow.style.setProperty('--my',py); }
+  }
+  addEventListener('resize',function(){W=innerWidth;H=innerHeight;});
+  cover.addEventListener('pointermove',function(e){ pointer=true; idle=false; tx=e.clientX; ty=e.clientY; });
+  cover.addEventListener('pointerleave',function(){ pointer=false; });
+  // a slow self-driving drift path so the effect demonstrates itself (and carries mobile/no-pointer)
+  function drift(){ t+=0.006;
+    var dx=W*(0.42+0.26*Math.sin(t)+0.07*Math.sin(t*2.3));
+    var dy=H*(0.40+0.20*Math.cos(t*0.8)+0.06*Math.sin(t*1.7));
+    return [dx,dy];
+  }
+  if(reduce){ setVars(W*0.62,H*0.34); return; }   // static, tasteful, no motion
+  (function loop(){
+    if(!pointer){ var d=drift(); tx=d[0]; ty=d[1]; }
+    cx+=(tx-cx)*0.08; cy+=(ty-cy)*0.08;            // ease toward target
+    setVars(cx,cy);
+    requestAnimationFrame(loop);
+  })();
+})();
 var D=JSON.parse(document.getElementById('data').textContent);
 var SC=JSON.parse(document.getElementById('scorecard').textContent);
 var years=D.years; // [{year,n,avgDisc,lawPct,delivPct,reports:[...]}]
@@ -1911,7 +1962,7 @@ var W=1000,H=1000,NS='http://www.w3.org/2000/svg';
 var svg=document.getElementById('viz'); svg.setAttribute('viewBox','0 0 '+W+' '+H);
 function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
 function rnd(i,s){var x=Math.sin((i+1)*12.9898+(s||0)*78.233)*43758.5453;return x-Math.floor(x);}
-var PAD={l:150,r:90,t:150,b:140};
+var PAD={l:150,r:90,t:200,b:140};
 function xAt(yr){var i=years.findIndex(function(y){return y.year===yr;});return PAD.l+(W-PAD.l-PAD.r)*(i/(years.length-1));}
 function yAt(pct){return PAD.t+(H-PAD.t-PAD.b)*(1-pct/100);}
 
@@ -1943,21 +1994,26 @@ var STAGE_TITLE=[
 function chartFurniture(stage){
   gFurn.innerHTML='';
   var meta=STAGE_TITLE[stage]||STAGE_TITLE[0];
-  // chart title block, top-left of plot
-  var tt=el('text',{x:PAD.l,y:PAD.t-66,class:'charttitle'});tt.textContent=meta.t;gFurn.appendChild(tt);
-  var st=el('text',{x:PAD.l,y:PAD.t-40,class:'chartsub'});st.textContent=meta.s;gFurn.appendChild(st);
-  // dot key, top-right of plot: what a single dot encodes (colour = finding, code = country)
-  var kx=W-PAD.r, ky=PAD.t-58;
-  var kcap=el('text',{x:kx,y:ky-26,class:'dotkey','text-anchor':'end',fill:'#7c766b'});kcap.textContent='ONE DOT = ONE REPORT';gFurn.appendChild(kcap);
-  // colour legend row
-  var k1=el('circle',{cx:kx-300,cy:ky-4,r:7,fill:'var(--rise)'});gFurn.appendChild(k1);
-  var k1t=el('text',{x:kx-286,y:ky,class:'dotkey dotkey-t','text-anchor':'start'});k1t.textContent='standard in law';gFurn.appendChild(k1t);
-  var k2=el('circle',{cx:kx-150,cy:ky-4,r:7,fill:'var(--stuck)'});gFurn.appendChild(k2);
-  var k2t=el('text',{x:kx-136,y:ky,class:'dotkey dotkey-t','text-anchor':'start'});k2t.textContent='failure flagged';gFurn.appendChild(k2t);
-  // country-code legend row
-  var k3=el('circle',{cx:kx-300,cy:ky+22,r:7,fill:'#55514a'});gFurn.appendChild(k3);
-  var k3lbl=el('text',{x:kx-289,y:ky+27,class:'isolbl','text-anchor':'start',fill:'#a39d92','style':'opacity:1'});k3lbl.textContent='UGA';gFurn.appendChild(k3lbl);
-  var k3t=el('text',{x:kx-258,y:ky+26,class:'dotkey dotkey-t','text-anchor':'start'});k3t.textContent='country code (UGA = Uganda)';gFurn.appendChild(k3t);
+  // TITLE BLOCK: top-left, two lines, well above the plot. Never shares a row with the legend.
+  var tt=el('text',{x:PAD.l,y:PAD.t-96,class:'charttitle'});tt.textContent=meta.t;gFurn.appendChild(tt);
+  var st=el('text',{x:PAD.l,y:PAD.t-70,class:'chartsub'});st.textContent=meta.s;gFurn.appendChild(st);
+  // LEGEND STRIP: one horizontal row directly below the title block, left-anchored. No collision with the title.
+  var ly=PAD.t-38, x=PAD.l;
+  function chip(fill,label,extraGap){
+    x+=extraGap||0;
+    gFurn.appendChild(el('circle',{cx:x+7,cy:ly-4,r:7,fill:fill}));
+    var t=el('text',{x:x+20,y:ly,class:'dotkey dotkey-t','text-anchor':'start'});t.textContent=label;gFurn.appendChild(t);
+    x+=20+label.length*8.4;   // advance by approx text width
+  }
+  chip('var(--rise)','standard in law',0);
+  chip('var(--stuck)','failure flagged',26);
+  // country-code chip: a neutral dot with a sample code inside-ish, then explanation
+  x+=26;
+  gFurn.appendChild(el('circle',{cx:x+7,cy:ly-4,r:7,fill:'#55514a'}));
+  var cc=el('text',{x:x+18,y:ly+1,class:'isolbl','text-anchor':'start',fill:'#a39d92','style':'opacity:1'});cc.textContent='UGA';gFurn.appendChild(cc);
+  var cct=el('text',{x:x+50,y:ly,class:'dotkey dotkey-t','text-anchor':'start'});cct.textContent='= country (Uganda)';gFurn.appendChild(cct);
+  // caption, right-aligned, on the same row but far right so it never meets the title
+  var cap=el('text',{x:W-PAD.r,y:ly,class:'dotkey','text-anchor':'end',fill:'#7c766b'});cap.textContent='ONE DOT = ONE REPORT';gFurn.appendChild(cap);
 }
 
 // join each viz report to its richer scorecard twin (by title) for source URL + extra flags
