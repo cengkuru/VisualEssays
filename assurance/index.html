@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Transparency rose. Delivery didn't. A decade of CoST assurance reports.</title>
-<meta name="description" content="Across 95 CoST assurance reports and a decade, the transparency standard spread into law. The delivery failures it was meant to fix did not move.">
+<meta name="description" content="Across 95 CoST assurance reports and a decade, the transparency standard spread into law. The delivery failures it was meant to expose did not move.">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
 <style>
 :root{
   --cost-red:#B7251C; --cost-charcoal:#4A4743;
@@ -115,6 +117,23 @@ a{color:var(--rise-hi)}
 .beat .big{font-family:var(--serif);font-size:40px;font-weight:700;line-height:1;margin:2px 0 8px}
 .beat .big.g{color:var(--rise)} .beat .big.r{color:var(--stuck)}
 
+/* map scene: where the 95 reports came from */
+.mapsec{position:relative;background:var(--ink2);padding:13vh 0 11vh;border-top:1px solid #2a2620}
+.mapsec .head{max-width:760px;margin:0 auto 30px;padding:0 24px}
+.mapsec h2{font-size:clamp(26px,4vw,42px);margin:0 0 12px;font-family:var(--serif);font-weight:700}
+.mapsec .head p{color:#cdc7bc;margin:0;font-size:16px}
+#map{width:100%;max-width:1100px;height:62vh;min-height:420px;margin:0 auto;border-radius:4px;overflow:hidden;border:1px solid #2a2620}
+.maplegend{max-width:1100px;margin:16px auto 0;padding:0 24px;display:flex;gap:22px;flex-wrap:wrap;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.maplegend .sw{display:inline-flex;align-items:center;gap:7px}
+.maplegend .sw i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.maplegend .sz{display:inline-flex;align-items:center;gap:5px}
+.maplegend .sz i{border-radius:50%;background:#6e695f;display:inline-block}
+.mappop{font-family:var(--sans)}
+.mappop .pc{font-family:var(--serif);font-weight:700;font-size:16px;color:#14120e;margin:0 0 3px}
+.mappop .pm{font-size:12.5px;color:#4a4743;line-height:1.45}
+.mappop .pm b{color:var(--cost-red)}
+.mapboxgl-popup-content{padding:11px 13px;border-radius:3px}
+@media(max-width:680px){#map{height:54vh}.maplegend{font-size:10px;gap:14px}}
 .coda{padding:13vh 0 8vh;background:var(--ink2)}
 .flow{max-width:760px;margin:0 auto;padding:0 24px}
 .coda h2{font-size:clamp(26px,4vw,42px);margin:0 0 14px}
@@ -210,11 +229,26 @@ footer b{color:var(--paper)}
 
     <section data-stage="4"><div class="beat stuck">
       <h2>The gap is the finding</h2>
-      <p>Transparency became law. The delivery failures it was meant to surface and fix did not move. A decade of disclosure made the problems visible. It did not, on this record, make them go away.</p>
+      <p>Transparency became law. The delivery failures it was meant to expose did not move. A decade of disclosure made the problems visible. It did not, on this record, make them go away.</p>
       <div class="src">95 CoST assurance reports, read together, 2011 to 2021</div>
     </div></section>
   </div>
 </div>
+
+<section class="mapsec">
+  <div class="head">
+    <div class="eyebrow">The same pattern, country after country</div>
+    <h2>This was not one place</h2>
+    <p>The reports come from a dozen countries across Africa, Latin America, Asia, and Eastern Europe. Each bubble is one country, sized by how many reports it produced and coloured by how often those reports still flagged a delivery failure. The colour barely changes.</p>
+  </div>
+  <div id="map"></div>
+  <div class="maplegend">
+    <span class="sw"><i style="background:#5bbf97"></i>fewer reports flag failure</span>
+    <span class="sw"><i style="background:#cf6b3a"></i>most reports flag failure</span>
+    <span class="sz"><i style="width:9px;height:9px"></i><i style="width:16px;height:16px"></i><i style="width:23px;height:23px"></i>more reports assured</span>
+    <span style="margin-left:auto">Tap a bubble for the country detail</span>
+  </div>
+</section>
 
 <section class="coda">
   <div class="flow">
@@ -2020,7 +2054,8 @@ render(0); if(reduce) render(4);
 var howto=document.getElementById('howto');
 var howtoDone=false;            // true once the reader has engaged; never show again
 var coverVisible=true;
-function syncHowto(){ if(howto){ var show=!howtoDone && !coverVisible; howto.classList.toggle('hide',!show); } }
+var chartActive=false;
+function syncHowto(){ if(howto){ var show=!howtoDone && chartActive; howto.classList.toggle('hide',!show); } }
 function dismissHowto(){ howtoDone=true; syncHowto(); }
 // pulse the visible dots once they're actually on screen (first time the chart is reached)
 var pulsed=false;
@@ -2029,8 +2064,9 @@ function pulseDots(){ if(pulsed||reduce)return; pulsed=true;
   setTimeout(function(){ allDots.forEach(function(c){c.classList.remove('pulse');}); }, 2600);
 }
 allDots.forEach(function(c){ c.addEventListener('mouseenter',dismissHowto); c.addEventListener('focus',dismissHowto); });
-// cover visibility drives the hint + triggers the pulse when the chart first appears
-new IntersectionObserver(function(es){es.forEach(function(e){ coverVisible=e.isIntersecting&&e.intersectionRatio>0.35; if(!coverVisible)pulseDots(); syncHowto(); });},{threshold:[0,.35,.7]}).observe(document.querySelector('.cover'));
+// the hint belongs to the chart only: show while the sticky chart fills the screen,
+// hide over the hero above and the map/coda below. Pulse on first appearance.
+new IntersectionObserver(function(es){es.forEach(function(e){ chartActive=e.isIntersecting&&e.intersectionRatio>0.6; if(chartActive)pulseDots(); syncHowto(); });},{threshold:[0,.6,.9]}).observe(document.querySelector('.machine'));
 // hide for good once the reader scrolls into the delivery stages
 new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&+e.target.dataset.stage>=2)dismissHowto();});},{threshold:.5}).observe(document.querySelector('section[data-stage="2"]'));
 
@@ -2141,6 +2177,53 @@ function xls(){function c(v){return '<Cell><Data ss:Type="String">'+String(v==nu
 document.getElementById('dlJson').onclick=function(){dl('cost-assurance-scorecard.json','application/json',JSON.stringify(SC,null,2));};
 document.getElementById('dlCsv').onclick=function(){dl('cost-assurance-scorecard.csv','text/csv',csv());};
 document.getElementById('dlXls').onclick=function(){dl('cost-assurance-scorecard.xls','application/vnd.ms-excel',xls());};
+
+// ---- map scene: where the reports came from (Mapbox GL, lazy-loaded on scroll) ----
+var COUNTRY_LL={
+  Malawi:[34.30,-13.25],Ethiopia:[39.78,9.15],Ukraine:[31.17,48.38],Honduras:[-86.24,15.20],
+  Guatemala:[-90.23,15.78],Tanzania:[34.89,-6.37],Uganda:[32.29,1.37],Thailand:[100.99,15.87],
+  'El Salvador':[-88.90,13.79],Ghana:[-1.02,7.95],'Costa Rica':[-83.75,9.75],Afghanistan:[67.71,33.94]
+};
+function buildCountryAgg(){
+  var skip={Global:1,'United Kingdom':1}, agg={};
+  SC.forEach(function(s){ if(skip[s.c])return; var a=agg[s.c]||(agg[s.c]={c:s.c,n:0,law:0,fail:0});
+    a.n++; if(s.law)a.law++; if(s.overrun||s.prep||s.superv)a.fail++; });
+  return Object.keys(agg).map(function(k){return agg[k];}).filter(function(a){return COUNTRY_LL[a.c];});
+}
+function initMap(){
+  if(!window.mapboxgl){ return; }
+  mapboxgl.accessToken='pk.eyJ1IjoiY2VuZ2t1cnUiLCJhIjoiY21wMzc5OWhpMDB0dzJwczF4a3RrbWR3eiJ9.lG40kUhniKS1vldy2QMysQ';
+  var rows=buildCountryAgg();
+  var feats=rows.map(function(r){ var fr=r.fail/r.n;
+    return {type:'Feature',geometry:{type:'Point',coordinates:COUNTRY_LL[r.c]},
+      properties:{c:r.c,n:r.n,law:r.law,fail:r.fail,failPct:Math.round(fr*100),lawPct:Math.round(r.law/r.n*100)}};});
+  var map=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/dark-v11',projection:'equalEarth',center:[-10,14],zoom:0.9,attributionControl:true,cooperativeGestures:true});
+  map.addControl(new mapboxgl.NavigationControl({showCompass:false}),'top-right');
+  map.on('load',function(){
+    // fit all 12 countries (Latin America to SE Asia) in view
+    try{ var bnds=new mapboxgl.LngLatBounds(); feats.forEach(function(f){bnds.extend(f.geometry.coordinates);}); map.fitBounds(bnds,{padding:{top:70,bottom:70,left:60,right:60},maxZoom:3,duration:0}); }catch(e){}
+    map.addSource('countries',{type:'geojson',data:{type:'FeatureCollection',features:feats}});
+    map.addLayer({id:'bubbles',type:'circle',source:'countries',paint:{
+      'circle-radius':['interpolate',['linear'],['get','n'],1,8,13,30],
+      'circle-color':['interpolate',['linear'],['get','failPct'],60,'#5bbf97',80,'#d3a24a',100,'#cf6b3a'],
+      'circle-opacity':0.82,'circle-stroke-width':1.5,'circle-stroke-color':'rgba(242,239,233,.55)'}});
+    map.addLayer({id:'labels',type:'symbol',source:'countries',layout:{
+      'text-field':['get','c'],'text-size':12,'text-offset':[0,1.7],'text-font':['DIN Pro Medium','Arial Unicode MS Regular']},
+      paint:{'text-color':'#e7e2d8','text-halo-color':'#14120e','text-halo-width':1.4}});
+    var pop=new mapboxgl.Popup({closeButton:false,closeOnClick:true,offset:14});
+    map.on('mouseenter','bubbles',function(){map.getCanvas().style.cursor='pointer';});
+    map.on('mouseleave','bubbles',function(){map.getCanvas().style.cursor='';});
+    function show(e){var p=e.features[0].properties;
+      var html='<div class="mappop"><div class="pc">'+p.c+'</div><div class="pm">'+
+        p.n+' assurance report'+(p.n==1?'':'s')+'<br><b>'+p.failPct+'%</b> still flagged a delivery failure<br>'+
+        p.lawPct+'% recorded the standard in law</div></div>';
+      pop.setLngLat(e.lngLat).setHTML(html).addTo(map);}
+    map.on('click','bubbles',show);
+    map.on('mouseenter','bubbles',show);
+  });
+}
+var mapStarted=false;
+new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting && !mapStarted){ mapStarted=true; initMap(); } });},{threshold:.15}).observe(document.getElementById('map'));
 })();
 </script>
 </body>
