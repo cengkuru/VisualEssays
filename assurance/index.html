@@ -80,14 +80,16 @@ a{color:var(--rise-hi)}
 .gcard-pop .gcglyph{height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:#12100c}
 .gcard-pop .gcglyph svg{width:42px;height:42px}
 .gcard-pop .gcglyph span{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.gcard-pop .gceyebrow{font-family:var(--serif);font-weight:700;font-size:21px;color:var(--paper);padding:13px 16px 4px}
-.gcard-pop .gcrise,.gcard-pop .gcstay{display:flex;align-items:baseline;justify-content:space-between;padding:2px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#9b958a}
-.gcard-pop .gcrise b,.gcard-pop .gcstay b{font-family:var(--serif);font-size:22px}
+.gcard-pop .gceyebrow{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--rise-hi);padding:13px 18px 0}
+/* the INSIGHT leads: a holistic finding only visible across all reports */
+.gcard-pop .gcinsight{font-family:var(--serif);font-weight:700;font-size:22px;line-height:1.15;color:var(--paper);padding:4px 18px 8px}
+.gcard-pop .gcdetail{padding:0 18px 10px;font-size:14px;color:#d6d0c5;line-height:1.45}
+/* stats demoted to a quiet supporting strip, so they serve the message not compete */
+.gcard-pop .gcstats{display:flex;gap:18px;padding:4px 18px 4px;flex-wrap:wrap}
+.gcard-pop .gcstat{font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:#9b958a;display:flex;align-items:baseline;gap:6px}
+.gcard-pop .gcstat b{font-family:var(--serif);font-size:19px}
 .gcard-pop b.g{color:var(--rise-hi)} .gcard-pop b.r{color:var(--stuck)}
-.gcard-pop .gcrise .up{color:var(--rise)} .gcard-pop .gcstay .flat{color:var(--stuck)}
-.gcard-pop .gcproj{padding:10px 16px 4px;font-size:14px;color:#d6d0c5;line-height:1.4}
-.gcard-pop .gcproj .pl{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--rise-hi);margin-bottom:3px}
-.gcard-pop .gcn{padding:6px 16px 14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;color:#6e695f;border-top:1px solid #221f19;margin-top:8px}
+.gcard-pop .gcn{padding:8px 18px 14px;font-family:var(--mono);font-size:9px;letter-spacing:.03em;color:#6e695f;border-top:1px solid #221f19;margin-top:8px}
 .gtrack{position:relative;z-index:2;pointer-events:none}
 .gtrack>section{min-height:100vh;display:flex;align-items:flex-end;padding:0 0 9vh 6vw}
 .gbeat{pointer-events:auto;max-width:min(420px,86vw);background:rgba(10,12,11,.82);backdrop-filter:blur(6px);border-left:3px solid var(--rise);padding:18px 22px;border-radius:2px;box-shadow:0 10px 34px rgba(0,0,0,.5)}
@@ -97,8 +99,9 @@ a{color:var(--rise-hi)}
 .gbeat p{margin:0;font-size:15.5px;color:#d6d0c5}
 .gbeat .src{margin-top:11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--muted)}
 /* country beats keep their card on the LEFT, so the beat sections that are empty just advance scroll */
-.gtrack section[data-g="GHA"],.gtrack section[data-g="ETH"],.gtrack section[data-g="SLV"],
-.gtrack section[data-g="UGA"],.gtrack section[data-g="CRI"],.gtrack section[data-g="THA"]{min-height:100vh}
+.gtrack section[data-g="SLV"],.gtrack section[data-g="ETH"],.gtrack section[data-g="MWI"],
+.gtrack section[data-g="HND"],.gtrack section[data-g="UGA"],.gtrack section[data-g="GHA"],
+.gtrack section[data-g="THA"]{min-height:100vh}
 /* SVG world fallback */
 .globefallback{position:absolute;inset:0;z-index:6;background:#0a0908;overflow-y:auto;padding:60px 20px 40px;display:none}
 .globefallback[aria-hidden="false"]{display:block}
@@ -259,14 +262,15 @@ footer b{color:var(--paper)}
 </div>
 
 <section class="cover" id="cover">
-  <div class="herobg ghost" style="background-image:url('img/ghana-road-settlement.jpg')"></div>
-  <div class="herobg" id="herolight" style="background-image:url('img/ghana-road-settlement.jpg')"></div>
+  <div class="herobg ghost" style="background-image:url('img/hero-road-dusk.jpg')"></div>
+  <div class="herobg" id="herolight" style="background-image:url('img/hero-road-dusk.jpg')"></div>
   <div class="glow" id="heroglow"></div>
   <div class="scrim"></div>
   <div class="inner">
     <div class="eyebrow">CoST · 95 independent assurance reports, 2011 to 2021</div>
     <h1><span class="a">Transparency rose.</span><br><span class="b">Delivery didn't.</span></h1>
-    <p class="lede">Independent assurance means outside reviewers checked whether public infrastructure projects were published, monitored, and delivered properly. We read 95 such reports from 2011 to 2021. The year-by-year story below uses the 49 reports from 2015 to 2021, where the data is dense enough to compare: the transparency standard climbing into law, and the delivery failures it was meant to expose still refusing to move.</p>
+    <p class="lede">Over a decade, governments across a dozen countries got dramatically better at one thing: publishing what their public projects cost and how they were run. The rules became law almost everywhere. And yet, across the very same projects, the failures that openness was meant to drive out, the overruns, the weak planning, the contractor left to watch itself, barely moved. Every overrun is a school built late, a clinic over budget, a road that still chokes the homes beside it.</p>
+    <p class="lede" style="font-size:15px;color:#bdb7ac;margin-top:14px">We read 95 independent assurance reports, 2011 to 2021. The year-by-year story uses the 49 from 2015 to 2021, where the data is dense enough to compare.</p>
     <div class="stats">
       <div><b class="g">26</b><span>reports show the standard entering law</span></div>
       <div><b class="r">70</b><span>still flag cost or time overruns</span></div>
@@ -275,7 +279,7 @@ footer b{color:var(--paper)}
     <div class="cue">Scroll to watch the decade ↓ &nbsp;·&nbsp; tap any dot for the report behind it</div>
     <div class="hint">The light reveals only what it touches</div>
   </div>
-  <div class="credit">A road under CoST assurance review, Ghana<br>From the CoST Sekondi-Takoradi assurance report</div>
+  <div class="credit">Illustrative: a public road network at dusk<br>Photo: David Kristianto / Unsplash · real report photos appear later</div>
 </section>
 
 <!-- THE GLOBE: a rotating Mapbox globe that flies country to country.
@@ -291,15 +295,16 @@ footer b{color:var(--paper)}
   <div class="gtrack">
     <section data-g="intro"><div class="gbeat">
       <h2>One finding, a dozen countries</h2>
-      <p>The reports come from twelve countries on four continents. Travel to each one and the same thing has happened: the rules to make infrastructure honest became law, and the failures those rules were meant to end stayed almost exactly where they were. Start in Ghana.</p>
+      <p>The reports come from twelve countries on four continents. Travel to each one and the same thing has happened: the rules to make infrastructure honest became law, and the failures those rules were meant to end stayed almost exactly where they were. Start in El Salvador, where they published nearly everything.</p>
       <div class="src">Spin the globe. Then scroll to fly, country to country.</div>
     </div></section>
 
-    <section data-g="GHA"><div class="gbeat"></div></section>
-    <section data-g="ETH"><div class="gbeat"></div></section>
     <section data-g="SLV"><div class="gbeat"></div></section>
+    <section data-g="ETH"><div class="gbeat"></div></section>
+    <section data-g="MWI"><div class="gbeat"></div></section>
+    <section data-g="HND"><div class="gbeat"></div></section>
     <section data-g="UGA"><div class="gbeat"></div></section>
-    <section data-g="CRI"><div class="gbeat"></div></section>
+    <section data-g="GHA"><div class="gbeat"></div></section>
     <section data-g="THA"><div class="gbeat"></div></section>
 
     <section data-g="all"><div class="gbeat stuck">
@@ -2011,7 +2016,12 @@ var scByTitle={}; SC.forEach(function(s){ scByTitle[s.t]=s; });
 var PHOTO_BY_COUNTRY={
   Ghana:{f:'img/ghana-road-settlement.jpg',cap:'An unpaved road runs past homes, Ghana'},
   'El Salvador':{f:'img/elsalvador-roadworks-crew.jpg',cap:'Crews on a road under assurance review, El Salvador'},
-  'Costa Rica':{f:'img/costarica-aerial.jpg',cap:'A project site from above, Costa Rica'}
+  'Costa Rica':{f:'img/costarica-aerial.jpg',cap:'A project site from above, Costa Rica'},
+  Malawi:{f:'img/malawi-signboard.jpg',cap:'The project board: Lilongwe University complex, Malawi'},
+  Uganda:{f:'img/uganda-road.jpg',cap:'A road under assurance review, Uganda'},
+  Guatemala:{f:'img/guatemala-bridge.jpg',cap:'A construction site under review, Guatemala'},
+  Tanzania:{f:'img/tanzania-site.jpg',cap:'A project site under review, Tanzania'},
+  Ukraine:{f:'img/ukraine-roadworks.jpg',cap:'Road works under assurance, Ukraine'}
 };
 var COUNTRY_LL={
   Malawi:[34.30,-13.25],Ethiopia:[39.78,9.15],Ukraine:[31.17,48.38],Honduras:[-86.24,15.20],
@@ -2027,15 +2037,32 @@ function buildCountryAgg(){
 var AGG={}; buildCountryAgg().forEach(function(a){AGG[a.c]=a;});
 
 // the verified itinerary: code -> {country, named project (as the report titles it), the finding}
+// Each stop carries an INSIGHT only visible after reading all 95 reports together,
+// not a stat. The headline is the holistic finding; proj/find are the grounding evidence.
 var STOPS={
-  GHA:{c:'Ghana',proj:'Sekondi-Takoradi, second assurance',find:'A road left unpaved, dust settling on the homes and stalls beside it.'},
-  ETH:{c:'Ethiopia',proj:'Arjo Dedessa Dam',find:'Over budget and behind schedule, with preparation flagged as weak.'},
-  SLV:{c:'El Salvador',proj:'Third assurance, road works',find:'Overruns and weak planning, the public unable to use the data as published.'},
-  UGA:{c:'Uganda',proj:'Mwiri Access Road',find:'Supervision compromised by a conflict of interest with the contractor.'},
-  CRI:{c:'Costa Rica',proj:'First assurance',find:'Cost or time overruns on a project the standard was meant to safeguard.'},
-  THA:{c:'Thailand',proj:'Fourth assurance',find:'The brightest case: every report records the law, yet three in four still flag a failure.'}
+  SLV:{c:'El Salvador',proj:'Third assurance, road works',
+    insight:'Publishing almost everything changed almost nothing.',
+    detail:'El Salvador disclosed 91% of the data the standard asks for, the highest of any country here. Every single project it assured still ran over budget or time. Transparency was nearly complete; delivery still broke.'},
+  ETH:{c:'Ethiopia',proj:'Arjo Dedessa Dam',
+    insight:'Twelve reports. Not one could say the rules were law.',
+    detail:'Ethiopia produced more assurance reports than almost anywhere, yet zero recorded the standard written into law. The data flowed without the legal mandate behind it, and ten of twelve projects ran over.'},
+  MWI:{c:'Malawi',proj:'Lilongwe and Chilumba housing',
+    insight:'The data was published. The public still could not use it.',
+    detail:'In ten of Malawi’s thirteen reports, the information was disclosed in a form the public could not actually use. Disclosure on paper is not the same as disclosure that informs anyone.'},
+  HND:{c:'Honduras',proj:'Sixth assurance',
+    insight:'In most projects, the contractor was effectively watching itself.',
+    detail:'Honduras flagged supervision compromised by a conflict of interest in five of nine reports, and four disclosed data the public could not use, even as disclosure averaged 74%.'},
+  UGA:{c:'Uganda',proj:'Mwiri Access Road',
+    insight:'The watchdog reported to the people it was watching.',
+    detail:'On the Mwiri Access Road and others, Uganda flagged supervision compromised by a conflict of interest with the contractor. Independent oversight is the one safeguard transparency cannot replace, and it was missing where it mattered.'},
+  GHA:{c:'Ghana',proj:'Sekondi-Takoradi, second assurance',
+    insight:'A finished report, an unfinished road.',
+    detail:'Ghana’s assurance recorded the standard entering law, then documented a road left unpaved, the dust settling on the homes and stalls beside it. The paperwork advanced; the project did not.'},
+  THA:{c:'Thailand',proj:'Fourth assurance',
+    insight:'The best in the set still could not shake the failures.',
+    detail:'Thailand is the bright spot: every report records the law and disclosure averages 86%, the cleanest here. Even so, three in four projects still flagged a delivery failure. If transparency alone could fix delivery, it would have shown here first.'}
 };
-var ORDER=['GHA','ETH','SLV','UGA','CRI','THA'];
+var ORDER=['SLV','ETH','MWI','HND','UGA','GHA','THA'];
 
 var greadout=document.getElementById('greadout');
 var gcard=document.getElementById('gcountryCard');
@@ -2052,10 +2079,10 @@ function countryCardHTML(code){
     : '<div class="gcglyph" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M6 40 L24 8 L42 40 Z M16 40 L24 24 L32 40" fill="none" stroke="var(--stuck)" stroke-width="2"/></svg><span>'+s.c+'</span></div>';
   return media
     + '<div class="gceyebrow">'+s.c+'</div>'
-    + '<div class="gcrise"><span class="up">▲ standard into law</span><b class="g">'+lawP+'%</b></div>'
-    + '<div class="gcstay"><span class="flat">▬ failure still found</span><b class="r">'+failP+'%</b></div>'
-    + '<div class="gcproj"><span class="pl">'+s.proj+'</span>'+s.find+'</div>'
-    + '<div class="gcn">'+a.n+' assurance report'+(a.n==1?'':'s')+', read as reported</div>';
+    + '<div class="gcinsight">'+s.insight+'</div>'
+    + '<div class="gcdetail">'+s.detail+'</div>'
+    + '<div class="gcstats"><span class="gcstat"><b class="g">'+lawP+'%</b> standard in law</span><span class="gcstat"><b class="r">'+failP+'%</b> still flagged a failure</span></div>'
+    + '<div class="gcn">'+a.n+' assurance report'+(a.n==1?'':'s')+' · '+s.proj+' · read as reported</div>';
 }
 
 // ---- the globe ----
