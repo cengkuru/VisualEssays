@@ -3,423 +3,1909 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Sorting Machine: 95 CoST assurance reports, and the gap they share</title>
-<meta name="description" content="Watch 32 CoST assurance reports sort themselves by how much they disclosed, then watch how little of it the public can actually reach.">
+<title>Transparency rose. Delivery didn't. A decade of CoST assurance reports.</title>
+<meta name="description" content="Across 95 CoST assurance reports and a decade, the transparency standard spread into law. The delivery failures it was meant to fix did not move.">
 <style>
 :root{
-  --cost-red:#B7251C; --cost-charcoal:#4A4743; --cost-light:#F0EDE7; --cost-muted:#9b958c;
-  --ink:#16140f;            /* near-black stage */
-  --ink2:#211e18;
-  --paper:#f3f0ea;
-  --disclosed:#5bbf97;      /* semantic: published (green), NOT brand */
-  --disclosed-hi:#8fe0bf;
-  --reach:#c9712a;          /* semantic: reach gap (amber/rust), NOT brand red */
-  --grid:#33302a;
+  --cost-red:#B7251C; --cost-charcoal:#4A4743;
+  --ink:#14120e; --ink2:#1e1b15; --paper:#f2efe9; --muted:#9b958a;
+  --rise:#5bbf97;        /* transparency / law: green, semantic */
+  --rise-hi:#8fe0bf;
+  --stuck:#cf6b3a;       /* delivery failure: rust, semantic */
+  --grid:#322f29;
   --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
   --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
   --mono:SFMono-Regular,Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+html,body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
 h1,h2{font-family:var(--serif);font-weight:700;line-height:1.08;letter-spacing:-.01em}
-.eyebrow{font-family:var(--mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--disclosed)}
-a{color:var(--disclosed-hi)}
+.eyebrow{font-family:var(--mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--rise)}
+a{color:var(--rise-hi)}
 
-/* brand bar (thin, dark) */
-.brandbar{position:fixed;top:0;left:0;right:0;height:48px;background:rgba(15,13,9,.86);backdrop-filter:blur(8px);border-bottom:2px solid var(--cost-red);z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 20px}
-.brandbar img{height:24px;background:#fff;padding:2px 5px;border-radius:2px}
-.brandbar .tag{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--cost-muted)}
+.brandbar{position:fixed;top:0;left:0;right:0;height:46px;background:rgba(14,12,8,.9);backdrop-filter:blur(8px);border-bottom:2px solid var(--cost-red);z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.brandbar img{height:22px;background:#fff;padding:2px 5px;border-radius:2px}
+.brandbar .tag{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 
-/* THE STICKY STAGE: the machine. Full-bleed, the protagonist. */
-.machine{position:sticky;top:0;height:100vh;width:100%;overflow:hidden;z-index:1}
+.cover{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 7vw;max-width:1040px}
+.cover h1{font-size:clamp(40px,7vw,86px);margin:.1em 0 .35em;max-width:13ch}
+.cover h1 .a{color:var(--rise)} .cover h1 .b{color:var(--stuck)}
+.cover .lede{font-size:clamp(18px,2.2vw,23px);color:#cdc7bc;max-width:48ch}
+.cover .stats{margin-top:44px;display:flex;gap:40px;flex-wrap:wrap}
+.cover .stats b{display:block;font-family:var(--serif);font-size:34px}
+.cover .stats .g{color:var(--rise)} .cover .stats .r{color:var(--stuck)}
+.cover .stats span{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.cover .cue{margin-top:48px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+.machine{position:sticky;top:0;height:100vh;overflow:hidden;z-index:1}
 #viz{width:100%;height:100%;display:block}
-.dot{transition:cx 1.1s cubic-bezier(.45,.05,.2,1), cy 1.1s cubic-bezier(.45,.05,.2,1), r .6s ease, fill .6s ease, opacity .6s ease}
-.axis-line{stroke:var(--grid);stroke-width:1}
-.axis-label{fill:var(--cost-muted);font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
-.tick-label{fill:#6f6a61;font-family:var(--mono);font-size:11px}
-.stage-title{fill:var(--paper);font-family:var(--serif);font-weight:700}
-.stage-sub{fill:var(--cost-muted);font-family:var(--sans)}
-.glow{filter:drop-shadow(0 0 7px var(--disclosed-hi))}
-.headline-num{fill:var(--disclosed);font-family:var(--serif);font-weight:700}
+.gl{stroke:var(--grid);stroke-width:1}
+.axl{fill:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.tk{fill:#6e695f;font-family:var(--mono);font-size:11px}
+.yearbig{fill:var(--paper);font-family:var(--serif);font-weight:700;opacity:.13}
+.linelbl{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.dot{transition:cx 1s cubic-bezier(.4,0,.2,1),cy 1s cubic-bezier(.4,0,.2,1),opacity .6s,fill .6s}
+.path-rise{fill:none;stroke:var(--rise);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(91,191,151,.4))}
+.path-stuck{fill:none;stroke:var(--stuck);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(207,107,58,.4))}
+.gapband{fill:url(#gapgrad);opacity:.0;transition:opacity .8s}
 
-/* scroll track that drives the machine */
 .track{position:relative;z-index:2;pointer-events:none}
-.track > section{min-height:100vh;display:flex;align-items:flex-end;padding:0 0 12vh 6vw}
-.beat{pointer-events:auto;max-width:380px;background:rgba(22,20,15,.82);backdrop-filter:blur(6px);border-left:3px solid var(--disclosed);padding:18px 22px;border-radius:2px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
-.beat.warn{border-left-color:var(--reach)}
-.beat h2{font-size:clamp(22px,2.6vw,30px);margin:0 0 8px;color:var(--paper)}
-.beat p{margin:0;font-size:15.5px;color:#d8d3ca}
-.beat .src{margin-top:11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--cost-muted)}
+.track>section{min-height:100vh;display:flex;align-items:flex-end;padding:0 0 9vh 6vw}
+.beat{pointer-events:auto;max-width:400px;background:rgba(20,18,13,.85);backdrop-filter:blur(6px);border-left:3px solid var(--rise);padding:18px 22px;border-radius:2px;box-shadow:0 10px 34px rgba(0,0,0,.45)}
+.beat.stuck{border-left-color:var(--stuck)}
+.beat h2{font-size:clamp(22px,2.6vw,30px);margin:0 0 8px}
+.beat p{margin:0;font-size:15.5px;color:#d6d0c5}
+.beat .src{margin-top:11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--muted)}
+.beat .big{font-family:var(--serif);font-size:40px;font-weight:700;line-height:1;margin:2px 0 8px}
+.beat .big.g{color:var(--rise)} .beat .big.r{color:var(--stuck)}
 
-/* intro + outro flow sections (not sticky) */
-.flow{max-width:720px;margin:0 auto;padding:0 24px}
-.cover{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 6vw;max-width:1000px}
-.cover h1{font-size:clamp(38px,6.4vw,76px);margin:.1em 0 .3em;max-width:15ch}
-.cover .lede{font-size:clamp(18px,2.2vw,23px);color:#cfc9bf;max-width:46ch}
-.cover .stats{margin-top:42px;display:flex;gap:36px;flex-wrap:wrap}
-.cover .stats b{display:block;font-family:var(--serif);font-size:34px;color:var(--disclosed)}
-.cover .stats span{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cost-muted)}
-.cover .cue{margin-top:50px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cost-muted);animation:bob 2s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
-
-/* predict */
-.predict-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:0 24px;position:relative;z-index:3;background:linear-gradient(180deg,transparent,var(--ink) 18%,var(--ink) 82%,transparent)}
-.predict{max-width:560px;text-align:center}
-.predict h2{font-size:clamp(26px,4vw,40px);margin:0 0 10px}
-.predict p{color:#cfc9bf}
-.slider-row{margin:34px 0 8px}
-.slider-row input{width:100%;accent-color:var(--reach)}
-.guess{font-family:var(--serif);font-size:64px;font-weight:700;color:var(--reach);line-height:1}
-.predict button{margin-top:20px;background:var(--reach);color:#1a1206;border:0;padding:13px 26px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;border-radius:2px}
-.reveal-txt{margin-top:24px;font-size:16px;color:#d8d3ca;opacity:0;max-height:0;overflow:hidden;transition:opacity .6s,max-height .6s}
-.predict.done .reveal-txt{opacity:1;max-height:300px}
-
-/* coda / explore */
-.coda{padding:14vh 0 8vh;background:var(--ink2)}
-.coda h2{font-size:clamp(26px,4vw,42px);margin:0 0 14px;color:var(--paper)}
-.explore{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px;margin-top:24px}
-.cell{background:var(--ink);padding:14px;border:1px solid #2a2721}
-.cell .pct{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--disclosed)}
-.cell .ct{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--cost-muted);margin-top:2px}
-.cell .nm{font-size:13px;color:#cfc9bf;margin-top:6px;line-height:1.35}
-.downloads{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
-.downloads button{background:transparent;border:1px solid var(--disclosed);color:var(--disclosed-hi);padding:10px 18px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:2px}
-details.method{margin-top:28px;border-top:1px solid #2a2721;padding-top:14px}
-details.method summary{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cost-muted);cursor:pointer}
-details.method p{font-size:14px;color:#a8a298}
-footer{padding:40px 6vw;color:var(--cost-muted);font-size:13px;border-top:2px solid var(--cost-red);background:var(--ink)}
+.coda{padding:13vh 0 8vh;background:var(--ink2)}
+.flow{max-width:760px;margin:0 auto;padding:0 24px}
+.coda h2{font-size:clamp(26px,4vw,42px);margin:0 0 14px}
+.bars{margin-top:26px;display:flex;flex-direction:column;gap:14px}
+.barrow{display:grid;grid-template-columns:230px 1fr 52px;align-items:center;gap:14px}
+.barrow .lab{font-size:14px;color:#d6d0c5}
+.barrow .tr{height:22px;background:#262219;border-radius:2px;overflow:hidden}
+.barrow .fl{height:100%;background:var(--stuck);border-radius:2px}
+.barrow .fl.g{background:var(--rise)}
+.barrow .v{font-family:var(--serif);font-size:20px;font-weight:700;text-align:right}
+.downloads{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.downloads button{background:transparent;border:1px solid var(--rise);color:var(--rise-hi);padding:10px 18px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+details.method{margin-top:26px;border-top:1px solid #2a2620;padding-top:14px}
+details.method summary{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);cursor:pointer}
+details.method p{font-size:14px;color:#a39d92}
+footer{padding:40px 7vw;color:var(--muted);font-size:13px;border-top:2px solid var(--cost-red);background:var(--ink)}
 footer b{color:var(--paper)}
 
-@media (max-width:680px){
-  .track > section{padding:0 16px 10vh;align-items:flex-end}
-  .beat{max-width:none}
-  .cover h1{font-size:40px}
-}
-@media (prefers-reduced-motion:reduce){
-  .dot{transition:none}
-  .cue{animation:none}
-}
+@media(max-width:680px){.track>section{padding:0 16px 9vh}.beat{max-width:none}.barrow{grid-template-columns:130px 1fr 44px}.cover h1{font-size:42px}}
+@media(prefers-reduced-motion:reduce){.dot,.path-rise,.path-stuck,.gapband{transition:none}}
 </style>
 </head>
 <body>
 
 <div class="brandbar">
   <img src="data:image/jpeg;base64,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" alt="CoST, the Infrastructure Transparency Initiative">
-  <span class="tag">Independent Assurance · The record, sorted</span>
+  <span class="tag">Independent Assurance · 2015 to 2021</span>
 </div>
 
-<!-- COVER -->
 <section class="cover">
-  <div class="eyebrow">CoST · 95 independent assurance reports</div>
-  <h1>How much did they disclose? And could anyone see it?</h1>
-  <p class="lede">Each circle is one real CoST assurance report. Scroll, and watch them sort themselves by how much infrastructure data each one published. Then watch what happens to the part the public can actually reach.</p>
+  <div class="eyebrow">CoST · 95 independent assurance reports, one decade</div>
+  <h1><span class="a">Transparency rose.</span><br><span class="b">Delivery didn't.</span></h1>
+  <p class="lede">For ten years, CoST published independent assurance reports across thirteen countries. Watch what they show when you line them up by year: the transparency standard climbing into law, and the failures it was meant to fix refusing to move.</p>
   <div class="stats">
-    <div><b>95</b><span>reports read</span></div>
-    <div><b>32</b><span>state a disclosure rate</span></div>
-    <div><b>2015 to 2021</b><span>span</span></div>
+    <div><b class="g">26</b><span>reports show the standard entering law</span></div>
+    <div><b class="r">70</b><span>still flag cost or time overruns</span></div>
+    <div><b class="r">57</b><span>still flag weak project preparation</span></div>
   </div>
-  <div class="cue">Scroll to sort ↓</div>
+  <div class="cue">Scroll to watch the decade ↓</div>
 </section>
 
-<!-- THE MACHINE (sticky) + the scroll track that drives it -->
 <div style="position:relative">
   <div class="machine">
-    <svg id="viz" preserveAspectRatio="xMidYMid meet" aria-label="Animated scatter of 32 CoST assurance reports sorting by disclosure rate, then by public reach"></svg>
+    <svg id="viz" preserveAspectRatio="xMidYMid meet" aria-label="Two lines over 2015 to 2021: transparency-into-law rising, delivery-failure staying flat near the top, never converging.">
+      <defs><linearGradient id="gapgrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#cf6b3a" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="#5bbf97" stop-opacity="0.10"/>
+      </linearGradient></defs>
+    </svg>
   </div>
 
   <div class="track">
-    <section data-stage="0">
-      <div class="beat">
-        <h2>32 reports, no order yet</h2>
-        <p>A loose cloud. Each circle is one assurance report that states how much of the required infrastructure data it found published. One already glows: Honduras, the Fifth Report.</p>
-        <div class="src">CoST independent assurance reports · 32 with a stated rate</div>
-      </div>
-    </section>
-    <section data-stage="1">
-      <div class="beat">
-        <h2>Now sort them by disclosure</h2>
-        <p>The circles climb. Higher means more of the required data was published. The spread is wide: Malawi near the floor at 11 percent, Honduras and Thailand near the ceiling.</p>
-        <div class="src">Position = disclosure rate as stated in each report</div>
-      </div>
-    </section>
-    <section data-stage="2">
-      <div class="beat">
-        <h2>The programme works: the cloud rises over time</h2>
-        <p>Read left to right by cycle and the reports drift upward. Uganda alone climbs 42 to 62 percent across its cycles. Publishing more is the clear, real win.</p>
-        <div class="src">Uganda First to Fourth · 42% to 62%</div>
-      </div>
-    </section>
-    <section data-stage="3">
-      <div class="beat">
-        <h2>One report reaches the ceiling</h2>
-        <p>Honduras Fifth: 98.1 percent disclosed on the specialised SISOCS portal. The single highest circle. By the only measure most people use, near perfect transparency.</p>
-        <div class="src">CoST Honduras Fifth Assurance Report · 98.1%</div>
-      </div>
-    </section>
+    <section data-stage="0"><div class="beat">
+      <h2>One year, the reports arrive</h2>
+      <p>Each circle is one assurance report. They land by the year they were published. 2015: five reports across Central America and Africa, the standard still young.</p>
+      <div class="src">CoST assurance reports, 2015 · positioned by year</div>
+    </div></section>
+
+    <section data-stage="1"><div class="beat">
+      <h2>The standard climbs into law</h2>
+      <div class="big g">30% → 100%</div>
+      <p>Year by year, more reports record the disclosure standard being written into national law and policy. By 2020 every report in the set describes it as institutionalised. This is the real, hard-won win.</p>
+      <div class="src">Share of each year's reports describing the standard entering law</div>
+    </div></section>
+
+    <section data-stage="2"><div class="beat stuck">
+      <h2>Now add what the reports actually found on site</h2>
+      <p>A second line. Not transparency, but delivery: the share of each year's reports flagging cost or time overruns, weak project preparation, or compromised supervision.</p>
+      <div class="src">Delivery-failure rate per year, across the same reports</div>
+    </div></section>
+
+    <section data-stage="3"><div class="beat stuck">
+      <h2>It never comes down</h2>
+      <div class="big r">88% to 100%</div>
+      <p>Every single year from 2015 to 2021, nine in ten reports or more flag the same delivery failures. The line meant to fall as transparency rose stays pinned to the ceiling.</p>
+      <div class="src">70 of 95 reports flag overruns · 57 flag weak preparation</div>
+    </div></section>
+
+    <section data-stage="4"><div class="beat stuck">
+      <h2>The gap is the finding</h2>
+      <p>Transparency became law. The delivery failures it was meant to surface and fix did not move. A decade of disclosure made the problems visible. It did not, on this record, make them go away.</p>
+      <div class="src">95 CoST assurance reports, read together, 2011 to 2021</div>
+    </div></section>
   </div>
 </div>
 
-<!-- PREDICT (the wrong-intuition gate) -->
-<div class="predict-wrap">
-  <div class="predict" id="predict">
-    <div class="eyebrow" style="color:var(--reach)">Before the last move</div>
-    <h2>That data was published. How much of it can the public actually reach?</h2>
-    <p>Set your guess. When a country pushes disclosure up near 90 or 98 percent, how high does the share a member of the public can find and use climb with it?</p>
-    <div class="slider-row">
-      <div><span class="guess" id="guessVal">50</span><span style="font-family:var(--serif);font-size:30px;color:var(--reach)">%</span></div>
-      <input type="range" id="guess" min="0" max="100" value="50" aria-label="Your guess for public reach, percent">
-    </div>
-    <button id="revealBtn">Drop the circles onto reach</button>
-    <div class="reveal-txt" id="revealTxt">
-      <p><b>The reports do not record a matching climb.</b> Honduras at 98.1 percent notes the public is "unaware of the SISOCS portals". Uganda finds data sitting on donor platforms "which may not be known to the public". Malawi calls the information "not easily understandable to the general public". Keep scrolling, and watch the circles move onto reach.</p>
-    </div>
-  </div>
-</div>
-
-<!-- THE REVEAL: second machine, the floor drop -->
-<div style="position:relative">
-  <div class="machine">
-    <svg id="viz2" preserveAspectRatio="xMidYMid meet" aria-label="The same 32 reports re-plotted: disclosure high on the vertical axis, public reach low, so nearly all fall to the floor"></svg>
-  </div>
-  <div class="track">
-    <section data-stage="10">
-      <div class="beat warn">
-        <h2>Keep the height. Add a second axis.</h2>
-        <p>Vertical still means disclosure: the circles stay where they climbed. Now the horizontal axis asks a different question: can the public actually reach this data?</p>
-        <div class="src">Vertical = disclosed · Horizontal = reachable by the public</div>
-      </div>
-    </section>
-    <section data-stage="11">
-      <div class="beat warn">
-        <h2>They slide left, and fall</h2>
-        <p>One by one the circles move to the left wall and sink. A report can be 98 percent disclosed and still leave the public unable to find it. Height was never the same as reach.</p>
-        <div class="src">Reach shown as the collective finding across the reports, not a per-report score</div>
-      </div>
-    </section>
-    <section data-stage="12">
-      <div class="beat warn">
-        <h2>This is the gap, in one frame</h2>
-        <p>High on the wall, the data is published. Pinned to the floor, it stays out of public hands. Disclosure rose toward 100. The reach that was meant to follow did not. That distance is the whole finding.</p>
-        <div class="src">95 CoST assurance reports, read together</div>
-      </div>
-    </section>
-  </div>
-</div>
-
-<!-- CODA -->
 <section class="coda">
   <div class="flow">
-    <div class="eyebrow">What the reports say the fix is</div>
-    <h2>Put the data where people are, in a form they can use, backed by law</h2>
-    <p style="color:#cfc9bf">If the gap is reach, the reports converge on closing it. Uganda's recommendation is concrete: "strengthen the use of community Barazas for citizens to build trust in Government's work," and "mainstream disclosure into the Access to Information Law." Publication was step one. Reach is the step the record keeps asking for.</p>
+    <div class="eyebrow" style="color:var(--stuck)">What the reports keep finding, across the whole decade</div>
+    <h2>The same failures, report after report</h2>
+    <p style="color:#cdc7bc">These are not one bad country or one bad year. Counted across all 95 reports, the recurring findings are remarkably consistent.</p>
+    <div class="bars" id="bars"></div>
 
-    <h2 style="margin-top:50px;font-size:24px">Every report, by what it disclosed</h2>
-    <div class="explore" id="explore"></div>
+    <h2 style="margin-top:52px;font-size:24px">What the reports say would close it</h2>
+    <p style="color:#cdc7bc">Disclosure was the entry point, not the destination. The reports converge on what comes next: get project preparation right before tender (57 reports flag it), keep supervision genuinely independent of the contractor (23 reports flag the conflict), and publish the audit and evaluation reports that 23 reports found missing. Transparency opened the books. Delivery is the chapter still unwritten.</p>
 
-    <h3 style="margin-top:40px;font-size:18px;color:var(--paper)">Download the data</h3>
-    <p style="color:#a8a298;font-size:15px">A piece about disclosure publishes its own. Every rate here is as stated in the source report.</p>
-    <div class="downloads">
-      <button id="dlJson">JSON</button><button id="dlCsv">CSV</button><button id="dlXls">Excel</button>
-    </div>
-    <details class="method">
-      <summary>Method and limits</summary>
-      <p>Each circle is one CoST independent assurance report whose text states a disclosure or transparency rate (32 of the 95 ingested reports state one explicitly; the rest are excluded from the sort, not zeroed). Rates are quoted as reported in each document and not re-measured; confirm against the source before external citation. Cross-country rates use differing indicator sets across years, so vertical position is directional, not strictly comparable. "Reach" is a collective finding stated across the reports (the public being unaware of portals, data on platforms they do not know, information not understandable), not a per-report number; the horizontal drop visualises that shared finding, it does not assign each report a reach score.</p>
+    <h3 style="margin-top:40px;font-size:18px">Download the data</h3>
+    <p style="color:#a39d92;font-size:15px">Every flag here is read from the assurance reports themselves.</p>
+    <div class="downloads"><button id="dlJson">JSON</button><button id="dlCsv">CSV</button><button id="dlXls">Excel</button></div>
+    <details class="method"><summary>Method and limits</summary>
+      <p>Each report was read with a language model against a fixed schema; every field is as stated in the document, null where the report does not state it, never inferred. Of 95 reports, 55 state a year and 27 state an overall disclosure rate; the year lines use 2015 to 2021, the window with enough reports per year to be meaningful (49 reports). "Delivery failure" means the report flags at least one of: cost or time overrun, weak project preparation, or compromised supervision. These are findings the reports make, not independently audited outcomes; they show what the assurance process surfaced, not a verified national delivery statistic. Counts are directional across differing country methodologies and years.</p>
     </details>
   </div>
 </section>
 
 <footer>
-  <div class="eyebrow" style="color:var(--reach)">CoST · Infrastructure Transparency Initiative</div>
-  <p style="margin-top:10px"><b>Disclosure was step one. Reach is the gap.</b></p>
-  <p style="font-size:12px;color:var(--cost-muted)">Built from 95 published CoST assurance reports. Rates as reported in source documents.</p>
+  <div class="eyebrow" style="color:var(--stuck)">CoST · Infrastructure Transparency Initiative</div>
+  <p style="margin-top:10px"><b>A decade made infrastructure transparent. The next decade has to make it deliver.</b></p>
+  <p style="font-size:12px;color:var(--muted)">Built from 95 published CoST assurance reports, 2011 to 2021. Findings as reported in source documents.</p>
 </footer>
 
-<script id="dots" type="application/json">[{"id":27,"t":"Assurance Team Report Card: Rockland St Mary Project, Broadland Housing Association","c":"United Kingdom","disc":0.5,"s":"The Rockland St Mary Project, a social housing initiative in Norfolk, served as a pilot for the Construction Sector Transparency Initiative (CoST) UK. The project involved the construction of 10 affor","u":"https://infrastructuretransparency.org/wp-content/uploads/2013/12/68_1.-Broadland-Housing-Rockland-AT-Card.pdf"},{"id":31,"t":"Assurance Team Report: Rockland St Mary Project, Broadland Housing Association","c":"United Kingdom","disc":0.5,"s":"This Assurance Team Report evaluates the Rockland St Mary Project, a 10-unit affordable social housing development in Norfolk, UK, as part of the Construction Sector Transparency Initiative (CoST) pil","u":"https://infrastructuretransparency.org/wp-content/uploads/2018/06/69_2.-Broadland-Housing-Rockland-AT-Report.pdf"},{"id":7,"t":"Malawi Assurance Report 2019","c":"Malawi","disc":11,"s":"The CoST Malawi Assurance Report 2019 evaluates transparency and information disclosure across 13 public infrastructure projects. It reveals low proactive disclosure rates (8-11%) and significant chal","u":"https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Malawi-Assurance-Report-2019.pdf"},{"id":25,"t":"Malawi: Wasi Civil Engineering report","c":"Malawi","disc":15,"s":"This assurance report evaluates the Patching, Slurry Sealing & Drainage Works project in Malawi's Southern Region. While the Roads Authority demonstrated good record-keeping and transparency in disclo","u":"https://infrastructuretransparency.org/wp-content/uploads/2018/06/103_10.-Wasi-Civil-Engineering.pdf"},{"id":26,"t":"Malawi: Sale Civil Engineering report","c":"Malawi","disc":15,"s":"This assurance report evaluates the 'Retainer Pothole Patching and Other Routine Maintenance Works' project in Malawi's Central Region. Conducted by EMC Jatula Associates for the CoST Initiative, the ","u":"https://infrastructuretransparency.org/wp-content/uploads/2018/06/101_8.-Sale-Civil-Engineering.pdf"},{"id":29,"t":"Guatemala Second Assurance Report (Spanish)","c":"Guatemala","disc":23.1,"s":"The CoST Guatemala Second Assurance Report (2011) evaluates 13 infrastructure projects across six procuring entities, revealing that while initial information disclosure was low at 23.08%, CoST's inte","u":"https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Guatemala-Second-Assurance-Report.pdf"},{"id":4,"t":"El Salvador Third Assurance Report Infographic (Spanish)","c":"El Salvador","disc":24,"s":"The Third Assurance Report for El Salvador evaluates 14 infrastructure projects across central government and municipal levels. It highlights a significant improvement in transparency, with non-disclo","u":"https://infrastructuretransparency.org/wp-content/uploads/2019/11/El-Salvador-Third-Assurance-Report.pdf"},{"id":22,"t":"Assurance report - Arjo Dedessa Dam, construction project","c":"Ethiopia","disc":24,"s":"This assurance report evaluates the Arjo Dedessa Dam construction project in Ethiopia, focusing on transparency, procurement, and contract implementation. The project, managed by the Ministry of Water","u":"https://infrastructuretransparency.org/wp-content/uploads/2018/06/153_Assurance-Report-Arjo-Dedessa-Dam-construction-project.pdf"},{"id":10,"t":"Infographic for the CoST Uganda Second Assurance Report","c":"Uganda","disc":29,"s":"The Second CoST Uganda Assurance Report evaluates infrastructure transparency across eight selected projects, revealing a 29% increase in data disclosure compared to previous scoping studies. The repo","u":"https://infrastructuretransparency.org/wp-content/uploads/2018/11/CoST-Uganda-Second-Assurance-Report-Infographic.pdf"},{"id":11,"t":"Uganda Second Assurance Report","c":"Uganda","disc":29,"s":"The CoST Uganda Second Assurance Report (2018) evaluates eight infrastructure projects across the Ministry of Works and Transport, Ministry of Education and Sports, and Wakiso District. It identifies ","u":"https://infrastructuretransparency.org/wp-content/uploads/2018/11/CoST-Uganda-Second-Assurance-Report.pdf"},{"id":20,"t":"Ukraine First Assurance Report summary","c":"Ukraine","disc":38,"s":"The CoST Ukraine First Assurance Report (2016) provides a comprehensive analysis of the 'State Road Reparation in 2016' project, identifying significant regional funding disparities, high market conce","u":"https://infrastructuretransparency.org/wp-content/uploads/2018/06/3206_Assurance-Report-Summary.pdf"},{"id":17,"t":"Ukraine Third Assurance Report","c":"Ukraine","disc":42,"s":"The CoST Ukraine Third Assurance Report provides an independent review of the 'Roads of the Carpathian Region' infrastructure project. It evaluates road repairs across Zakarpattia, Ivano-Frankivsk, Lv","u":"https://infrastructuretransparency.org/wp-content/uploads/2017/11/CoST-Ukraine-Third-Assurance-Report.pdf"},{"id":3,"t":"Uganda Third Assurance Report","c":"Uganda","disc":43,"s":"The CoST Uganda 3rd Assurance Report (January 2020) evaluates 13 public infrastructure projects valued at approximately USD 74 million across five government sectors. The report identifies an overall ","u":"https://infrastructuretransparency.org/wp-content/uploads/2020/02/CoST-Uganda-Third-Assurance-Report.pdf"},{"id":1,"t":"Sekondi-Takoradi Second Assurance Report","c":"Ghana","disc":47.6,"s":"The CoST Sekondi-Takoradi Second Assurance Report evaluates infrastructure transparency and accountability across eight subnational projects in Ghana's Western Region. It reveals an average data discl","u":"https://infrastructuretransparency.org/wp-content/uploads/2021/03/CoST-Sekondi-Takoradi-2nd-Assurance-Report.pdf"},{"id":15,"t":"Ukraine Fourth Assurance Process: Kyiv - Znamyanka Road","c":"Ukraine","disc":49,"s":"The Fourth Assurance Report for CoST Ukraine evaluates the N-01 Kyiv - Znamyanka Road repair project, identifying a 49% disclosure rate against the Infrastructure Data Standard. The review highlights ","u":"https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Ukraine-Fourth-Assurance-Process-Repair-of-the-section-of-N-01-Kyiv-%E2%80%93-Znamyanka-Road.pdf"},{"id":5,"t":"Costa Rica First Assurance Report","c":"Costa Rica","disc":51,"s":"The First Assurance Report of CoST Costa Rica evaluates 10 public infrastructure projects using 66 indicators from the CoST Infrastructure Data Standard. The publication reveals an average proactive d","u":"https://infrastructuretransparency.org/wp-content/uploads/2019/11/Primer-Informe-Aseguramiento-Costa-Rica.pdf"},{"id":16,"t":"Ukraine First Assurance Report infographic","c":"Ukraine","disc":51,"s":"The CoST Ukraine First Assurance Report analyzes the 'State Roads Reparation in 2016' project, revealing significant issues in procurement efficiency, market competition, and funding distribution. The","u":"https://infrastructuretransparency.org/wp-content/uploads/2018/06/2180_CoST-Ukraine-Assurance-Infographic.pdf"},{"id":23,"t":"Assurance report - Afdera Abala, road project","c":"Ethiopia","disc":51.8,"s":"This assurance report evaluates the Afdera Abala road project in Ethiopia, specifically focusing on Contract 1 (Hawusewa-Abala-Irebti). It identifies critical failures in the design phase, leading to ","u":"https://infrastructuretransparency.org/wp-content/uploads/2015/11/151_Assurance-Report-Afdera-Abala-road-project.pdf"},{"id":19,"t":"Uganda First Assurance Report","c":"Uganda","disc":53,"s":"The CoST Uganda First Assurance Report (August 2017) evaluates five infrastructure projects across three procurement entities: KCCA, UNRA, and Wakiso District. The report identifies low disclosure rat","u":"https://infrastructuretransparency.org/wp-content/uploads/2020/01/CoST-Uganda-First-Assurance-Report.pdf"},{"id":30,"t":"Guatemala First Assurance Report (Spanish)","c":"Guatemala","disc":53,"s":"The CoST Guatemala First Assurance Report (July 2011) evaluates the transparency and disclosure of 31 key project information (KPI) indicators across six infrastructure projects. The report highlights","u":"https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Guatemala-First-Assurance-Report.pdf"},{"id":28,"t":"Guatemala Third Assurance Report (Spanish)","c":"Guatemala","disc":54,"s":"The CoST Guatemala Third Assurance Report (April 2013) evaluates the disclosure of 31 Key Project Information (ICP) indicators across 17 new and 8 follow-up infrastructure projects. The report highlig","u":"https://infrastructuretransparency.org/wp-content/uploads/2011/09/CoST-Guatemala-Third-Assurance-Report.pdf"},{"id":8,"t":"Guatemala Eighth Assurance Report","c":"Guatemala","disc":60,"s":"The CoST Guatemala Eighth Assurance Report (2019) evaluates the transparency and efficiency of public infrastructure investment in Guatemala. It highlights a systemic execution gap where only approxim","u":"https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Guatemala-Eighth-Assurance-Report.pdf"},{"id":2,"t":"Uganda Fourth Assurance Report","c":"Uganda","disc":62,"s":"The CoST Uganda Fourth Assurance Report (February 2021) evaluates 23 public infrastructure projects across eight government entities, revealing an improvement in disclosure rates from 42% to 62%. The ","u":"https://infrastructuretransparency.org/wp-content/uploads/2021/02/CoST-Uganda-Fourth-Assurance-Report.pdf"},{"id":24,"t":"Ethiopia: Adiremet Dejena Dansha project and contract information","c":"Ethiopia","disc":65,"s":"This publication provides a detailed review of the Adiremet-Dejena-Dansha Road Project in Ethiopia, highlighting a 97.644km road upgrade. While the project was 64.99% complete as of October 2012, it f","u":"https://infrastructuretransparency.org/wp-content/uploads/2018/06/112_Ethiopia-Project-Information-test-ADIREMET-DEJENA-DANSHA.pdf"},{"id":9,"t":"Honduras Sixth Assurance Report (Spanish)","c":"Honduras","disc":68.2,"s":"The Sixth Assurance Report by CoST Honduras evaluates the transparency and disclosure levels of three major Public-Private Partnership (PPP) projects, finding an average disclosure rate of 68.2%. This","u":"https://infrastructuretransparency.org/wp-content/uploads/2020/09/Honduras-Sixth-Assurance-Report.pdf"},{"id":21,"t":"Honduras third assurance report infographic","c":"Honduras","disc":76.2,"s":"The CoST Honduras Third Assurance Report evaluates seven major infrastructure projects, including five Public-Private Partnerships (PPPs) and two public investment projects. The report highlights a si","u":"https://infrastructuretransparency.org/wp-content/uploads/2019/02/CoST-Honduras-third-assurance-report-infographic.pdf"},{"id":12,"t":"Honduras Fourth Assurance Report","c":"Honduras","disc":80,"s":"The Fourth Assurance Report by CoST Honduras evaluates 14 infrastructure projects, including 2 Public-Private Partnerships (PPPs) and 12 traditional public investments. While disclosure levels exceed ","u":"https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Honduras-Fourth-Assurance-Report.pdf"},{"id":0,"t":"Thailand Fourth Assurance Report","c":"Thailand","disc":82.6,"s":"The CoST Thailand Fourth Assurance Report (2020) provides a comprehensive review of infrastructure transparency progress from 2015 to 2020. It details the inclusion of 798 projects valued at 184.2 bil","u":"https://infrastructuretransparency.org/wp-content/uploads/2021/09/CoST-Thailand-Fourth-Assurance-Report.pdf"},{"id":14,"t":"Honduras Third Assurance Report","c":"Honduras","disc":85.3,"s":"The CoST Honduras Third Assurance Report, published in June 2017, serves as a global pilot for CoST International, evaluating seven infrastructure projects with a primary focus on Public-Private Partn","u":"https://infrastructuretransparency.org/wp-content/uploads/2018/09/CoST-Honduras-Third-Assurance-Report.pdf"},{"id":6,"t":"Ukraine Sixth Assurance Report Infographic Summary","c":"Ukraine","disc":98,"s":"The CoST Ukraine Sixth Assurance Report evaluates two major infrastructure projects in Kyiv: the capital repair of the Ring Road and Alma-Atynska Street. The report highlights a high level of data dis","u":"https://infrastructuretransparency.org/wp-content/uploads/2019/11/CoST_brochure_big_270819_v1.pdf"},{"id":13,"t":"Honduras Fifth Assurance Report","c":"Honduras","disc":98.1,"s":"The CoST Honduras Fifth Assurance Report evaluates 13 infrastructure projects across six government entities to measure transparency and accountability using the Infrastructure Data Standard (IDS). Th","u":"https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Honduras-Fifth-Assurance-Report.pdf"},{"id":18,"t":"Thailand First Assurance Report","c":"Thailand","disc":100,"s":"The CoST Thailand First Assurance Report for Fiscal Year 2017 evaluates the transparency and disclosure of four pilot infrastructure projects. It highlights a 100% disclosure rate for required items u","u":"https://infrastructuretransparency.org/wp-content/uploads/2020/02/CoST-Thailand-First-Assurance-Report-1.pdf"}]</script>
+<script id="data" type="application/json">{"years":[{"year":2015,"n":5,"avgDisc":52,"lawPct":40,"delivPct":100,"reports":[{"t":"Guatemala Fifth Assurance Report","c":"Guatemala","disc":19,"over":true,"prep":false,"law":true},{"t":"Assurance report - Arjo Dedessa Dam, construction project","c":"Ethiopia","disc":null,"over":true,"prep":true,"law":false},{"t":"Assurance Report: Jimma University, laboratory and workshop building project","c":"Ethiopia","disc":null,"over":true,"prep":true,"law":false},{"t":"Assurance report - Afdera Abala, road project","c":"Ethiopia","disc":null,"over":true,"prep":true,"law":false},{"t":"Honduras First Assurance Report","c":"Honduras","disc":84.3,"over":true,"prep":true,"law":true}]},{"year":2016,"n":8,"avgDisc":49,"lawPct":38,"delivPct":88,"reports":[{"t":"Ukraine Fourth Assurance Process: M-03 Road repair project","c":"Ukraine","disc":null,"over":true,"prep":true,"law":true},{"t":"Ukraine Fourth Assurance Process: Kyiv - Znamyanka Road","c":"Ukraine","disc":49,"over":true,"prep":true,"law":false},{"t":"Ukraine First Assurance Report infographic","c":"Ukraine","disc":null,"over":true,"prep":true,"law":false},{"t":"Ukraine Third Assurance Report","c":"Ukraine","disc":null,"over":false,"prep":false,"law":true},{"t":"Ukraine First Assurance Report summary","c":"Ukraine","disc":null,"over":true,"prep":true,"law":false},{"t":"Ukraine First Assurance Report","c":"Ukraine","disc":null,"over":false,"prep":true,"law":false},{"t":"Guatemala Sixth Assurance Report (Spanish)","c":"Guatemala","disc":null,"over":true,"prep":true,"law":true},{"t":"Malawi Assurance Report 2016","c":"Malawi","disc":null,"over":true,"prep":false,"law":false}]},{"year":2017,"n":10,"avgDisc":77,"lawPct":30,"delivPct":90,"reports":[{"t":"Ukraine road sector performance monitoring","c":"Ukraine","disc":82,"over":true,"prep":true,"law":true},{"t":"Honduras Fourth Assurance Report","c":"Honduras","disc":85,"over":true,"prep":true,"law":false},{"t":"Honduras Third Assurance Report","c":"Honduras","disc":85.3,"over":true,"prep":true,"law":true},{"t":"Tanzania 2017 Assurance Report: TAZARA Intersection Project","c":"Tanzania","disc":null,"over":false,"prep":false,"law":false},{"t":"Tanzania 2017 Assurance Report: Dungu Satellite Village Project","c":"Tanzania","disc":null,"over":true,"prep":true,"law":false},{"t":"Malawi Assurance Report 2017","c":"Malawi","disc":null,"over":true,"prep":false,"law":false},{"t":"Honduras Fourth Assurance Report Infographic","c":"Honduras","disc":85.1,"over":true,"prep":true,"law":false},{"t":"Thailand First Assurance Report","c":"Thailand","disc":100,"over":true,"prep":false,"law":true},{"t":"Uganda First Assurance Report","c":"Uganda","disc":null,"over":false,"prep":true,"law":false},{"t":"Honduras third assurance report infographic","c":"Honduras","disc":21.6,"over":true,"prep":true,"law":false}]},{"year":2018,"n":11,"avgDisc":70,"lawPct":45,"delivPct":100,"reports":[{"t":"Uganda assurance summary for Mwiri Access Road project","c":"Uganda","disc":null,"over":false,"prep":false,"law":false},{"t":"Infographic for the CoST Uganda Second Assurance Report","c":"Uganda","disc":57,"over":true,"prep":true,"law":true},{"t":"Uganda Second Assurance Report","c":"Uganda","disc":49,"over":true,"prep":true,"law":false},{"t":"Guatemala Seventh Assurance Report","c":"Guatemala","disc":null,"over":true,"prep":false,"law":true},{"t":"Turning infrastructure data into compelling information: How the CoST Assurance process can be a catalyst for sector reform","c":"Afghanistan","disc":null,"over":true,"prep":true,"law":true},{"t":"El Salvador Second Assurance Report","c":"El Salvador","disc":null,"over":true,"prep":false,"law":true},{"t":"Thailand Second Assurance Report","c":"Thailand","disc":75,"over":true,"prep":true,"law":true},{"t":"Malawi Assurance Report 2018","c":"Malawi","disc":null,"over":true,"prep":true,"law":false},{"t":"Summary of findings from the CoST Tanzania assurance process 2018","c":"Tanzania","disc":null,"over":true,"prep":true,"law":false},{"t":"Honduras Fifth Assurance Report","c":"Honduras","disc":98.1,"over":true,"prep":true,"law":false},{"t":"Ukraine Fourth Assurance Process: Chernivetska Electrical Substation","c":"Ukraine","disc":null,"over":true,"prep":true,"law":false}]},{"year":2019,"n":11,"avgDisc":74,"lawPct":55,"delivPct":91,"reports":[{"t":"Sekondi-Takoradi First Assurance Report","c":"Ghana","disc":73,"over":true,"prep":true,"law":false},{"t":"Thailand Third Assurance Report","c":"Thailand","disc":null,"over":false,"prep":false,"law":true},{"t":"El Salvador Third Assurance Report Infographic (Spanish)","c":"El Salvador","disc":91,"over":true,"prep":true,"law":false},{"t":"Honduras Sixth Assurance Report Infographic (Spanish)","c":"Honduras","disc":68.2,"over":true,"prep":true,"law":true},{"t":"Costa Rica First Assurance Report Infographic","c":"Costa Rica","disc":null,"over":true,"prep":false,"law":false},{"t":"Costa Rica First Assurance Report","c":"Costa Rica","disc":51,"over":true,"prep":false,"law":true},{"t":"Ukraine Sixth Assurance Report Infographic Summary","c":"Ukraine","disc":98,"over":true,"prep":false,"law":false},{"t":"Malawi Assurance Report 2019","c":"Malawi","disc":null,"over":true,"prep":true,"law":true},{"t":"El Salvador Third Assurance Report","c":"El Salvador","disc":null,"over":true,"prep":false,"law":false},{"t":"Guatemala Eighth Assurance Report","c":"Guatemala","disc":67,"over":true,"prep":true,"law":true},{"t":"Honduras Sixth Assurance Report (Spanish)","c":"Honduras","disc":68.2,"over":true,"prep":true,"law":true}]},{"year":2020,"n":2,"avgDisc":63,"lawPct":100,"delivPct":100,"reports":[{"t":"Thailand Fourth Assurance Report","c":"Thailand","disc":82.6,"over":false,"prep":true,"law":true},{"t":"Uganda Third Assurance Report","c":"Uganda","disc":43,"over":true,"prep":true,"law":true}]},{"year":2021,"n":2,"avgDisc":55,"lawPct":100,"delivPct":100,"reports":[{"t":"Sekondi-Takoradi Second Assurance Report","c":"Ghana","disc":47.6,"over":true,"prep":true,"law":true},{"t":"Uganda Fourth Assurance Report","c":"Uganda","disc":62,"over":true,"prep":true,"law":true}]}],"totals":{"rows":95,"overrun":70,"prep":57,"superv":23,"law":26,"noAudit":23}}</script>
+<script id="scorecard" type="application/json">[
+  {
+    "t": "Manual Volume 1 Annex 5: Infographics Gallery (Spanish)",
+    "c": "Honduras",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": null,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2025/12/Anexo-5-Galeria-de-Infografias.docx.pdf"
+  },
+  {
+    "t": "Independent Review Manual. Volume 2.",
+    "c": "Global",
+    "year": 2025,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": null,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2025/12/Assurance-Manual-Volume-2-v5.pdf"
+  },
+  {
+    "t": "Thailand Fourth Assurance Report",
+    "c": "Thailand",
+    "year": 2020,
+    "disc": 82.6,
+    "pro": null,
+    "rea": null,
+    "proj": 702,
+    "overrun": false,
+    "prep": true,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2021/09/CoST-Thailand-Fourth-Assurance-Report.pdf"
+  },
+  {
+    "t": "Sekondi-Takoradi Second Assurance Report",
+    "c": "Ghana",
+    "year": 2021,
+    "disc": 47.6,
+    "pro": null,
+    "rea": null,
+    "proj": 8,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2021/03/CoST-Sekondi-Takoradi-2nd-Assurance-Report.pdf"
+  },
+  {
+    "t": "Uganda Fourth Assurance Report",
+    "c": "Uganda",
+    "year": 2021,
+    "disc": 62,
+    "pro": 55,
+    "rea": 70,
+    "proj": 23,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2021/02/CoST-Uganda-Fourth-Assurance-Report.pdf"
+  },
+  {
+    "t": "Sekondi-Takoradi First Assurance Report",
+    "c": "Ghana",
+    "year": 2019,
+    "disc": 73,
+    "pro": 89.5,
+    "rea": 54.8,
+    "proj": 5,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/01/CoST-Sekondi-Takoradi-First-Assurance-Report.pdf"
+  },
+  {
+    "t": "Uganda Third Assurance Report",
+    "c": "Uganda",
+    "year": 2020,
+    "disc": 43,
+    "pro": 43,
+    "rea": 42,
+    "proj": 13,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": true,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/02/CoST-Uganda-Third-Assurance-Report.pdf"
+  },
+  {
+    "t": "Thailand Third Assurance Report",
+    "c": "Thailand",
+    "year": 2019,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 10,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/02/CoST-Thailand-Third-Assurance-Report.pdf"
+  },
+  {
+    "t": "El Salvador Third Assurance Report Infographic (Spanish)",
+    "c": "El Salvador",
+    "year": 2019,
+    "disc": 91,
+    "pro": null,
+    "rea": null,
+    "proj": 14,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2019/11/El-Salvador-Third-Assurance-Report.pdf"
+  },
+  {
+    "t": "Honduras Sixth Assurance Report Infographic (Spanish)",
+    "c": "Honduras",
+    "year": 2019,
+    "disc": 68.2,
+    "pro": 46.6,
+    "rea": 21.6,
+    "proj": 3,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2019/11/Honduras-Sixth-Assurance-Report-Infographic.pdf"
+  },
+  {
+    "t": "Costa Rica First Assurance Report Infographic",
+    "c": "Costa Rica",
+    "year": 2019,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 10,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2019/11/Info-1er-informe-Aseguramiento.pdf"
+  },
+  {
+    "t": "Costa Rica First Assurance Report",
+    "c": "Costa Rica",
+    "year": 2019,
+    "disc": 51,
+    "pro": 51,
+    "rea": null,
+    "proj": 10,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2019/11/Primer-Informe-Aseguramiento-Costa-Rica.pdf"
+  },
+  {
+    "t": "Ukraine Sixth Assurance Report",
+    "c": "Ukraine",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 2,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2019/11/Sixth-Assurance-Report-Ukraine.pdf"
+  },
+  {
+    "t": "Ukraine Sixth Assurance Report Infographic Summary",
+    "c": "Ukraine",
+    "year": 2019,
+    "disc": 98,
+    "pro": null,
+    "rea": null,
+    "proj": 2,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2019/11/CoST_brochure_big_270819_v1.pdf"
+  },
+  {
+    "t": "Malawi Assurance Report 2019",
+    "c": "Malawi",
+    "year": 2019,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 13,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": true,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Malawi-Assurance-Report-2019.pdf"
+  },
+  {
+    "t": "El Salvador Third Assurance Report",
+    "c": "El Salvador",
+    "year": 2019,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 10,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/11/CoST-El-Salvador-Third-Assurance-Report.pdf"
+  },
+  {
+    "t": "Guatemala Eighth Assurance Report",
+    "c": "Guatemala",
+    "year": 2019,
+    "disc": 67,
+    "pro": 54,
+    "rea": null,
+    "proj": 24,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Guatemala-Eighth-Assurance-Report.pdf"
+  },
+  {
+    "t": "Honduras Sixth Assurance Report (Spanish)",
+    "c": "Honduras",
+    "year": 2019,
+    "disc": 68.2,
+    "pro": 68.2,
+    "rea": null,
+    "proj": 3,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": true,
+    "noAudit": true,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/Honduras-Sixth-Assurance-Report.pdf"
+  },
+  {
+    "t": "Uganda assurance summary for Mwiri Access Road project",
+    "c": "Uganda",
+    "year": 2018,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": true,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2019/07/CoST-Uganda-Mwiri-Flyer-for-Baraza-Event.pdf"
+  },
+  {
+    "t": "Infographic for the CoST Uganda Second Assurance Report",
+    "c": "Uganda",
+    "year": 2018,
+    "disc": 57,
+    "pro": null,
+    "rea": null,
+    "proj": 8,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": true,
+    "noAudit": true,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/11/CoST-Uganda-Second-Assurance-Report-Infographic.pdf"
+  },
+  {
+    "t": "Uganda Second Assurance Report",
+    "c": "Uganda",
+    "year": 2018,
+    "disc": 49,
+    "pro": 49,
+    "rea": null,
+    "proj": 8,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/11/CoST-Uganda-Second-Assurance-Report.pdf"
+  },
+  {
+    "t": "Guatemala Seventh Assurance Report",
+    "c": "Guatemala",
+    "year": 2018,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 22,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/11/7%C2%BA-Informe-de-Aseguramiento-COST-VF6-FINAL.pdf"
+  },
+  {
+    "t": "Assurance: Step-by-step",
+    "c": "Global",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": null,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/11/CoST-Assurance-Step-by-Step.pdf"
+  },
+  {
+    "t": "Turning infrastructure data into compelling information: How the CoST Assurance process can be a catalyst for sector reform",
+    "c": "Afghanistan",
+    "year": 2018,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 127,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": true,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2022/01/LSBU-CoST-Assurance-Paper-FInal-051118-1.pdf"
+  },
+  {
+    "t": "El Salvador Second Assurance Report",
+    "c": "El Salvador",
+    "year": 2018,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 21,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-El-Salvador-Second-Assurance-Report.pdf"
+  },
+  {
+    "t": "Thailand Second Assurance Report",
+    "c": "Thailand",
+    "year": 2018,
+    "disc": 75,
+    "pro": 75,
+    "rea": null,
+    "proj": 5,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": true,
+    "noAudit": true,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Thailand-Second-Assurance-Report.pdf"
+  },
+  {
+    "t": "Malawi Assurance Report 2018",
+    "c": "Malawi",
+    "year": 2018,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Malawi-Assurance-Report-2018.pdf"
+  },
+  {
+    "t": "Summary of findings from the CoST Tanzania assurance process 2018",
+    "c": "Tanzania",
+    "year": 2018,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 3,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/3208_Tanzania-sheet.pdf-FINAL.pdf"
+  },
+  {
+    "t": "Ukraine road sector performance monitoring",
+    "c": "Ukraine",
+    "year": 2017,
+    "disc": 82,
+    "pro": null,
+    "rea": null,
+    "proj": 120,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": true,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/01/3205_CoST-Ukraine_Kopenhagen-full.pdf"
+  },
+  {
+    "t": "Honduras Fourth Assurance Report",
+    "c": "Honduras",
+    "year": 2017,
+    "disc": 85,
+    "pro": null,
+    "rea": null,
+    "proj": 14,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Honduras-Fourth-Assurance-Report.pdf"
+  },
+  {
+    "t": "Honduras Fifth Assurance Report",
+    "c": "Honduras",
+    "year": 2018,
+    "disc": 98.1,
+    "pro": null,
+    "rea": null,
+    "proj": 15,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Honduras-Fifth-Assurance-Report.pdf"
+  },
+  {
+    "t": "Honduras Third Assurance Report",
+    "c": "Honduras",
+    "year": 2017,
+    "disc": 85.3,
+    "pro": null,
+    "rea": null,
+    "proj": 7,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": true,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/09/CoST-Honduras-Third-Assurance-Report.pdf"
+  },
+  {
+    "t": "Ukraine Fourth Assurance Process: M-03 Road repair project",
+    "c": "Ukraine",
+    "year": 2016,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Ukraine-Fourth-Assurance-Process-Capital-Repair-on-M-03-Road.pdf"
+  },
+  {
+    "t": "Ukraine Fourth Assurance Process: Kyiv - Znamyanka Road",
+    "c": "Ukraine",
+    "year": 2016,
+    "disc": 49,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Ukraine-Fourth-Assurance-Process-Repair-of-the-section-of-N-01-Kyiv-%E2%80%93-Znamyanka-Road.pdf"
+  },
+  {
+    "t": "Ukraine Fourth Assurance Process: Chernivetska Electrical Substation",
+    "c": "Ukraine",
+    "year": 2018,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/11/CoST-Ukraine-Fourth-Assurance-Process-Chernivetska-Electrical-Substation.pdf"
+  },
+  {
+    "t": "Tanzania 2017 Assurance Report: TAZARA Intersection Project",
+    "c": "Tanzania",
+    "year": 2017,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Tanzania-2017-Assurance-Report-TAZARA-Intersection-Project.pdf"
+  },
+  {
+    "t": "Tanzania 2017 Assurance Report: Dungu Satellite Village Project",
+    "c": "Tanzania",
+    "year": 2017,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Tanzania-2017-Assurance-Report-Dungu-Village-Project.pdf"
+  },
+  {
+    "t": "Malawi Assurance Report 2017",
+    "c": "Malawi",
+    "year": 2017,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": null,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Malawi-Assurance-Report-2017.pdf"
+  },
+  {
+    "t": "Honduras Fourth Assurance Report Infographic",
+    "c": "Honduras",
+    "year": 2017,
+    "disc": 85.1,
+    "pro": 83.2,
+    "rea": 87.4,
+    "proj": 14,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2019/06/CoST-Honduras-Fourth-Assurance-Report-Infographic.pdf"
+  },
+  {
+    "t": "Ukraine First Assurance Report infographic",
+    "c": "Ukraine",
+    "year": 2016,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 120,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/2180_CoST-Ukraine-Assurance-Infographic.pdf"
+  },
+  {
+    "t": "Ukraine Third Assurance Report",
+    "c": "Ukraine",
+    "year": 2016,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 38,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2017/11/CoST-Ukraine-Third-Assurance-Report.pdf"
+  },
+  {
+    "t": "Thailand First Assurance Report",
+    "c": "Thailand",
+    "year": 2017,
+    "disc": 100,
+    "pro": 100,
+    "rea": null,
+    "proj": 4,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": true,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/02/CoST-Thailand-First-Assurance-Report-1.pdf"
+  },
+  {
+    "t": "Uganda First Assurance Report",
+    "c": "Uganda",
+    "year": 2017,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 5,
+    "overrun": false,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/01/CoST-Uganda-First-Assurance-Report.pdf"
+  },
+  {
+    "t": "Ukraine First Assurance Report summary",
+    "c": "Ukraine",
+    "year": 2016,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 120,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/3206_Assurance-Report-Summary.pdf"
+  },
+  {
+    "t": "Ukraine First Assurance Report",
+    "c": "Ukraine",
+    "year": 2016,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 39,
+    "overrun": false,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/11/CoST-Ukraine-First-Assurance-Report.pdf"
+  },
+  {
+    "t": "Honduras third assurance report infographic",
+    "c": "Honduras",
+    "year": 2017,
+    "disc": 21.6,
+    "pro": null,
+    "rea": null,
+    "proj": 7,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2019/02/CoST-Honduras-third-assurance-report-infographic.pdf"
+  },
+  {
+    "t": "Guatemala Sixth Assurance Report (Spanish)",
+    "c": "Guatemala",
+    "year": 2016,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 23,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Guatemala-Sixth-Assurance-Report.pdf"
+  },
+  {
+    "t": "Malawi Assurance Report 2016",
+    "c": "Malawi",
+    "year": 2016,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 26,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": true,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2016/09/CoST-Malawi-Assurance-Report-2016.pdf"
+  },
+  {
+    "t": "Guatemala Fifth Assurance Report",
+    "c": "Guatemala",
+    "year": 2015,
+    "disc": 19,
+    "pro": null,
+    "rea": null,
+    "proj": 32,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/157_CoST-Guatemala-fifth-assurance-report.pdf"
+  },
+  {
+    "t": "Assurance report - Arjo Dedessa Dam, construction project",
+    "c": "Ethiopia",
+    "year": 2015,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/153_Assurance-Report-Arjo-Dedessa-Dam-construction-project.pdf"
+  },
+  {
+    "t": "Assurance Report: Jimma University, laboratory and workshop building project",
+    "c": "Ethiopia",
+    "year": 2015,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/152_Assurance-Report-Jimma-Universitylaboratory-and-workshop-building-project.pdf"
+  },
+  {
+    "t": "Assurance report - Afdera Abala, road project",
+    "c": "Ethiopia",
+    "year": 2015,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2015/11/151_Assurance-Report-Afdera-Abala-road-project.pdf"
+  },
+  {
+    "t": "Honduras First Assurance Report",
+    "c": "Honduras",
+    "year": 2015,
+    "disc": 84.3,
+    "pro": 84.27,
+    "rea": null,
+    "proj": 13,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Honduras-First-Assurance-Report.pdf"
+  },
+  {
+    "t": "Guatemala Fourth Assurance Report (Spanish)",
+    "c": "Guatemala",
+    "year": 2014,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 37,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Guatemala-Fourth-Assurance-Report.pdf"
+  },
+  {
+    "t": "Malawi: SOS Mzuzu report",
+    "c": "Malawi",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/102_9.-SOS-Mzuzu.pdf"
+  },
+  {
+    "t": "Assurance Team Report: M40 Junction 15 (Longbridge) Bypass the Highways Agency",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/81_14.-Highways-M40-AT-Report.pdf"
+  },
+  {
+    "t": "Assurance Team Report Card: M40 Junction 15 (Longbridge) Bypass, the Highways Agency",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/80_13.-Highways-Agency-M40-AT-Card.pdf"
+  },
+  {
+    "t": "Ethiopia: Adiremet Dejena Dansha project and contract information",
+    "c": "Ethiopia",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/112_Ethiopia-Project-Information-test-ADIREMET-DEJENA-DANSHA.pdf"
+  },
+  {
+    "t": "Ethiopia: Mehalmeda Alemketema road project and contract information",
+    "c": "Ethiopia",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/111_MehalMeda-Alemketema-DISCLOSURE-Draft.pdf"
+  },
+  {
+    "t": "Ethiopia: Koga irrigation and watershed management project and contract information",
+    "c": "Ethiopia",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/110_Ethiopia-KOGA-IRRIGATION-AND-WATERSHED-MANAGEMENT-P_and_-C-INFO.pdf"
+  },
+  {
+    "t": "Ethiopia: Dabus Irrigation design project and contract information",
+    "c": "Ethiopia",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/109_DABUS-IRRIGATION-DESIGN-DISCLOSURE-Draft.pdf"
+  },
+  {
+    "t": "Ethiopia: Jimma University additional facility project and contract information",
+    "c": "Ethiopia",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/108_JIMMA-UNIVERSITY-P_and_-C-INFODraft.pdf"
+  },
+  {
+    "t": "Ethiopia: Butajira Gubre project and contract information",
+    "c": "Ethiopia",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/107_BUTAJIRA-GUBRE-DISCLOSURE1final.pdf"
+  },
+  {
+    "t": "Ethiopia: Gindeber Gobensa project and contract information",
+    "c": "Ethiopia",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/106_GINDEBER-GOBENSA-DISCLOSURE1final.pdf"
+  },
+  {
+    "t": "Ethiopia: Hossana University product and contract information",
+    "c": "Ethiopia",
+    "year": 2012,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/105_Hossana-University-P_and_-C-INFOfinal.pdf"
+  },
+  {
+    "t": "Ethiopia: St Paul’s Hospital product and contract information",
+    "c": "Ethiopia",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/104_St-paul-medical-college-P_and_-C-INFOfinal.pdf"
+  },
+  {
+    "t": "Malawi: Wasi Civil Engineering report",
+    "c": "Malawi",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/103_10.-Wasi-Civil-Engineering.pdf"
+  },
+  {
+    "t": "Malawi: Sale Civil Engineering report",
+    "c": "Malawi",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/101_8.-Sale-Civil-Engineering.pdf"
+  },
+  {
+    "t": "Malawi: Mota Engil report",
+    "c": "Malawi",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/100_7.-Mota-Engil-Report.pdf"
+  },
+  {
+    "t": "Malawi: MHC final report - Lilongwe Area 49 housing project",
+    "c": "Malawi",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 9,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": true,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/98_5.-MHC-Final-Report-Lilongwe-Area-49-Housing.pdf"
+  },
+  {
+    "t": "Malawi: MHC final report - Chilumba Garrison housing project",
+    "c": "Malawi",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/97_4.-MHC-Final-Report-Chilumba-Garrison-Housing-Project.pdf"
+  },
+  {
+    "t": "Malawi: NRWB Final Report - Project No. II",
+    "c": "Malawi",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2013/12/96_3.-NRWB-Final-Report-Project-No.-II.pdf"
+  },
+  {
+    "t": "Malawi: NRWB Final Report - Project No. I",
+    "c": "Malawi",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 9,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": true,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/95_2.-NRWB-Final-Report-Project-No.-I.pdf"
+  },
+  {
+    "t": "Tanzania: Ministry of Health project 2 data",
+    "c": "Tanzania",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/92_CoST-Project-MoH-2.pdf"
+  },
+  {
+    "t": "Tanzania: Ministry of Health project data",
+    "c": "Tanzania",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/91_CoST-Project-MoH-1.pdf"
+  },
+  {
+    "t": "Tanzania: Magol to Turiani data",
+    "c": "Tanzania",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/90_Cost-Data-Magol-to-Turiani.pdf"
+  },
+  {
+    "t": "Tanzania: Chalinze to Kitumbi data",
+    "c": "Tanzania",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/89_Cost-Data-Chalinze-to-Kitumbi.pdf"
+  },
+  {
+    "t": "Assurance Team Report Card: A46 Newark to Widmerpool Improvement Project, Highways Agency",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/82_15.-Highwasy-A46-AT-Card.pdf"
+  },
+  {
+    "t": "Assurance Team Report Card: Deptford Creek Frontages Package, the Environment Agency",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/78_11.-Environment-Agency-Deptford-Creek-AT-Card.pdf"
+  },
+  {
+    "t": "Assurance Team Report Card: Cobbins Brook Flood Alleviation Scheme, the Environment Agency",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/76_9.-Environement-Cobbins-Brook-AT-Card.pdf"
+  },
+  {
+    "t": "Assurance Team Report Card: Esh Winning Primary School Project, Durham County Council",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/74_7.-Durham-Esh-Winning-AT-Card.pdf"
+  },
+  {
+    "t": "Assurance Team Report Card: Brandon Primary School Project, Durham County Council",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2013/12/72_5.-Durham-Brandon-AT-Card.pdf"
+  },
+  {
+    "t": "Assurance Team Report Card Dowson School Project, Broadland Housing Association",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/70_3.-Broadlands-Dowson-AT-Card.pdf"
+  },
+  {
+    "t": "Assurance Team Report Card: Rockland St Mary Project, Broadland Housing Association",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2013/12/68_1.-Broadland-Housing-Rockland-AT-Card.pdf"
+  },
+  {
+    "t": "Guatemala Third Assurance Report (Spanish)",
+    "c": "Guatemala",
+    "year": 2013,
+    "disc": 54,
+    "pro": null,
+    "rea": null,
+    "proj": 25,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2011/09/CoST-Guatemala-Third-Assurance-Report.pdf"
+  },
+  {
+    "t": "Guatemala Second Assurance Report (Spanish)",
+    "c": "Guatemala",
+    "year": 2011,
+    "disc": 65.3,
+    "pro": 23.08,
+    "rea": null,
+    "proj": 13,
+    "overrun": true,
+    "prep": true,
+    "superv": false,
+    "law": true,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Guatemala-Second-Assurance-Report.pdf"
+  },
+  {
+    "t": "Guatemala First Assurance Report (Spanish)",
+    "c": "Guatemala",
+    "year": 2011,
+    "disc": 53,
+    "pro": 30,
+    "rea": 23,
+    "proj": 6,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": true,
+    "noAudit": false,
+    "noReach": true,
+    "fundGap": true,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2020/09/CoST-Guatemala-First-Assurance-Report.pdf"
+  },
+  {
+    "t": "Malawi assurance report 2010",
+    "c": "Malawi",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": true,
+    "prep": true,
+    "superv": true,
+    "law": false,
+    "noAudit": true,
+    "noReach": true,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/99_6.-Master-Construction-Report.pdf"
+  },
+  {
+    "t": "Assurance Team Report: A46 Newark to Widmerpool Improvement Project, Highways Agency",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/83_16.-Highways-A46-AT-Report.pdf"
+  },
+  {
+    "t": "Assurance Team Report: Deptford Creek Frontages Package, the Environment Agency",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/79_12.-Environment-Agency-Deptford-Creek-AT-Report.pdf"
+  },
+  {
+    "t": "Assurance Team Report: Cobbins Brook Flood Alleviation Scheme, the Environment Agency",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/77_10.-Environment-Cobbins-Brook-AT-Report.pdf"
+  },
+  {
+    "t": "Assurance Team Report: Esh Winning Primary School Project, Durham County Council",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": true,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/75_8.-Durham-County-Council-Esh-Winning-AT-Report.pdf"
+  },
+  {
+    "t": "Assurance Team Report: Dowson School Project, Broadland Housing Association",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/71_4.-Broadland-Housing-Dowson-AT-Report.pdf"
+  },
+  {
+    "t": "Assurance Team Report: Rockland St Mary Project, Broadland Housing Association",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/69_2.-Broadland-Housing-Rockland-AT-Report.pdf"
+  },
+  {
+    "t": "Assurance Team Report: Brandon Primary School Project, Durham County Council",
+    "c": "United Kingdom",
+    "year": null,
+    "disc": null,
+    "pro": null,
+    "rea": null,
+    "proj": 1,
+    "overrun": false,
+    "prep": false,
+    "superv": false,
+    "law": false,
+    "noAudit": false,
+    "noReach": false,
+    "fundGap": false,
+    "u": "https://infrastructuretransparency.org/wp-content/uploads/2018/06/73_6.-Durham-County-Council-Brandon-AT-Report.pdf"
+  }
+]</script>
 <script>
 (function(){
 "use strict";
-var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-var DOTS = JSON.parse(document.getElementById('dots').textContent);
-var W=1000, H=1000; // viewBox units
-var NS='http://www.w3.org/2000/svg';
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var D=JSON.parse(document.getElementById('data').textContent);
+var SC=JSON.parse(document.getElementById('scorecard').textContent);
+var years=D.years; // [{year,n,avgDisc,lawPct,delivPct,reports:[...]}]
+var W=1000,H=1000,NS='http://www.w3.org/2000/svg';
+var svg=document.getElementById('viz'); svg.setAttribute('viewBox','0 0 '+W+' '+H);
+function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+function rnd(i,s){var x=Math.sin((i+1)*12.9898+(s||0)*78.233)*43758.5453;return x-Math.floor(x);}
+var PAD={l:120,r:90,t:150,b:120};
+function xAt(yr){var i=years.findIndex(function(y){return y.year===yr;});return PAD.l+(W-PAD.l-PAD.r)*(i/(years.length-1));}
+function yAt(pct){return PAD.t+(H-PAD.t-PAD.b)*(1-pct/100);}
 
-// deterministic pseudo-random (no Math.random, vary by id)
-function rnd(i,s){ var x=Math.sin((i+1)*12.9898+(s||0)*78.233)*43758.5453; return x-Math.floor(x); }
-function el(tag,attrs){ var e=document.createElementNS(NS,tag); for(var k in attrs) e.setAttribute(k,attrs[k]); return e; }
-function lerp(a,b,t){ return a+(b-a)*t; }
-function discColor(d){ // green scale by disclosure
-  var t=Math.max(0,Math.min(1,d/100));
-  return 'rgb('+Math.round(lerp(120,60,t))+','+Math.round(lerp(150,210,t))+','+Math.round(lerp(120,170,t))+')';
+var gGrid=el('g',{}),gBig=el('g',{}),gBand=el('g',{}),gLines=el('g',{}),gDots=el('g',{}),gLbl=el('g',{});
+[gGrid,gBig,gBand,gLines,gDots,gLbl].forEach(function(g){svg.appendChild(g);});
+
+function grid(){
+  gGrid.innerHTML='';
+  [0,25,50,75,100].forEach(function(p){var y=yAt(p);gGrid.appendChild(el('line',{x1:PAD.l,y1:y,x2:W-PAD.r,y2:y,class:'gl'}));
+    var t=el('text',{x:PAD.l-12,y:y+4,class:'tk','text-anchor':'end'});t.textContent=p+'%';gGrid.appendChild(t);});
+  years.forEach(function(yr){var t=el('text',{x:xAt(yr.year),y:H-PAD.b+34,class:'tk','text-anchor':'middle'});t.textContent=yr.year;gGrid.appendChild(t);});
 }
+function bigYear(yr){gBig.innerHTML='';var t=el('text',{x:W/2,y:H/2+60,class:'yearbig','text-anchor':'middle','font-size':340});t.textContent=yr;gBig.appendChild(t);}
 
-// ---------- MACHINE 1 ----------
-function buildMachine(svgId, dots){
-  var svg=document.getElementById(svgId);
-  svg.setAttribute('viewBox','0 0 '+W+' '+H);
-  var gAxis=el('g',{}); svg.appendChild(gAxis);
-  var gLabel=el('g',{}); svg.appendChild(gLabel);
-  var gDots=el('g',{}); svg.appendChild(gDots);
-  var nodes=dots.map(function(d){
-    var r=14;
-    var c=el('circle',{class:'dot', r:r, cx:W/2, cy:H/2, fill:discColor(d.disc), 'fill-opacity':.92,
-      cx0:W/2, 'data-id':d.id});
-    c.__d=d; gDots.appendChild(c);
-    return c;
-  });
-  return {svg:svg, gAxis:gAxis, gLabel:gLabel, nodes:nodes, dots:dots};
-}
-function clearG(g){ while(g.firstChild) g.removeChild(g.firstChild); }
-function txt(g,x,y,s,cls,anchor){ var t=el('text',{x:x,y:y,class:cls,'text-anchor':anchor||'start'}); t.textContent=s; g.appendChild(t); return t; }
-function line(g,x1,y1,x2,y2){ g.appendChild(el('line',{x1:x1,y1:y1,x2:x2,y2:y2,class:'axis-line'})); }
-
-var m1 = buildMachine('viz', DOTS);
-
-// disclosure y-scale: 0% at bottom (H-90), 100% at top (110)
-function discY(d){ return lerp(H-110, 120, Math.max(0,Math.min(1,d/100))); }
-
-function m1_cloud(){
-  clearG(m1.gAxis); clearG(m1.gLabel);
-  m1.nodes.forEach(function(c,i){
-    var ang=rnd(i,1)*Math.PI*2, rad=160+rnd(i,2)*230;
-    c.setAttribute('r',13);
-    c.setAttribute('cx', W/2+Math.cos(ang)*rad*0.95);
-    c.setAttribute('cy', H/2+Math.sin(ang)*rad*0.62);
-    c.setAttribute('fill', discColor(c.__d.disc));
-    c.classList.toggle('glow', c.__d.disc>=98);
-  });
-  txt(m1.gLabel, W/2, 70, '32 ASSURANCE REPORTS', 'stage-sub', 'middle').setAttribute('font-size','16');
-}
-function m1_sort(showTime){
-  clearG(m1.gAxis); clearG(m1.gLabel);
-  // y axis
-  line(m1.gAxis, 120, 110, 120, H-110);
-  [0,25,50,75,100].forEach(function(p){
-    var y=discY(p); line(m1.gAxis, 116, y, W-60, y);
-    txt(m1.gLabel, 104, y+4, p+'%', 'tick-label','end');
-  });
-  txt(m1.gLabel, 120, 92, 'SHARE OF REQUIRED DATA PUBLISHED', 'axis-label','start');
-  // x: spread by cycle/time if showTime else by index
-  var byTime = m1.dots.map(function(d,i){return i;});
-  var n=m1.nodes.length;
-  m1.nodes.forEach(function(c,i){
-    var col = i; // already sorted ascending by disc in data
-    var x = lerp(200, W-120, n>1? col/(n-1):0.5);
-    // jitter x a touch so equal-disc dots don't stack
-    x += (rnd(i,3)-0.5)*26;
-    c.setAttribute('r', c.__d.disc>=98? 18:13);
-    c.setAttribute('cx', x);
-    c.setAttribute('cy', discY(c.__d.disc));
-    c.classList.toggle('glow', c.__d.disc>=98);
+// dots: one per report per year, scattered around that year's column
+var allDots=[];
+years.forEach(function(yr){ yr.reports.forEach(function(rep,j){
+  var c=el('circle',{class:'dot',r:8,cx:xAt(yr.year),cy:PAD.t-90,'fill-opacity':.9,fill:'#6f6a61'});
+  c.__yr=yr.year; c.__j=j; c.__rep=rep; gDots.appendChild(c); allDots.push(c);
+});});
+function scatterDots(uptoYear, mode){
+  allDots.forEach(function(c){
+    var show = c.__yr<=uptoYear;
+    c.setAttribute('opacity', show?1:0);
+    if(!show){ c.setAttribute('cy',PAD.t-90); return; }
+    var bx=xAt(c.__yr)+(rnd(c.__yr*7+c.__j,1)-0.5)*70;
+    var by;
+    if(mode==='cloud'){ by=H/2+(rnd(c.__yr+c.__j,2)-0.5)*260; c.setAttribute('fill','#7a756a'); }
+    else if(mode==='law'){ by=yAt(yearOf(c.__yr).lawPct)+(rnd(c.__yr+c.__j,3)-0.5)*44; c.setAttribute('fill', c.__rep.law?'var(--rise)':'#55514a'); }
+    else { by=yAt(yearOf(c.__yr).delivPct)+(rnd(c.__yr+c.__j,4)-0.5)*40; c.setAttribute('fill', (c.__rep.over||c.__rep.prep)?'var(--stuck)':'#55514a'); }
+    c.setAttribute('cx',bx); c.setAttribute('cy',by);
   });
 }
-function m1_honduras(){
-  m1_sort(true);
-  // headline the top dot
-  var top = m1.nodes.reduce(function(a,b){ return b.__d.disc> a.__d.disc? b:a; });
-  top.setAttribute('r',24); top.classList.add('glow');
-  var tx=+top.getAttribute('cx'), ty=+top.getAttribute('cy');
-  txt(m1.gLabel, Math.min(tx, W-260), ty-40, 'Honduras, 5th Report', 'stage-title','start').setAttribute('font-size','26');
-  txt(m1.gLabel, Math.min(tx, W-260), ty-14, '98.1% disclosed', 'stage-sub','start').setAttribute('font-size','15');
+function yearOf(y){return years.find(function(x){return x.year===y;});}
+
+function path(pts){return pts.map(function(p,i){return (i?'L':'M')+p[0]+' '+p[1];}).join(' ');}
+function drawRise(upto){
+  var pts=years.filter(function(y){return y.year<=upto;}).map(function(y){return [xAt(y.year),yAt(y.lawPct)];});
+  var p=gLines.querySelector('.path-rise')||gLines.appendChild(el('path',{class:'path-rise'}));
+  p.setAttribute('d',path(pts));
+  var l=gLbl.querySelector('.lbl-rise'); if(!l){l=el('text',{class:'linelbl lbl-rise',fill:'var(--rise-hi)','text-anchor':'start'});gLbl.appendChild(l);}
+  var last=pts[pts.length-1]; l.setAttribute('x',last[0]+14); l.setAttribute('y',last[1]+22); l.textContent='STANDARD IN LAW';
+}
+function drawStuck(upto){
+  var pts=years.filter(function(y){return y.year<=upto;}).map(function(y){return [xAt(y.year),yAt(y.delivPct)];});
+  var p=gLines.querySelector('.path-stuck')||gLines.appendChild(el('path',{class:'path-stuck'}));
+  p.setAttribute('d',path(pts));
+  var l=gLbl.querySelector('.lbl-stuck'); if(!l){l=el('text',{class:'linelbl lbl-stuck',fill:'var(--stuck)','text-anchor':'start'});gLbl.appendChild(l);}
+  var last=pts[pts.length-1]; l.setAttribute('x',last[0]+14); l.setAttribute('y',last[1]-10); l.textContent='DELIVERY FAILURE';
+}
+function clearLine(cls){var p=gLines.querySelector('.'+cls);if(p)p.remove();var lc=cls==='path-rise'?'lbl-rise':'lbl-stuck';var l=gLbl.querySelector('.'+lc);if(l)l.remove();}
+function gapBand(on){
+  var b=gBand.querySelector('.gapband');
+  if(!b){b=el('path',{class:'gapband'});gBand.appendChild(b);}
+  var top=years.map(function(y){return [xAt(y.year),yAt(y.delivPct)];});           // delivery (high)
+  var bot=years.map(function(y){return [xAt(y.year),yAt(y.lawPct)];}).reverse();    // law (lower), reversed to close
+  var d='M'+top.map(function(p){return p[0]+' '+p[1];}).join(' L')
+       +' L'+bot.map(function(p){return p[0]+' '+p[1];}).join(' L')+' Z';
+  b.setAttribute('d',d);
+  b.style.opacity=on?1:0;
 }
 
-// ---------- MACHINE 2 (reveal): disclosure on Y, reach on X ----------
-var m2 = buildMachine('viz2', DOTS);
-function reachX(d, dropped){
-  // reach is the collective finding: nearly all pinned to the left/floor.
-  // give a tiny deterministic spread so dots are distinct, but all low.
-  if(!dropped) return discX_mirror(d); // start where they were (mirror of sort x)
-  return lerp(150, 260, rnd(d.id,5)); // all crowd the left wall
-}
-function discX_mirror(d){
-  var i=m2.dots.indexOf(m2.dots.find(function(x){return x.id===d.id;}));
-  var n=m2.dots.length; return lerp(200, W-120, n>1? i/(n-1):0.5);
-}
-function m2_axes(){
-  clearG(m2.gAxis); clearG(m2.gLabel);
-  line(m2.gAxis, 130, 110, 130, H-110);            // Y disclosure
-  line(m2.gAxis, 130, H-110, W-80, H-110);          // X reach
-  [0,50,100].forEach(function(p){ var y=discY(p); txt(m2.gLabel,114,y+4,p+'%','tick-label','end'); });
-  txt(m2.gLabel, 130, 92, 'DISCLOSED ↑', 'axis-label','start');
-  txt(m2.gLabel, W-80, H-80, 'REACHABLE BY THE PUBLIC →', 'axis-label','end');
-}
-function m2_init(){
-  m2_axes();
-  m2.nodes.forEach(function(c){
-    c.setAttribute('r', c.__d.disc>=98?18:13);
-    c.setAttribute('cy', discY(c.__d.disc));
-    c.setAttribute('cx', discX_mirror(c.__d));
-    c.setAttribute('fill', discColor(c.__d.disc));
-    c.classList.toggle('glow', c.__d.disc>=98);
-  });
-}
-function m2_drop(){
-  m2_axes();
-  m2.nodes.forEach(function(c,i){
-    // KEEP height (disclosure), collapse X to the left wall (reach≈low)
-    c.setAttribute('cy', discY(c.__d.disc));
-    c.setAttribute('cx', reachX(c.__d, true));
-    c.setAttribute('fill', 'var(--reach)');
-    c.setAttribute('fill-opacity', .85);
-    c.classList.remove('glow');
-  });
-}
-function m2_gap(){
-  m2_drop();
-  // draw the gap: a band from where they were (high reach implied) to where they are
-  txt(m2.gLabel, W*0.62, discY(40), 'published, but', 'stage-title','middle').setAttribute('font-size','24');
-  txt(m2.gLabel, W*0.62, discY(40)+30, 'out of reach', 'stage-title','middle').setAttribute('font-size','24');
+// stages
+function render(stage){
+  grid();
+  var lastYr=years[years.length-1].year;
+  if(stage===0){ bigYear(2015); clearLine('path-rise'); clearLine('path-stuck'); gapBand(false); scatterDots(2015,'cloud'); }
+  else if(stage===1){ bigYear(lastYr); clearLine('path-stuck'); gapBand(false); drawRise(lastYr); scatterDots(lastYr,'law'); }
+  else if(stage===2){ bigYear(lastYr); drawRise(lastYr); drawStuck(2016); gapBand(false); scatterDots(lastYr,'deliv'); }
+  else if(stage===3){ bigYear(lastYr); drawRise(lastYr); drawStuck(lastYr); gapBand(false); scatterDots(lastYr,'deliv'); }
+  else if(stage===4){ bigYear(lastYr); drawRise(lastYr); drawStuck(lastYr); gapBand(true); scatterDots(lastYr,'deliv'); }
 }
 
-// ---------- scroll driver (race-proof, most-centered) ----------
-function driver(selector, apply){
-  var secs=[].slice.call(document.querySelectorAll(selector));
-  var ratios={};
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){ ratios[e.target.dataset.stage]= e.isIntersecting? e.intersectionRatio:0; });
-    var best=null,bestR=0;
-    for(var k in ratios){ if(ratios[k]>bestR){bestR=ratios[k];best=k;} }
-    if(best!==null && bestR>0.12) apply(+best);
-  },{threshold:[0,.12,.4,.7,1]});
-  secs.forEach(function(s){ io.observe(s); });
-}
+var cur=-1, ratios={};
+new IntersectionObserver(function(es){
+  es.forEach(function(e){ratios[e.target.dataset.stage]=e.isIntersecting?e.intersectionRatio:0;});
+  var best=null,bestR=0; for(var k in ratios){if(ratios[k]>bestR){bestR=ratios[k];best=+k;}}
+  if(best!==null&&bestR>0.12&&best!==cur){cur=best;render(best);}
+},{threshold:[0,.12,.4,.7,1]}).observe;
+[].slice.call(document.querySelectorAll('.track section')).forEach(function(s){
+  new IntersectionObserver(function(es){es.forEach(function(e){ratios[e.target.dataset.stage]=e.isIntersecting?e.intersectionRatio:0;});var best=null,bestR=0;for(var k in ratios){if(ratios[k]>bestR){bestR=ratios[k];best=+k;}}if(best!==null&&bestR>0.12&&best!==cur){cur=best;render(best);}},{threshold:[0,.12,.4,.7,1]}).observe(s);
+});
+render(0); if(reduce) render(4);
 
-var cur1=-1;
-function stage1(s){ if(s===cur1)return; cur1=s;
-  if(s===0) m1_cloud(); else if(s===1) m1_sort(false); else if(s===2) m1_sort(true); else if(s===3) m1_honduras();
-}
-var cur2=-1;
-function stage2(s){ if(s===cur2)return; cur2=s;
-  if(s===10) m2_init(); else if(s===11) m2_drop(); else if(s===12) m2_gap();
-}
-driver('.track section[data-stage="0"],.track section[data-stage="1"],.track section[data-stage="2"],.track section[data-stage="3"]', stage1);
-driver('.track section[data-stage="10"],.track section[data-stage="11"],.track section[data-stage="12"]', stage2);
-
-// initial paint
-m1_cloud(); m2_init();
-if(reduce){ m1_honduras(); m2_gap(); }
-
-// ---------- predict ----------
-var g=document.getElementById('guess'), gv=document.getElementById('guessVal'),
-    pw=document.getElementById('predict'), rb=document.getElementById('revealBtn');
-g.addEventListener('input',function(){ gv.textContent=g.value; });
-rb.addEventListener('click',function(){ pw.classList.add('done'); });
-
-// ---------- coda explore ----------
-var ex=document.getElementById('explore');
-var sorted=DOTS.slice().sort(function(a,b){return b.disc-a.disc;});
-ex.innerHTML=sorted.map(function(d){
-  return '<div class="cell"><div class="pct">'+d.disc+'%</div><div class="ct">'+esc(d.c)+'</div><div class="nm">'+esc(d.t)+'</div></div>';
+// coda bars (real corpus counts)
+var T=D.totals;
+var bars=[
+  {lab:'Cost or time overruns',v:T.overrun,g:false},
+  {lab:'Weak project preparation',v:T.prep,g:false},
+  {lab:'Standard written into law',v:T.law,g:true},
+  {lab:'Missing audit reports',v:T.noAudit,g:false},
+  {lab:'Compromised supervision',v:T.superv,g:false}
+].sort(function(a,b){return b.v-a.v;});
+document.getElementById('bars').innerHTML=bars.map(function(b){
+  var pct=Math.round(b.v/T.rows*100);
+  return '<div class="barrow"><div class="lab">'+b.lab+'</div><div class="tr"><div class="fl'+(b.g?' g':'')+'" style="width:'+pct+'%"></div></div><div class="v" style="color:'+(b.g?'var(--rise)':'var(--stuck)')+'">'+b.v+'</div></div>';
 }).join('');
-function esc(s){return String(s||'').replace(/[<>&]/g,function(m){return({'<':'&lt;','>':'&gt;','&':'&amp;'})[m];});}
 
-// ---------- downloads ----------
-function dl(name,type,content){var b=new Blob([content],{type:type}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove();},100);}
+// downloads
+function dl(n,t,c){var b=new Blob([c],{type:t}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove();},100);}
 function cell(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"';}
-function csv(){var h=['report','country','disclosure_pct_as_reported','summary','source_url','confidence'];var L=[h.map(cell).join(',')];DOTS.forEach(function(d){L.push([d.t,d.c,d.disc,d.s,d.u,'as reported in source'].map(cell).join(','));});return L.join('\r\n');}
-function xls(){function c(v){return '<Cell><Data ss:Type="String">'+esc(v)+'</Data></Cell>';}var rows=DOTS.map(function(d){return '<Row>'+[d.t,d.c,String(d.disc),d.u,'as reported'].map(c).join('')+'</Row>';}).join('');return '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Worksheet ss:Name="Reports"><Table><Row>'+['report','country','disclosure_pct','source_url','confidence'].map(c).join('')+'</Row>'+rows+'</Table></Worksheet></Workbook>';}
-document.getElementById('dlJson').onclick=function(){dl('cost-assurance-disclosure.json','application/json',JSON.stringify(DOTS,null,2));};
-document.getElementById('dlCsv').onclick=function(){dl('cost-assurance-disclosure.csv','text/csv',csv());};
-document.getElementById('dlXls').onclick=function(){dl('cost-assurance-disclosure.xls','application/vnd.ms-excel',xls());};
+function csv(){var h=['report','country','year','disclosure_pct','overrun','weak_preparation','compromised_supervision','standard_in_law','missing_audit','public_cannot_use','source_url','confidence'];var L=[h.map(cell).join(',')];SC.forEach(function(d){L.push([d.t,d.c,d.year,d.disc,d.overrun,d.prep,d.superv,d.law,d.noAudit,d.noReach,d.u,'as reported in source'].map(cell).join(','));});return L.join('\r\n');}
+function xls(){function c(v){return '<Cell><Data ss:Type="String">'+String(v==null?'':v).replace(/[<>&]/g,function(m){return({'<':'&lt;','>':'&gt;','&':'&amp;'})[m];})+'</Data></Cell>';}var rows=SC.map(function(d){return '<Row>'+[d.t,d.c,d.year,d.disc,d.overrun,d.prep,d.law,d.u].map(c).join('')+'</Row>';}).join('');return '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Worksheet ss:Name="Scorecard"><Table><Row>'+['report','country','year','disclosure_pct','overrun','prep_fail','in_law','source_url'].map(c).join('')+'</Row>'+rows+'</Table></Worksheet></Workbook>';}
+document.getElementById('dlJson').onclick=function(){dl('cost-assurance-scorecard.json','application/json',JSON.stringify(SC,null,2));};
+document.getElementById('dlCsv').onclick=function(){dl('cost-assurance-scorecard.csv','text/csv',csv());};
+document.getElementById('dlXls').onclick=function(){dl('cost-assurance-scorecard.xls','application/vnd.ms-excel',xls());};
 })();
 </script>
 </body>
