@@ -44,12 +44,31 @@ a{color:var(--rise-hi)}
 .tk{fill:#6e695f;font-family:var(--mono);font-size:11px}
 .yearbig{fill:var(--paper);font-family:var(--serif);font-weight:700;opacity:.13}
 .linelbl{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.charttitle{fill:var(--paper);font-family:var(--serif);font-weight:700;font-size:30px}
+.chartsub{fill:var(--muted);font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.axistitle{fill:#8f897e;font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.dotkey{font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+.dotkey-t{fill:#a39d92}
+.isolbl{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.06em;opacity:0;pointer-events:none;transition:opacity .6s,fill .6s}
 .dot{transition:cx 1s cubic-bezier(.4,0,.2,1),cy 1s cubic-bezier(.4,0,.2,1),opacity .6s,fill .6s}
 .path-rise{fill:none;stroke:var(--rise);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(91,191,151,.4))}
 .path-stuck{fill:none;stroke:var(--stuck);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(207,107,58,.4))}
 .gapband{fill:url(#gapgrad);opacity:.0;transition:opacity .8s}
 .dot{cursor:pointer}
 .dot:hover,.dot.lit{stroke:var(--paper);stroke-width:2.5}
+@keyframes dotpulse{0%{r:8}50%{r:13}100%{r:8}}
+.dot.pulse{animation:dotpulse 1.1s ease-in-out 2}
+
+/* persistent how-to-read hint, anchored over the chart; not dependent on scrolling */
+#howto{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:55;display:flex;align-items:center;gap:14px;background:rgba(16,14,10,.92);backdrop-filter:blur(8px);border:1px solid #34302a;border-radius:30px;padding:9px 18px;box-shadow:0 10px 30px rgba(0,0,0,.5);transition:opacity .5s ease;font-family:var(--sans);font-size:13.5px;color:#d6d0c5}
+#howto.hide{opacity:0;pointer-events:none}
+#howto .hk{display:inline-flex;align-items:center;gap:6px}
+#howto .hk b{color:var(--paper);font-weight:600}
+#howto .pip{width:10px;height:10px;border-radius:50%;background:var(--stuck);display:inline-block;box-shadow:0 0 0 0 rgba(207,107,58,.6);animation:hpip 1.6s ease-out infinite}
+@keyframes hpip{0%{box-shadow:0 0 0 0 rgba(207,107,58,.55)}70%{box-shadow:0 0 0 9px rgba(207,107,58,0)}100%{box-shadow:0 0 0 0 rgba(207,107,58,0)}}
+#howto .sep{width:1px;height:18px;background:#3a352e}
+@media(prefers-reduced-motion:reduce){.dot.pulse{animation:none}#howto .pip{animation:none}}
+@media(max-width:680px){#howto{font-size:12px;gap:9px;padding:8px 14px;bottom:16px}}
 
 /* report insight card on hover */
 #card{position:fixed;z-index:60;max-width:320px;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .14s ease,transform .14s ease;background:rgba(16,14,10,.97);backdrop-filter:blur(10px);border:1px solid #34302a;border-left-width:3px;border-radius:3px;padding:14px 16px;box-shadow:0 16px 44px rgba(0,0,0,.6)}
@@ -116,6 +135,14 @@ footer b{color:var(--paper)}
 </div>
 
 <div id="card" role="tooltip" aria-hidden="true"></div>
+
+<div id="howto">
+  <span class="hk"><span class="pip"></span><span>Each <b>dot</b> is one report: colour is the finding, code is the country</span></span>
+  <span class="sep"></span>
+  <span class="hk"><b>Hover</b> a dot to read it</span>
+  <span class="sep"></span>
+  <span class="hk"><b>Scroll</b> to play the decade</span>
+</div>
 
 <section class="cover">
   <div class="eyebrow">CoST · 95 independent assurance reports, one decade</div>
@@ -1832,45 +1859,90 @@ var W=1000,H=1000,NS='http://www.w3.org/2000/svg';
 var svg=document.getElementById('viz'); svg.setAttribute('viewBox','0 0 '+W+' '+H);
 function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
 function rnd(i,s){var x=Math.sin((i+1)*12.9898+(s||0)*78.233)*43758.5453;return x-Math.floor(x);}
-var PAD={l:120,r:90,t:150,b:120};
+var PAD={l:150,r:90,t:150,b:140};
 function xAt(yr){var i=years.findIndex(function(y){return y.year===yr;});return PAD.l+(W-PAD.l-PAD.r)*(i/(years.length-1));}
 function yAt(pct){return PAD.t+(H-PAD.t-PAD.b)*(1-pct/100);}
 
-var gGrid=el('g',{}),gBig=el('g',{}),gBand=el('g',{}),gLines=el('g',{}),gDots=el('g',{}),gLbl=el('g',{});
-[gGrid,gBig,gBand,gLines,gDots,gLbl].forEach(function(g){svg.appendChild(g);});
+var gGrid=el('g',{}),gBig=el('g',{}),gBand=el('g',{}),gLines=el('g',{}),gDots=el('g',{}),gLbl=el('g',{}),gFurn=el('g',{});
+// draw order: grid, big watermark year, gap band, lines, dots, line-labels, then furniture (titles/axis labels) on top
+[gGrid,gBig,gBand,gLines,gDots,gLbl,gFurn].forEach(function(g){svg.appendChild(g);});
 
 function grid(){
   gGrid.innerHTML='';
   [0,25,50,75,100].forEach(function(p){var y=yAt(p);gGrid.appendChild(el('line',{x1:PAD.l,y1:y,x2:W-PAD.r,y2:y,class:'gl'}));
     var t=el('text',{x:PAD.l-12,y:y+4,class:'tk','text-anchor':'end'});t.textContent=p+'%';gGrid.appendChild(t);});
   years.forEach(function(yr){var t=el('text',{x:xAt(yr.year),y:H-PAD.b+34,class:'tk','text-anchor':'middle'});t.textContent=yr.year;gGrid.appendChild(t);});
+  // x-axis title
+  var xt=el('text',{x:(PAD.l+(W-PAD.r))/2,y:H-PAD.b+72,class:'axistitle','text-anchor':'middle'});xt.textContent='Year report published';gGrid.appendChild(xt);
+  // y-axis title (rotated)
+  var yt=el('text',{x:0,y:0,class:'axistitle','text-anchor':'middle',transform:'translate('+(PAD.l-78)+','+((PAD.t+(H-PAD.b))/2)+') rotate(-90)'});yt.textContent='Share of that year’s reports';gGrid.appendChild(yt);
 }
-function bigYear(yr){gBig.innerHTML='';var t=el('text',{x:W/2,y:H/2+60,class:'yearbig','text-anchor':'middle','font-size':340});t.textContent=yr;gBig.appendChild(t);}
+// year watermark removed: it implied a single-year snapshot and undercut the decade-long progression.
+function bigYear(){gBig.innerHTML='';}
+
+// per-stage chart title + dot key (cardinal rules: every chart frame is titled and keyed)
+var STAGE_TITLE=[
+  {t:'Each dot is one assurance report',s:'CoST · 95 reports · 2015 to 2021'},
+  {t:'The transparency standard climbs into law',s:'Green line · share of reports recording it'},
+  {t:'Delivery failure enters the same chart',s:'Rust line · share flagging overruns or weak prep'},
+  {t:'The failure line never comes down',s:'Both series · one 0 to 100% scale'},
+  {t:'The gap between the two lines is the finding',s:'Law rose · delivery failure held'}
+];
+function chartFurniture(stage){
+  gFurn.innerHTML='';
+  var meta=STAGE_TITLE[stage]||STAGE_TITLE[0];
+  // chart title block, top-left of plot
+  var tt=el('text',{x:PAD.l,y:PAD.t-66,class:'charttitle'});tt.textContent=meta.t;gFurn.appendChild(tt);
+  var st=el('text',{x:PAD.l,y:PAD.t-40,class:'chartsub'});st.textContent=meta.s;gFurn.appendChild(st);
+  // dot key, top-right of plot: what a single dot encodes (colour = finding, code = country)
+  var kx=W-PAD.r, ky=PAD.t-58;
+  var kcap=el('text',{x:kx,y:ky-26,class:'dotkey','text-anchor':'end',fill:'#7c766b'});kcap.textContent='ONE DOT = ONE REPORT';gFurn.appendChild(kcap);
+  // colour legend row
+  var k1=el('circle',{cx:kx-300,cy:ky-4,r:7,fill:'var(--rise)'});gFurn.appendChild(k1);
+  var k1t=el('text',{x:kx-286,y:ky,class:'dotkey dotkey-t','text-anchor':'start'});k1t.textContent='standard in law';gFurn.appendChild(k1t);
+  var k2=el('circle',{cx:kx-150,cy:ky-4,r:7,fill:'var(--stuck)'});gFurn.appendChild(k2);
+  var k2t=el('text',{x:kx-136,y:ky,class:'dotkey dotkey-t','text-anchor':'start'});k2t.textContent='failure flagged';gFurn.appendChild(k2t);
+  // country-code legend row
+  var k3=el('circle',{cx:kx-300,cy:ky+22,r:7,fill:'#55514a'});gFurn.appendChild(k3);
+  var k3lbl=el('text',{x:kx-289,y:ky+27,class:'isolbl','text-anchor':'start',fill:'#a39d92','style':'opacity:1'});k3lbl.textContent='UGA';gFurn.appendChild(k3lbl);
+  var k3t=el('text',{x:kx-258,y:ky+26,class:'dotkey dotkey-t','text-anchor':'start'});k3t.textContent='country code (UGA = Uganda)';gFurn.appendChild(k3t);
+}
 
 // join each viz report to its richer scorecard twin (by title) for source URL + extra flags
 var scByTitle={}; SC.forEach(function(s){ scByTitle[s.t]=s; });
 
-// dots: one per report per year, scattered around that year's column
+// ISO-style 3-letter codes so each dot says its country without a hover
+var ISO3={Guatemala:'GTM',Honduras:'HND',Ethiopia:'ETH',Ukraine:'UKR',Malawi:'MWI',Tanzania:'TZA',Thailand:'THA',Uganda:'UGA',Afghanistan:'AFG','El Salvador':'SLV',Ghana:'GHA','Costa Rica':'CRI'};
+function iso3(c){return ISO3[c]||(c?c.slice(0,3).toUpperCase():'');}
+
+// dots: one per report per year, scattered around that year's column.
+// each dot is paired with a small country code that scatters with it.
 var allDots=[];
 years.forEach(function(yr){ yr.reports.forEach(function(rep,j){
   var c=el('circle',{class:'dot',r:8,cx:xAt(yr.year),cy:PAD.t-90,'fill-opacity':.9,fill:'#6f6a61'});
-  c.__yr=yr.year; c.__j=j; c.__rep=rep; c.__sc=scByTitle[rep.t]||null;
+  var lbl=el('text',{class:'isolbl','text-anchor':'start',x:xAt(yr.year),y:PAD.t-90});
+  lbl.textContent=iso3(rep.c);
+  c.__yr=yr.year; c.__j=j; c.__rep=rep; c.__sc=scByTitle[rep.t]||null; c.__lbl=lbl;
   c.setAttribute('tabindex','0');
   c.setAttribute('role','button');
   c.setAttribute('aria-label', rep.t+', '+rep.c+', '+yr.year);
-  gDots.appendChild(c); allDots.push(c);
+  gDots.appendChild(c); gDots.appendChild(lbl); allDots.push(c);
 });});
 function scatterDots(uptoYear, mode){
   allDots.forEach(function(c){
     var show = c.__yr<=uptoYear;
     c.setAttribute('opacity', show?1:0);
+    c.__lbl.setAttribute('opacity', show?1:0);
     if(!show){ c.setAttribute('cy',PAD.t-90); return; }
     var bx=xAt(c.__yr)+(rnd(c.__yr*7+c.__j,1)-0.5)*70;
     var by;
-    if(mode==='cloud'){ by=H/2+(rnd(c.__yr+c.__j,2)-0.5)*260; c.setAttribute('fill','#7a756a'); }
+    if(mode==='cloud'){ by=yAt(50)+(rnd(c.__yr+c.__j,2)-0.5)*300; c.setAttribute('fill','#7a756a'); }
     else if(mode==='law'){ by=yAt(yearOf(c.__yr).lawPct)+(rnd(c.__yr+c.__j,3)-0.5)*44; c.setAttribute('fill', c.__rep.law?'var(--rise)':'#55514a'); }
     else { by=yAt(yearOf(c.__yr).delivPct)+(rnd(c.__yr+c.__j,4)-0.5)*40; c.setAttribute('fill', (c.__rep.over||c.__rep.prep)?'var(--stuck)':'#55514a'); }
     c.setAttribute('cx',bx); c.setAttribute('cy',by);
+    // place the country code just right of the dot, vertically centred
+    c.__lbl.setAttribute('x',bx+11); c.__lbl.setAttribute('y',by+4);
+    c.__lbl.setAttribute('fill', c.getAttribute('fill'));
   });
 }
 function yearOf(y){return years.find(function(x){return x.year===y;});}
@@ -1902,15 +1974,16 @@ function gapBand(on){
   b.style.opacity=on?1:0;
 }
 
-// stages
+// stages — the full decade is on screen from the first frame; stages add lines + meaning on top
 function render(stage){
   grid();
+  chartFurniture(stage);
   var lastYr=years[years.length-1].year;
-  if(stage===0){ bigYear(2015); clearLine('path-rise'); clearLine('path-stuck'); gapBand(false); scatterDots(2015,'cloud'); }
-  else if(stage===1){ bigYear(lastYr); clearLine('path-stuck'); gapBand(false); drawRise(lastYr); scatterDots(lastYr,'law'); }
-  else if(stage===2){ bigYear(lastYr); drawRise(lastYr); drawStuck(2016); gapBand(false); scatterDots(lastYr,'deliv'); }
-  else if(stage===3){ bigYear(lastYr); drawRise(lastYr); drawStuck(lastYr); gapBand(false); scatterDots(lastYr,'deliv'); }
-  else if(stage===4){ bigYear(lastYr); drawRise(lastYr); drawStuck(lastYr); gapBand(true); scatterDots(lastYr,'deliv'); }
+  if(stage===0){ clearLine('path-rise'); clearLine('path-stuck'); gapBand(false); scatterDots(lastYr,'cloud'); }
+  else if(stage===1){ clearLine('path-stuck'); gapBand(false); drawRise(lastYr); scatterDots(lastYr,'law'); }
+  else if(stage===2){ drawRise(lastYr); drawStuck(lastYr); gapBand(false); scatterDots(lastYr,'deliv'); }
+  else if(stage===3){ drawRise(lastYr); drawStuck(lastYr); gapBand(false); scatterDots(lastYr,'deliv'); }
+  else if(stage===4){ drawRise(lastYr); drawStuck(lastYr); gapBand(true); scatterDots(lastYr,'deliv'); }
 }
 
 var cur=-1, ratios={};
@@ -1923,6 +1996,19 @@ new IntersectionObserver(function(es){
   new IntersectionObserver(function(es){es.forEach(function(e){ratios[e.target.dataset.stage]=e.isIntersecting?e.intersectionRatio:0;});var best=null,bestR=0;for(var k in ratios){if(ratios[k]>bestR){bestR=ratios[k];best=+k;}}if(best!==null&&bestR>0.12&&best!==cur){cur=best;render(best);}},{threshold:[0,.12,.4,.7,1]}).observe(s);
 });
 render(0); if(reduce) render(4);
+
+// onboarding: pulse the visible dots once so they read as interactive; dismiss the hint on first real hover
+var howto=document.getElementById('howto');
+function dismissHowto(){ if(howto){howto.classList.add('hide');} }
+if(!reduce){
+  setTimeout(function(){
+    allDots.forEach(function(c){ if(c.getAttribute('opacity')!=='0'){ c.classList.add('pulse'); } });
+    setTimeout(function(){ allDots.forEach(function(c){c.classList.remove('pulse');}); }, 2600);
+  }, 600);
+}
+allDots.forEach(function(c){ c.addEventListener('mouseenter',dismissHowto,{once:false}); c.addEventListener('focus',dismissHowto); });
+// also hide the hint once the reader has clearly engaged with scrolling past stage 1
+new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&+e.target.dataset.stage>=2)dismissHowto();});},{threshold:.5}).observe(document.querySelector('section[data-stage="2"]'));
 
 // ---- report insight card: hover/focus any dot ----
 var card=document.getElementById('card');
