@@ -27,15 +27,25 @@ a{color:var(--rise-hi)}
 .brandbar img{height:22px;background:#fff;padding:2px 5px;border-radius:2px}
 .brandbar .tag{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 
-.cover{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 7vw;max-width:1040px}
-.cover h1{font-size:clamp(40px,7vw,86px);margin:.1em 0 .35em;max-width:13ch}
+/* full-bleed hero: a real site photo sells the stakes on load */
+.cover{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 7vw 9vh;overflow:hidden}
+.cover .herobg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center 32%;transform:scale(1.04);animation:heroken 18s ease-out forwards}
+@keyframes heroken{to{transform:scale(1.12)}}
+/* scrim: dark enough at the bottom for text, lets the photo breathe up top */
+.cover .scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(14,12,8,.34) 0%,rgba(14,12,8,.20) 32%,rgba(14,12,8,.72) 68%,rgba(14,12,8,.96) 100%)}
+.cover .inner{position:relative;z-index:2;max-width:1040px}
+.cover .eyebrow{text-shadow:0 1px 12px rgba(0,0,0,.7)}
+.cover h1{font-size:clamp(42px,8vw,86px);margin:.1em 0 .3em;max-width:13ch;text-shadow:0 2px 24px rgba(0,0,0,.55)}
 .cover h1 .a{color:var(--rise)} .cover h1 .b{color:var(--stuck)}
-.cover .lede{font-size:clamp(18px,2.2vw,23px);color:#cdc7bc;max-width:48ch}
-.cover .stats{margin-top:44px;display:flex;gap:40px;flex-wrap:wrap}
-.cover .stats b{display:block;font-family:var(--serif);font-size:34px}
-.cover .stats .g{color:var(--rise)} .cover .stats .r{color:var(--stuck)}
-.cover .stats span{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
-.cover .cue{margin-top:48px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.cover .lede{font-size:clamp(17px,2.1vw,22px);color:#eae5db;max-width:52ch;text-shadow:0 1px 14px rgba(0,0,0,.7)}
+.cover .stats{margin-top:34px;display:flex;gap:clamp(20px,4vw,40px);flex-wrap:wrap}
+.cover .stats b{display:block;font-family:var(--serif);font-size:clamp(28px,5vw,34px)}
+.cover .stats .g{color:var(--rise-hi)} .cover .stats .r{color:var(--stuck)}
+.cover .stats span{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#cdc7bc;max-width:18ch;display:inline-block}
+.cover .cue{margin-top:36px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#cdc7bc}
+.cover .credit{position:absolute;right:14px;bottom:10px;z-index:2;font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;color:rgba(242,239,233,.62);text-align:right;max-width:60vw;line-height:1.45}
+.cover .credit a{color:rgba(242,239,233,.62)}
+@media(prefers-reduced-motion:reduce){.cover .herobg{animation:none;transform:none}}
 
 .machine{position:sticky;top:0;height:100vh;overflow:hidden;z-index:1}
 #viz{width:100%;height:100%;display:block}
@@ -136,24 +146,29 @@ footer b{color:var(--paper)}
 
 <div id="card" role="tooltip" aria-hidden="true"></div>
 
-<div id="howto">
+<div id="howto" class="hide">
   <span class="hk"><span class="pip"></span><span>Each <b>dot</b> is one report: colour is the finding, code is the country</span></span>
   <span class="sep"></span>
-  <span class="hk"><b>Hover</b> a dot to read it</span>
+  <span class="hk"><b>Tap</b> a dot to read it</span>
   <span class="sep"></span>
   <span class="hk"><b>Scroll</b> to play the decade</span>
 </div>
 
 <section class="cover">
-  <div class="eyebrow">CoST · 95 independent assurance reports, one decade</div>
-  <h1><span class="a">Transparency rose.</span><br><span class="b">Delivery didn't.</span></h1>
-  <p class="lede">For ten years, CoST published independent assurance reports across thirteen countries. Watch what they show when you line them up by year: the transparency standard climbing into law, and the failures it was meant to fix refusing to move.</p>
-  <div class="stats">
-    <div><b class="g">26</b><span>reports show the standard entering law</span></div>
-    <div><b class="r">70</b><span>still flag cost or time overruns</span></div>
-    <div><b class="r">57</b><span>still flag weak project preparation</span></div>
+  <div class="herobg" style="background-image:url('img/ghana-road-settlement.jpg')"></div>
+  <div class="scrim"></div>
+  <div class="inner">
+    <div class="eyebrow">CoST · 95 independent assurance reports, 2011 to 2021</div>
+    <h1><span class="a">Transparency rose.</span><br><span class="b">Delivery didn't.</span></h1>
+    <p class="lede">Independent assurance means outside reviewers checked whether public infrastructure projects were published, monitored, and delivered properly. We read 95 such reports from 2011 to 2021. The year-by-year story below uses the 49 reports from 2015 to 2021, where the data is dense enough to compare: the transparency standard climbing into law, and the delivery failures it was meant to expose still refusing to move.</p>
+    <div class="stats">
+      <div><b class="g">26</b><span>reports show the standard entering law</span></div>
+      <div><b class="r">70</b><span>still flag cost or time overruns</span></div>
+      <div><b class="r">57</b><span>still flag weak project preparation</span></div>
+    </div>
+    <div class="cue">Scroll to watch the decade ↓ &nbsp;·&nbsp; tap any dot for the report behind it</div>
   </div>
-  <div class="cue">Scroll to watch the decade ↓ &nbsp;·&nbsp; hover any dot for the report behind it</div>
+  <div class="credit">A road under CoST assurance review, Ghana<br>From the CoST Sekondi-Takoradi assurance report</div>
 </section>
 
 <div style="position:relative">
@@ -168,16 +183,16 @@ footer b{color:var(--paper)}
 
   <div class="track">
     <section data-stage="0"><div class="beat">
-      <h2>One year, the reports arrive</h2>
-      <p>Each circle is one assurance report. They land by the year they were published. 2015: five reports across Central America and Africa, the standard still young. Hover any dot to read the report behind it: the project, the country, what it found.</p>
-      <div class="src">CoST assurance reports, 2015 · positioned by year</div>
+      <h2>Think of these as report cards</h2>
+      <p>Each circle is one report card for a public project, dropped onto the year it was published. The cards ask two questions: did the government publish what it should, and did the delivery problems get better? Its colour is the answer; its code is the country. Hover any dot to read that report: the project, where, what it found.</p>
+      <div class="src">49 CoST assurance reports, 2015 to 2021 · one dot each, positioned by year</div>
     </div></section>
 
     <section data-stage="1"><div class="beat">
-      <h2>The standard climbs into law</h2>
+      <h2>The paperwork got better fast</h2>
       <div class="big g">30% → 100%</div>
-      <p>Year by year, more reports record the disclosure standard being written into national law and policy. By 2020 every report in the set describes it as institutionalised. This is the real, hard-won win.</p>
-      <div class="src">Share of each year's reports describing the standard entering law</div>
+      <p>Year by year, more reports record the disclosure standard written into national law: published budgets, contracts, and progress, checked by outsiders. By 2020 every report in the set describes it as routine. This is the real, hard-won win.</p>
+      <div class="src">Share of each year's reports recording the standard entering law</div>
     </div></section>
 
     <section data-stage="2"><div class="beat stuck">
@@ -215,7 +230,10 @@ footer b{color:var(--paper)}
     <p style="color:#cdc7bc">A decade of assurance reports, scored on the questions that matter. The wins are real. So is the work left.</p>
     <div class="scoreboard" id="scoreboard"></div>
 
-    <h3 style="margin-top:40px;font-size:18px">Download the data</h3>
+    <h2 style="margin-top:52px;font-size:24px">The decision for the next decade</h2>
+    <p style="color:#cdc7bc">The next decade is not about publishing more PDFs. It is about making published evidence trigger something: better preparation before tender, supervision that is independent of the contractor, audits that actually appear, and consequences when a project fails. Transparency proved it can open the books. The open question is whether anyone acts on what they show.</p>
+
+    <h3 style="margin-top:48px;font-size:18px">Download the data</h3>
     <p style="color:#a39d92;font-size:15px">Every flag here is read from the assurance reports themselves.</p>
     <div class="downloads"><button id="dlJson">JSON</button><button id="dlCsv">CSV</button><button id="dlXls">Excel</button></div>
     <details class="method"><summary>Method and limits</summary>
@@ -1932,7 +1950,7 @@ function scatterDots(uptoYear, mode){
   allDots.forEach(function(c){
     var show = c.__yr<=uptoYear;
     c.setAttribute('opacity', show?1:0);
-    c.__lbl.setAttribute('opacity', show?1:0);
+    c.__lbl.setAttribute('opacity', show?0.42:0);  // codes always on but dimmed to texture; brighten on hover
     if(!show){ c.setAttribute('cy',PAD.t-90); return; }
     var bx=xAt(c.__yr)+(rnd(c.__yr*7+c.__j,1)-0.5)*70;
     var by;
@@ -1974,7 +1992,7 @@ function gapBand(on){
   b.style.opacity=on?1:0;
 }
 
-// stages — the full decade is on screen from the first frame; stages add lines + meaning on top
+// stages: the full decade is on screen from the first frame; stages add lines + meaning on top
 function render(stage){
   grid();
   chartFurniture(stage);
@@ -1997,17 +2015,23 @@ new IntersectionObserver(function(es){
 });
 render(0); if(reduce) render(4);
 
-// onboarding: pulse the visible dots once so they read as interactive; dismiss the hint on first real hover
+// onboarding: the hint belongs to the CHART, not the hero. It appears when the chart is in view,
+// hides over the cover, and is permanently dismissed once the reader hovers a dot or scrolls deep.
 var howto=document.getElementById('howto');
-function dismissHowto(){ if(howto){howto.classList.add('hide');} }
-if(!reduce){
-  setTimeout(function(){
-    allDots.forEach(function(c){ if(c.getAttribute('opacity')!=='0'){ c.classList.add('pulse'); } });
-    setTimeout(function(){ allDots.forEach(function(c){c.classList.remove('pulse');}); }, 2600);
-  }, 600);
+var howtoDone=false;            // true once the reader has engaged; never show again
+var coverVisible=true;
+function syncHowto(){ if(howto){ var show=!howtoDone && !coverVisible; howto.classList.toggle('hide',!show); } }
+function dismissHowto(){ howtoDone=true; syncHowto(); }
+// pulse the visible dots once they're actually on screen (first time the chart is reached)
+var pulsed=false;
+function pulseDots(){ if(pulsed||reduce)return; pulsed=true;
+  allDots.forEach(function(c){ if(c.getAttribute('opacity')!=='0'){ c.classList.add('pulse'); } });
+  setTimeout(function(){ allDots.forEach(function(c){c.classList.remove('pulse');}); }, 2600);
 }
-allDots.forEach(function(c){ c.addEventListener('mouseenter',dismissHowto,{once:false}); c.addEventListener('focus',dismissHowto); });
-// also hide the hint once the reader has clearly engaged with scrolling past stage 1
+allDots.forEach(function(c){ c.addEventListener('mouseenter',dismissHowto); c.addEventListener('focus',dismissHowto); });
+// cover visibility drives the hint + triggers the pulse when the chart first appears
+new IntersectionObserver(function(es){es.forEach(function(e){ coverVisible=e.isIntersecting&&e.intersectionRatio>0.35; if(!coverVisible)pulseDots(); syncHowto(); });},{threshold:[0,.35,.7]}).observe(document.querySelector('.cover'));
+// hide for good once the reader scrolls into the delivery stages
 new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&+e.target.dataset.stage>=2)dismissHowto();});},{threshold:.5}).observe(document.querySelector('section[data-stage="2"]'));
 
 // ---- report insight card: hover/focus any dot ----
@@ -2045,12 +2069,12 @@ function cardHTML(rep,sc,yr){
 }
 var cardTimer=null;
 function showCard(c,clientX,clientY){
-  if(reduce) return;
   card.className='on '+((c.__rep.over||c.__rep.prep)?'stuck':'rise');
   card.innerHTML=cardHTML(c.__rep,c.__sc,c.__yr);
   card.setAttribute('aria-hidden','false');
   positionCard(clientX,clientY);
   c.classList.add('lit');
+  if(c.__lbl){ c.__lbl.setAttribute('opacity',1); c.__lbl.setAttribute('font-size',16); }
 }
 function positionCard(x,y){
   var w=card.offsetWidth||300, h=card.offsetHeight||160, m=14;
@@ -2061,14 +2085,26 @@ function positionCard(x,y){
   if(py<58) py=58;
   card.style.left=px+'px'; card.style.top=py+'px';
 }
-function hideCard(c){ card.className=''; card.setAttribute('aria-hidden','true'); if(c)c.classList.remove('lit'); }
+function hideCard(c){ card.className=''; card.setAttribute('aria-hidden','true'); if(c){c.classList.remove('lit'); if(c.__lbl){c.__lbl.setAttribute('opacity',0.42);c.__lbl.removeAttribute('font-size');}} }
+var tappedDot=null;  // currently open dot on touch
 allDots.forEach(function(c){
   c.addEventListener('mouseenter',function(e){ if(c.getAttribute('opacity')==='0')return; clearTimeout(cardTimer); showCard(c,e.clientX,e.clientY); });
-  c.addEventListener('mousemove',function(e){ if(card.classList.contains('on')) positionCard(e.clientX,e.clientY); });
-  c.addEventListener('mouseleave',function(){ cardTimer=setTimeout(function(){hideCard(c);},80); });
+  c.addEventListener('mousemove',function(e){ if(card.classList.contains('on')&&!tappedDot) positionCard(e.clientX,e.clientY); });
+  c.addEventListener('mouseleave',function(){ if(tappedDot)return; cardTimer=setTimeout(function(){hideCard(c);},80); });
   c.addEventListener('focus',function(){ if(c.getAttribute('opacity')==='0')return; var b=c.getBoundingClientRect(); showCard(c,b.left+b.width/2,b.top); });
-  c.addEventListener('blur',function(){ hideCard(c); });
+  c.addEventListener('blur',function(){ if(!tappedDot) hideCard(c); });
+  // touch / click: tap a dot to pin its card, tap again or elsewhere to close
+  c.addEventListener('click',function(e){
+    if(c.getAttribute('opacity')==='0')return;
+    e.stopPropagation(); dismissHowto();
+    if(tappedDot===c){ hideCard(c); tappedDot=null; return; }
+    if(tappedDot) hideCard(tappedDot);
+    var b=c.getBoundingClientRect(); showCard(c,b.left+b.width/2,b.top); tappedDot=c;
+  });
 });
+// tap anywhere else closes a pinned card
+document.addEventListener('click',function(){ if(tappedDot){ hideCard(tappedDot); tappedDot=null; } });
+card.addEventListener('click',function(e){ e.stopPropagation(); });  // taps inside the card (e.g. source link) don't close it
 
 // coda bars (real corpus counts)
 var T=D.totals;
