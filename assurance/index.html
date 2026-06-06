@@ -48,6 +48,33 @@ a{color:var(--rise-hi)}
 .path-rise{fill:none;stroke:var(--rise);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(91,191,151,.4))}
 .path-stuck{fill:none;stroke:var(--stuck);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(207,107,58,.4))}
 .gapband{fill:url(#gapgrad);opacity:.0;transition:opacity .8s}
+.dot{cursor:pointer}
+.dot:hover,.dot.lit{stroke:var(--paper);stroke-width:2.5}
+
+/* report insight card on hover */
+#card{position:fixed;z-index:60;max-width:320px;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .14s ease,transform .14s ease;background:rgba(16,14,10,.97);backdrop-filter:blur(10px);border:1px solid #34302a;border-left-width:3px;border-radius:3px;padding:14px 16px;box-shadow:0 16px 44px rgba(0,0,0,.6)}
+#card.on{opacity:1;transform:translateY(0)}
+#card.rise{border-left-color:var(--rise)} #card.stuck{border-left-color:var(--stuck)}
+#card .ct{font-family:var(--serif);font-size:16px;font-weight:700;line-height:1.18;color:var(--paper);margin:0 0 2px}
+#card .cmeta{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+#card .cdisc{font-family:var(--serif);font-size:15px;color:#cdc7bc;margin:0 0 9px}
+#card .cdisc b{font-size:21px}
+#card .cdisc b.g{color:var(--rise-hi)} #card .cdisc b.r{color:var(--stuck)}
+#card .flags{display:flex;flex-direction:column;gap:4px;margin:0 0 9px}
+#card .fg{font-size:12.5px;color:#d6d0c5;display:flex;gap:7px;align-items:baseline}
+#card .fg .mk{font-family:var(--mono);font-size:11px;width:11px;flex:none}
+#card .fg .mk.bad{color:var(--stuck)} #card .fg .mk.ok{color:var(--rise)}
+#card .csrc{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:#7c766b;border-top:1px solid #2a2620;padding-top:7px;margin-top:2px;word-break:break-word}
+#card .csrc a{color:var(--rise-hi);pointer-events:auto}
+
+/* scoreboard: what changed / what didn't */
+.scoreboard{margin-top:30px;border-top:1px solid #2a2620}
+.scoreboard .srow{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:13px 2px;border-bottom:1px solid #221f19}
+.scoreboard .sq{font-size:15.5px;color:#e7e2d8;line-height:1.3}
+.scoreboard .sa{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-align:right;white-space:nowrap}
+.scoreboard .sa.yes{color:var(--rise)} .scoreboard .sa.no{color:var(--stuck)} .scoreboard .sa.next{color:var(--rise-hi)}
+.scoreboard .sa small{display:block;font-weight:400;letter-spacing:.04em;text-transform:none;color:var(--muted);font-size:10.5px;margin-top:2px}
+@media(max-width:680px){.scoreboard .srow{grid-template-columns:1fr;gap:4px}.scoreboard .sa{text-align:left}}
 
 .track{position:relative;z-index:2;pointer-events:none}
 .track>section{min-height:100vh;display:flex;align-items:flex-end;padding:0 0 9vh 6vw}
@@ -88,6 +115,8 @@ footer b{color:var(--paper)}
   <span class="tag">Independent Assurance · 2015 to 2021</span>
 </div>
 
+<div id="card" role="tooltip" aria-hidden="true"></div>
+
 <section class="cover">
   <div class="eyebrow">CoST · 95 independent assurance reports, one decade</div>
   <h1><span class="a">Transparency rose.</span><br><span class="b">Delivery didn't.</span></h1>
@@ -97,7 +126,7 @@ footer b{color:var(--paper)}
     <div><b class="r">70</b><span>still flag cost or time overruns</span></div>
     <div><b class="r">57</b><span>still flag weak project preparation</span></div>
   </div>
-  <div class="cue">Scroll to watch the decade ↓</div>
+  <div class="cue">Scroll to watch the decade ↓ &nbsp;·&nbsp; hover any dot for the report behind it</div>
 </section>
 
 <div style="position:relative">
@@ -113,7 +142,7 @@ footer b{color:var(--paper)}
   <div class="track">
     <section data-stage="0"><div class="beat">
       <h2>One year, the reports arrive</h2>
-      <p>Each circle is one assurance report. They land by the year they were published. 2015: five reports across Central America and Africa, the standard still young.</p>
+      <p>Each circle is one assurance report. They land by the year they were published. 2015: five reports across Central America and Africa, the standard still young. Hover any dot to read the report behind it: the project, the country, what it found.</p>
       <div class="src">CoST assurance reports, 2015 · positioned by year</div>
     </div></section>
 
@@ -154,6 +183,10 @@ footer b{color:var(--paper)}
 
     <h2 style="margin-top:52px;font-size:24px">What the reports say would close it</h2>
     <p style="color:#cdc7bc">Disclosure was the entry point, not the destination. The reports converge on what comes next: get project preparation right before tender (57 reports flag it), keep supervision genuinely independent of the contractor (23 reports flag the conflict), and publish the audit and evaluation reports that 23 reports found missing. Transparency opened the books. Delivery is the chapter still unwritten.</p>
+
+    <h2 style="margin-top:52px;font-size:24px">What changed, what didn't</h2>
+    <p style="color:#cdc7bc">A decade of assurance reports, scored on the questions that matter. The wins are real. So is the work left.</p>
+    <div class="scoreboard" id="scoreboard"></div>
 
     <h3 style="margin-top:40px;font-size:18px">Download the data</h3>
     <p style="color:#a39d92;font-size:15px">Every flag here is read from the assurance reports themselves.</p>
@@ -1814,11 +1847,18 @@ function grid(){
 }
 function bigYear(yr){gBig.innerHTML='';var t=el('text',{x:W/2,y:H/2+60,class:'yearbig','text-anchor':'middle','font-size':340});t.textContent=yr;gBig.appendChild(t);}
 
+// join each viz report to its richer scorecard twin (by title) for source URL + extra flags
+var scByTitle={}; SC.forEach(function(s){ scByTitle[s.t]=s; });
+
 // dots: one per report per year, scattered around that year's column
 var allDots=[];
 years.forEach(function(yr){ yr.reports.forEach(function(rep,j){
   var c=el('circle',{class:'dot',r:8,cx:xAt(yr.year),cy:PAD.t-90,'fill-opacity':.9,fill:'#6f6a61'});
-  c.__yr=yr.year; c.__j=j; c.__rep=rep; gDots.appendChild(c); allDots.push(c);
+  c.__yr=yr.year; c.__j=j; c.__rep=rep; c.__sc=scByTitle[rep.t]||null;
+  c.setAttribute('tabindex','0');
+  c.setAttribute('role','button');
+  c.setAttribute('aria-label', rep.t+', '+rep.c+', '+yr.year);
+  gDots.appendChild(c); allDots.push(c);
 });});
 function scatterDots(uptoYear, mode){
   allDots.forEach(function(c){
@@ -1884,6 +1924,66 @@ new IntersectionObserver(function(es){
 });
 render(0); if(reduce) render(4);
 
+// ---- report insight card: hover/focus any dot ----
+var card=document.getElementById('card');
+function esc(s){return String(s).replace(/[<>&]/g,function(m){return({'<':'&lt;','>':'&gt;','&':'&amp;'})[m];});}
+function flagRow(on,badLabel,okLabel){
+  if(on) return '<div class="fg"><span class="mk bad">✕</span><span>'+esc(badLabel)+'</span></div>';
+  return '<div class="fg"><span class="mk ok">✓</span><span>'+esc(okLabel)+'</span></div>';
+}
+function cardHTML(rep,sc,yr){
+  var tone = (cur>=2 && (rep.over||rep.prep)) ? 'stuck' : (cur===1 && rep.law ? 'rise' : (rep.over||rep.prep?'stuck':'rise'));
+  // disclosure line: prefer the precise scorecard value, fall back to viz value
+  var disc = (sc&&sc.disc!=null)?sc.disc:(rep.disc!=null?rep.disc:null);
+  var discHTML = disc!=null
+    ? '<p class="cdisc">Disclosed <b class="'+(disc>=66?'g':'r')+'">'+disc+'%</b> of the data the standard asks for.</p>'
+    : '<p class="cdisc" style="color:#9b958a">Disclosure rate not stated in this report.</p>';
+  var flags='';
+  flags+=flagRow(rep.over,'Flagged a cost or time overrun','No overrun flagged');
+  flags+=flagRow(rep.prep,'Flagged weak project preparation','Preparation held up');
+  if(sc){
+    if(sc.superv) flags+=flagRow(true,'Supervision compromised by conflict of interest','');
+    if(sc.noAudit) flags+=flagRow(true,'Audit or evaluation report missing','');
+    if(sc.noReach) flags+=flagRow(true,'Public cannot use the data as published','');
+  }
+  if(rep.law) flags+='<div class="fg"><span class="mk ok">✓</span><span>Records the standard written into law</span></div>';
+  var projLine = (sc&&sc.proj!=null) ? ' · '+sc.proj+' project'+(sc.proj===1?'':'s')+' assured' : '';
+  var src = (sc&&sc.u)
+    ? '<div class="csrc">Source · <a href="'+esc(sc.u)+'" target="_blank" rel="noopener">read the assurance report ↗</a></div>'
+    : '<div class="csrc">One of 95 published CoST assurance reports</div>';
+  return '<div class="ct">'+esc(rep.t)+'</div>'
+       + '<div class="cmeta">'+esc(rep.c)+' · '+yr+projLine+'</div>'
+       + discHTML
+       + '<div class="flags">'+flags+'</div>'
+       + src;
+}
+var cardTimer=null;
+function showCard(c,clientX,clientY){
+  if(reduce) return;
+  card.className='on '+((c.__rep.over||c.__rep.prep)?'stuck':'rise');
+  card.innerHTML=cardHTML(c.__rep,c.__sc,c.__yr);
+  card.setAttribute('aria-hidden','false');
+  positionCard(clientX,clientY);
+  c.classList.add('lit');
+}
+function positionCard(x,y){
+  var w=card.offsetWidth||300, h=card.offsetHeight||160, m=14;
+  var px=x+18, py=y+18;
+  if(px+w+m>innerWidth) px=x-w-18;
+  if(px<m) px=m;
+  if(py+h+m>innerHeight) py=y-h-18;
+  if(py<58) py=58;
+  card.style.left=px+'px'; card.style.top=py+'px';
+}
+function hideCard(c){ card.className=''; card.setAttribute('aria-hidden','true'); if(c)c.classList.remove('lit'); }
+allDots.forEach(function(c){
+  c.addEventListener('mouseenter',function(e){ if(c.getAttribute('opacity')==='0')return; clearTimeout(cardTimer); showCard(c,e.clientX,e.clientY); });
+  c.addEventListener('mousemove',function(e){ if(card.classList.contains('on')) positionCard(e.clientX,e.clientY); });
+  c.addEventListener('mouseleave',function(){ cardTimer=setTimeout(function(){hideCard(c);},80); });
+  c.addEventListener('focus',function(){ if(c.getAttribute('opacity')==='0')return; var b=c.getBoundingClientRect(); showCard(c,b.left+b.width/2,b.top); });
+  c.addEventListener('blur',function(){ hideCard(c); });
+});
+
 // coda bars (real corpus counts)
 var T=D.totals;
 var bars=[
@@ -1896,6 +1996,19 @@ var bars=[
 document.getElementById('bars').innerHTML=bars.map(function(b){
   var pct=Math.round(b.v/T.rows*100);
   return '<div class="barrow"><div class="lab">'+b.lab+'</div><div class="tr"><div class="fl'+(b.g?' g':'')+'" style="width:'+pct+'%"></div></div><div class="v" style="color:'+(b.g?'var(--rise)':'var(--stuck)')+'">'+b.v+'</div></div>';
+}).join('');
+
+// scoreboard: what changed / what didn't (every verdict tied to a real count)
+var score=[
+  {q:'Did transparency become formal law?', a:'Yes', cls:'yes', note:T.law+' of 95 reports record it'},
+  {q:'Did the reports keep finding cost or time overruns?', a:'Yes', cls:'no', note:T.overrun+' of 95 still flagged them'},
+  {q:'Did weak project preparation disappear?', a:'No', cls:'no', note:T.prep+' of 95 still flagged it'},
+  {q:'Did missing audits disappear?', a:'No', cls:'no', note:T.noAudit+' of 95 still flagged them'},
+  {q:'Did supervision become independent of the contractor?', a:'No', cls:'no', note:T.superv+' of 95 flagged the conflict'},
+  {q:'What is the next frontier?', a:'Delivery', cls:'next', note:'turn disclosure into supervision and audit'}
+];
+document.getElementById('scoreboard').innerHTML=score.map(function(s){
+  return '<div class="srow"><div class="sq">'+s.q+'</div><div class="sa '+s.cls+'">'+s.a+'<small>'+s.note+'</small></div></div>';
 }).join('');
 
 // downloads
