@@ -86,16 +86,20 @@ a{color:var(--rise-hi)}
 @keyframes dotpulse{0%{r:8}50%{r:13}100%{r:8}}
 .dot.pulse{animation:dotpulse 1.1s ease-in-out 2}
 
-/* persistent how-to-read hint, anchored over the chart; not dependent on scrolling */
-#howto{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:55;display:flex;align-items:center;gap:14px;background:rgba(16,14,10,.92);backdrop-filter:blur(8px);border:1px solid #34302a;border-radius:30px;padding:9px 18px;box-shadow:0 10px 30px rgba(0,0,0,.5);transition:opacity .5s ease;font-family:var(--sans);font-size:13.5px;color:#d6d0c5}
+/* how-to-read hint: a quiet vertical affordance pinned to the right edge, out of the content's way.
+   Apple-style: minimal, vertically centered, low-contrast, no slab. */
+#howto{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:55;display:flex;flex-direction:column;gap:18px;align-items:flex-end;transition:opacity .5s ease}
 #howto.hide{opacity:0;pointer-events:none}
-#howto .hk{display:inline-flex;align-items:center;gap:6px}
-#howto .hk b{color:var(--paper);font-weight:600}
-#howto .pip{width:10px;height:10px;border-radius:50%;background:var(--stuck);display:inline-block;box-shadow:0 0 0 0 rgba(207,107,58,.6);animation:hpip 1.6s ease-out infinite}
-@keyframes hpip{0%{box-shadow:0 0 0 0 rgba(207,107,58,.55)}70%{box-shadow:0 0 0 9px rgba(207,107,58,0)}100%{box-shadow:0 0 0 0 rgba(207,107,58,0)}}
-#howto .sep{width:1px;height:18px;background:#3a352e}
-@media(prefers-reduced-motion:reduce){.dot.pulse{animation:none}#howto .pip{animation:none}}
-@media(max-width:680px){#howto{font-size:12px;gap:9px;padding:8px 14px;bottom:16px}}
+#howto .hk{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8f897e;text-align:right}
+#howto .hk b{color:#d6d0c5;font-weight:700}
+#howto .hk .ic{width:22px;height:22px;flex:none;display:flex;align-items:center;justify-content:center;border:1px solid #3a352e;border-radius:50%;color:#cdc7bc}
+#howto .hk .ic svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.6}
+#howto .pip{position:relative}
+#howto .pip::after{content:"";position:absolute;inset:-3px;border-radius:50%;box-shadow:0 0 0 0 rgba(207,107,58,.5);animation:hpip 1.8s ease-out infinite}
+#howto .pip .ic{border-color:var(--stuck);color:var(--stuck)}
+@keyframes hpip{0%{box-shadow:0 0 0 0 rgba(207,107,58,.5)}70%{box-shadow:0 0 0 8px rgba(207,107,58,0)}100%{box-shadow:0 0 0 0 rgba(207,107,58,0)}}
+@media(prefers-reduced-motion:reduce){.dot.pulse{animation:none}#howto .pip::after{animation:none}}
+@media(max-width:680px){#howto{right:12px;gap:14px}#howto .hk{font-size:9px;gap:7px}#howto .hk .lbl{display:none}}
 
 /* report insight card on hover */
 #card{position:fixed;z-index:60;max-width:320px;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .14s ease,transform .14s ease;background:rgba(16,14,10,.97);backdrop-filter:blur(10px);border:1px solid #34302a;border-left-width:3px;border-radius:3px;padding:14px 16px;box-shadow:0 16px 44px rgba(0,0,0,.6)}
@@ -159,7 +163,12 @@ a{color:var(--rise-hi)}
 .barrow .fl{height:100%;background:var(--stuck);border-radius:2px}
 .barrow .fl.g{background:var(--rise)}
 .barrow .v{font-family:var(--serif);font-size:20px;font-weight:700;text-align:right}
-.downloads{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+/* the closer: the metaphor lands as the final beat, not a download link */
+.closer{margin-top:64px;padding-top:40px;border-top:1px solid #2a2620}
+.closer .cl1{font-family:var(--serif);font-weight:700;font-size:clamp(26px,4vw,40px);line-height:1.1;color:var(--rise-hi);margin:0}
+.closer .cl2{font-family:var(--serif);font-weight:700;font-size:clamp(26px,4vw,40px);line-height:1.1;color:var(--stuck);margin:.1em 0 0}
+.closer .cl3{font-size:17px;color:#cdc7bc;max-width:54ch;margin:28px 0 0}
+.downloads{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
 .downloads button{background:transparent;border:1px solid var(--rise);color:var(--rise-hi);padding:10px 18px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:2px}
 details.method{margin-top:26px;border-top:1px solid #2a2620;padding-top:14px}
 details.method summary{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);cursor:pointer}
@@ -180,12 +189,9 @@ footer b{color:var(--paper)}
 
 <div id="card" role="tooltip" aria-hidden="true"></div>
 
-<div id="howto" class="hide">
-  <span class="hk"><span class="pip"></span><span>Each <b>dot</b> is one report: colour is the finding, code is the country</span></span>
-  <span class="sep"></span>
-  <span class="hk"><b>Tap</b> a dot to read it</span>
-  <span class="sep"></span>
-  <span class="hk"><b>Scroll</b> to play the decade</span>
+<div id="howto" class="hide" aria-label="How to read this chart">
+  <span class="hk pip"><span class="lbl"><b>Tap</b> a dot<br>to read it</span><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/></svg></span></span>
+  <span class="hk"><span class="lbl"><b>Scroll</b> to play<br>the decade</span><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span></span>
 </div>
 
 <section class="cover" id="cover">
@@ -226,28 +232,28 @@ footer b{color:var(--paper)}
     </div></section>
 
     <section data-stage="1"><div class="beat">
-      <h2>The paperwork got better fast</h2>
+      <h2>Watch the green line climb</h2>
       <div class="big g">30% → 100%</div>
-      <p>Year by year, more reports record the disclosure standard written into national law: published budgets, contracts, and progress, checked by outsiders. By 2020 every report in the set describes it as routine. This is the real, hard-won win.</p>
+      <p>Trace it year by year: more and more reports record the disclosure standard written into law, until by 2020 every report calls it routine. This is the win. If publishing the data were enough to fix delivery, the next line should fall as this one rises.</p>
       <div class="src">Share of each year's reports recording the standard entering law</div>
     </div></section>
 
     <section data-stage="2"><div class="beat stuck">
-      <h2>Now add what the reports actually found on site</h2>
-      <p>A second line. Not transparency, but delivery: the share of each year's reports flagging cost or time overruns, weak project preparation, or compromised supervision.</p>
+      <h2>So watch what delivery does</h2>
+      <p>Here is the second line: the share of each year's reports that still flag a cost or time overrun, weak preparation, or supervision compromised by the contractor. Same reports, same years. Watch whether it falls.</p>
       <div class="src">Delivery-failure rate per year, across the same reports</div>
     </div></section>
 
     <section data-stage="3"><div class="beat stuck">
-      <h2>It never comes down</h2>
+      <h2>It refuses to move</h2>
       <div class="big r">88% to 100%</div>
-      <p>Every single year from 2015 to 2021, nine in ten reports or more flag the same delivery failures. The line meant to fall as transparency rose stays pinned to the ceiling.</p>
+      <p>It does not fall. Every year from 2015 to 2021, nine in ten reports or more flag the same failures. The green line climbed into law; the red line never left the ceiling. The two never meet.</p>
       <div class="src">70 of 95 reports flag overruns · 57 flag weak preparation</div>
     </div></section>
 
     <section data-stage="4"><div class="beat stuck">
-      <h2>The gap is the finding</h2>
-      <p>Transparency became law. The delivery failures it was meant to expose did not move. A decade of disclosure made the problems visible. It did not, on this record, make them go away.</p>
+      <h2>The gap between them is the finding</h2>
+      <p>That space between the lines is the whole story. Disclosure became law; the failures it was built to surface stayed exactly where they were. A decade of transparency made the problems impossible to miss. It did not, on this record, make them go away.</p>
       <div class="src">95 CoST assurance reports, read together, 2011 to 2021</div>
     </div></section>
   </div>
@@ -270,34 +276,34 @@ footer b{color:var(--paper)}
 
 <section class="coda">
   <div class="flow">
-    <div class="eyebrow" style="color:var(--stuck)">What the reports keep finding, across the whole decade</div>
-    <h2>The same failures, report after report</h2>
-    <p style="color:#cdc7bc">These are not one bad country or one bad year. Counted across all 95 reports, the recurring findings are remarkably consistent.</p>
+    <div class="eyebrow" style="color:var(--rise-hi)">So if disclosure alone didn't move the needle</div>
+    <h2>What would?</h2>
+    <p style="color:#cdc7bc">The reports do not just name the failures. Read together, they point at the same few fixes, over and over. These are the moves they converge on, ranked by how many of the 95 reports raised them.</p>
     <div class="bars" id="bars"></div>
+    <p style="color:#cdc7bc;margin-top:22px">It is a short list, and a stubborn one: get preparation right before tender, keep supervision independent of the contractor, and publish the audits that go missing. None of it is exotic. All of it sits downstream of disclosure, where the standard has not yet reached.</p>
 
-    <h2 style="margin-top:52px;font-size:24px">What the reports say would close it</h2>
-    <p style="color:#cdc7bc">Disclosure was the entry point, not the destination. The reports converge on what comes next: get project preparation right before tender (57 reports flag it), keep supervision genuinely independent of the contractor (23 reports flag the conflict), and publish the audit and evaluation reports that 23 reports found missing. Transparency opened the books. Delivery is the chapter still unwritten.</p>
-
-    <h2 style="margin-top:52px;font-size:24px">What changed, what didn't</h2>
-    <p style="color:#cdc7bc">A decade of assurance reports, scored on the questions that matter. The wins are real. So is the work left.</p>
+    <h2 style="margin-top:56px;font-size:24px">What changed, what didn't</h2>
+    <p style="color:#cdc7bc">A decade of assurance, scored on the questions that matter. The wins are real. So is the work left.</p>
     <div class="scoreboard" id="scoreboard"></div>
 
-    <h2 style="margin-top:52px;font-size:24px">The decision for the next decade</h2>
-    <p style="color:#cdc7bc">The next decade is not about publishing more PDFs. It is about making published evidence trigger something: better preparation before tender, supervision that is independent of the contractor, audits that actually appear, and consequences when a project fails. Transparency proved it can open the books. The open question is whether anyone acts on what they show.</p>
+    <div class="closer">
+      <p class="cl1">Transparency opened the books.</p>
+      <p class="cl2">Delivery is the chapter still unwritten.</p>
+      <p class="cl3">The next decade is not about publishing more PDFs. It is about making the evidence already on the page trigger something: better preparation, independent supervision, audits that appear, consequences when a project fails. The standard proved it can open the books. Whether anyone acts on what they show is the only question left.</p>
+    </div>
 
-    <h3 style="margin-top:48px;font-size:18px">Download the data</h3>
-    <p style="color:#a39d92;font-size:15px">Every flag here is read from the assurance reports themselves.</p>
-    <div class="downloads"><button id="dlJson">JSON</button><button id="dlCsv">CSV</button><button id="dlXls">Excel</button></div>
-    <details class="method"><summary>Method and limits</summary>
+    <details class="method" style="margin-top:48px">
+      <summary>Method, limits, and the data</summary>
       <p>Each report was read with a language model against a fixed schema; every field is as stated in the document, null where the report does not state it, never inferred. Of 95 reports, 55 state a year and 27 state an overall disclosure rate; the year lines use 2015 to 2021, the window with enough reports per year to be meaningful (49 reports). "Delivery failure" means the report flags at least one of: cost or time overrun, weak project preparation, or compromised supervision. These are findings the reports make, not independently audited outcomes; they show what the assurance process surfaced, not a verified national delivery statistic. Counts are directional across differing country methodologies and years.</p>
+      <p style="margin-top:14px">Every flag is read from the assurance reports themselves. Take the data:</p>
+      <div class="downloads"><button id="dlJson">JSON</button><button id="dlCsv">CSV</button><button id="dlXls">Excel</button></div>
     </details>
   </div>
 </section>
 
 <footer>
-  <div class="eyebrow" style="color:var(--stuck)">CoST · Infrastructure Transparency Initiative</div>
-  <p style="margin-top:10px"><b>A decade made infrastructure transparent. The next decade has to make it deliver.</b></p>
-  <p style="font-size:12px;color:var(--muted)">Built from 95 published CoST assurance reports, 2011 to 2021. Findings as reported in source documents.</p>
+  <div class="eyebrow" style="color:var(--muted)">CoST · Infrastructure Transparency Initiative</div>
+  <p style="font-size:12px;color:var(--muted);margin-top:10px">Built from 95 published CoST assurance reports, 2011 to 2021. Findings as reported in source documents.</p>
 </footer>
 
 <script id="data" type="application/json">{"years":[{"year":2015,"n":5,"avgDisc":52,"lawPct":40,"delivPct":100,"reports":[{"t":"Guatemala Fifth Assurance Report","c":"Guatemala","disc":19,"over":true,"prep":false,"law":true},{"t":"Assurance report - Arjo Dedessa Dam, construction project","c":"Ethiopia","disc":null,"over":true,"prep":true,"law":false},{"t":"Assurance Report: Jimma University, laboratory and workshop building project","c":"Ethiopia","disc":null,"over":true,"prep":true,"law":false},{"t":"Assurance report - Afdera Abala, road project","c":"Ethiopia","disc":null,"over":true,"prep":true,"law":false},{"t":"Honduras First Assurance Report","c":"Honduras","disc":84.3,"over":true,"prep":true,"law":true}]},{"year":2016,"n":8,"avgDisc":49,"lawPct":38,"delivPct":88,"reports":[{"t":"Ukraine Fourth Assurance Process: M-03 Road repair project","c":"Ukraine","disc":null,"over":true,"prep":true,"law":true},{"t":"Ukraine Fourth Assurance Process: Kyiv - Znamyanka Road","c":"Ukraine","disc":49,"over":true,"prep":true,"law":false},{"t":"Ukraine First Assurance Report infographic","c":"Ukraine","disc":null,"over":true,"prep":true,"law":false},{"t":"Ukraine Third Assurance Report","c":"Ukraine","disc":null,"over":false,"prep":false,"law":true},{"t":"Ukraine First Assurance Report summary","c":"Ukraine","disc":null,"over":true,"prep":true,"law":false},{"t":"Ukraine First Assurance Report","c":"Ukraine","disc":null,"over":false,"prep":true,"law":false},{"t":"Guatemala Sixth Assurance Report (Spanish)","c":"Guatemala","disc":null,"over":true,"prep":true,"law":true},{"t":"Malawi Assurance Report 2016","c":"Malawi","disc":null,"over":true,"prep":false,"law":false}]},{"year":2017,"n":10,"avgDisc":77,"lawPct":30,"delivPct":90,"reports":[{"t":"Ukraine road sector performance monitoring","c":"Ukraine","disc":82,"over":true,"prep":true,"law":true},{"t":"Honduras Fourth Assurance Report","c":"Honduras","disc":85,"over":true,"prep":true,"law":false},{"t":"Honduras Third Assurance Report","c":"Honduras","disc":85.3,"over":true,"prep":true,"law":true},{"t":"Tanzania 2017 Assurance Report: TAZARA Intersection Project","c":"Tanzania","disc":null,"over":false,"prep":false,"law":false},{"t":"Tanzania 2017 Assurance Report: Dungu Satellite Village Project","c":"Tanzania","disc":null,"over":true,"prep":true,"law":false},{"t":"Malawi Assurance Report 2017","c":"Malawi","disc":null,"over":true,"prep":false,"law":false},{"t":"Honduras Fourth Assurance Report Infographic","c":"Honduras","disc":85.1,"over":true,"prep":true,"law":false},{"t":"Thailand First Assurance Report","c":"Thailand","disc":100,"over":true,"prep":false,"law":true},{"t":"Uganda First Assurance Report","c":"Uganda","disc":null,"over":false,"prep":true,"law":false},{"t":"Honduras third assurance report infographic","c":"Honduras","disc":21.6,"over":true,"prep":true,"law":false}]},{"year":2018,"n":11,"avgDisc":70,"lawPct":45,"delivPct":100,"reports":[{"t":"Uganda assurance summary for Mwiri Access Road project","c":"Uganda","disc":null,"over":false,"prep":false,"law":false},{"t":"Infographic for the CoST Uganda Second Assurance Report","c":"Uganda","disc":57,"over":true,"prep":true,"law":true},{"t":"Uganda Second Assurance Report","c":"Uganda","disc":49,"over":true,"prep":true,"law":false},{"t":"Guatemala Seventh Assurance Report","c":"Guatemala","disc":null,"over":true,"prep":false,"law":true},{"t":"Turning infrastructure data into compelling information: How the CoST Assurance process can be a catalyst for sector reform","c":"Afghanistan","disc":null,"over":true,"prep":true,"law":true},{"t":"El Salvador Second Assurance Report","c":"El Salvador","disc":null,"over":true,"prep":false,"law":true},{"t":"Thailand Second Assurance Report","c":"Thailand","disc":75,"over":true,"prep":true,"law":true},{"t":"Malawi Assurance Report 2018","c":"Malawi","disc":null,"over":true,"prep":true,"law":false},{"t":"Summary of findings from the CoST Tanzania assurance process 2018","c":"Tanzania","disc":null,"over":true,"prep":true,"law":false},{"t":"Honduras Fifth Assurance Report","c":"Honduras","disc":98.1,"over":true,"prep":true,"law":false},{"t":"Ukraine Fourth Assurance Process: Chernivetska Electrical Substation","c":"Ukraine","disc":null,"over":true,"prep":true,"law":false}]},{"year":2019,"n":11,"avgDisc":74,"lawPct":55,"delivPct":91,"reports":[{"t":"Sekondi-Takoradi First Assurance Report","c":"Ghana","disc":73,"over":true,"prep":true,"law":false},{"t":"Thailand Third Assurance Report","c":"Thailand","disc":null,"over":false,"prep":false,"law":true},{"t":"El Salvador Third Assurance Report Infographic (Spanish)","c":"El Salvador","disc":91,"over":true,"prep":true,"law":false},{"t":"Honduras Sixth Assurance Report Infographic (Spanish)","c":"Honduras","disc":68.2,"over":true,"prep":true,"law":true},{"t":"Costa Rica First Assurance Report Infographic","c":"Costa Rica","disc":null,"over":true,"prep":false,"law":false},{"t":"Costa Rica First Assurance Report","c":"Costa Rica","disc":51,"over":true,"prep":false,"law":true},{"t":"Ukraine Sixth Assurance Report Infographic Summary","c":"Ukraine","disc":98,"over":true,"prep":false,"law":false},{"t":"Malawi Assurance Report 2019","c":"Malawi","disc":null,"over":true,"prep":true,"law":true},{"t":"El Salvador Third Assurance Report","c":"El Salvador","disc":null,"over":true,"prep":false,"law":false},{"t":"Guatemala Eighth Assurance Report","c":"Guatemala","disc":67,"over":true,"prep":true,"law":true},{"t":"Honduras Sixth Assurance Report (Spanish)","c":"Honduras","disc":68.2,"over":true,"prep":true,"law":true}]},{"year":2020,"n":2,"avgDisc":63,"lawPct":100,"delivPct":100,"reports":[{"t":"Thailand Fourth Assurance Report","c":"Thailand","disc":82.6,"over":false,"prep":true,"law":true},{"t":"Uganda Third Assurance Report","c":"Uganda","disc":43,"over":true,"prep":true,"law":true}]},{"year":2021,"n":2,"avgDisc":55,"lawPct":100,"delivPct":100,"reports":[{"t":"Sekondi-Takoradi Second Assurance Report","c":"Ghana","disc":47.6,"over":true,"prep":true,"law":true},{"t":"Uganda Fourth Assurance Report","c":"Uganda","disc":62,"over":true,"prep":true,"law":true}]}],"totals":{"rows":95,"overrun":70,"prep":57,"superv":23,"law":26,"noAudit":23}}</script>
